@@ -14,6 +14,8 @@
       --deep-sage: #5C6B4F;
       --blush: #E8DDD4;
       --moss: #4A5D3E;
+      --petal-pink: #FFB6C1;
+      --rose-red: #FF6B8B;
     }
 
     body { background-color: var(--cream); color: var(--deep-sage); font-family: 'Lora', serif; overflow-x: hidden; cursor: crosshair; }
@@ -36,72 +38,190 @@
       50% { opacity: 1; transform: scale(1.01); }
     }
 
-    /* Particle System */
-    .leaf-particle {
+    /* Flying Green Hearts */
+    .flying-heart {
       position: fixed;
       pointer-events: none;
       z-index: 1;
-      animation: leafDrift linear forwards;
+      animation: heartFloat linear forwards;
+      filter: drop-shadow(0 4px 8px rgba(125, 139, 111, 0.2));
     }
 
-    @keyframes leafDrift {
+    @keyframes heartFloat {
       0% { transform: translate(0, 110vh) rotate(0deg); opacity: 0; }
-      15% { opacity: 0.5; }
-      85% { opacity: 0.5; }
-      100% { transform: translate(100px, -10vh) rotate(720deg); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translate(calc(100vw * var(--x)), -10vh) rotate(calc(var(--r) * 1deg)); opacity: 0; }
     }
 
-    /* Section Aesthetics */
-    .letter-paper {
-      background: #fff;
-      box-shadow: 40px 40px 100px rgba(125, 139, 111, 0.1), -20px -20px 60px #ffffff;
-      line-height: 2.5;
-      letter-spacing: 0.12em;
-      transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-    
-    .letter-paper:hover { transform: translateY(-5px) rotate(0.5deg); }
-
-    /* The Willow Memory Tree */
-    .willow-branch {
-      stroke: var(--sage);
-      stroke-width: 1.5;
-      fill: none;
-      stroke-dasharray: 1200;
-      animation: drawTree 6s ease-out forwards;
-    }
-
-    @keyframes drawTree { from { stroke-dashoffset: 1200; } to { stroke-dashoffset: 0; } }
-
-    .memory-leaf {
-      position: absolute;
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      animation: sway 4s ease-in-out infinite;
-      transform-origin: top center;
-    }
-
-    @keyframes sway {
-      0%, 100% { transform: rotate(-3deg); }
-      50% { transform: rotate(3deg); }
-    }
-
-    .memory-leaf:hover { transform: scale(1.2) rotate(0deg); z-index: 50; }
-
-    /* Unique Scratch Card */
-    .scratch-wrapper {
-      width: 340px;
-      height: 200px;
+    /* Heart-shaped Letter */
+    .heart-letter {
       position: relative;
-      border-radius: 20px;
+      width: 500px;
+      height: 450px;
+      background: #fff;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+      transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+      cursor: pointer;
+      transform-origin: center;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     }
 
-    #scratch-canvas {
+    .heart-letter:before,
+    .heart-letter:after {
       position: absolute;
-      top: 0; left: 0;
+      content: "";
+      left: 250px;
+      top: 0;
+      width: 250px;
+      height: 400px;
+      background: #fff;
+      border-radius: 250px 250px 0 0;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
+
+    .heart-letter:after {
+      left: 0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
+
+    .heart-letter.open {
+      transform: scale(0.9);
+      animation: letterOpen 1.2s forwards;
+    }
+
+    @keyframes letterOpen {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .letter-content {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      height: 320px;
+      padding: 40px;
+      opacity: 0;
+      transition: opacity 0.8s 0.6s;
+      overflow-y: auto;
+      z-index: 2;
+    }
+
+    .heart-letter.open .letter-content {
+      opacity: 1;
+    }
+
+    /* Bouquet Styles */
+    .bouquet {
+      position: absolute;
+      width: 300px;
+      height: 400px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .bouquet-left {
+      left: -150px;
+      bottom: -50px;
+    }
+
+    .bouquet-right {
+      right: -150px;
+      bottom: -50px;
+    }
+
+    .flower {
+      position: absolute;
+      animation: flowerSway 8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.1));
+    }
+
+    @keyframes flowerSway {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    /* Envelope */
+    .envelope {
+      position: relative;
+      width: 500px;
+      height: 300px;
+      background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+      box-shadow: 0 40px 100px rgba(125, 139, 111, 0.2);
+      border-radius: 20px;
+      transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
       cursor: pointer;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .envelope:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 250px solid transparent;
+      border-right: 250px solid transparent;
+      border-bottom: 150px solid var(--sage);
+      top: 0;
+      left: 0;
+      opacity: 0.9;
+    }
+
+    .envelope:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 250px solid transparent;
+      border-right: 250px solid transparent;
+      border-top: 150px solid var(--deep-sage);
+      bottom: 0;
+      left: 0;
+      opacity: 0.8;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: -100px;
+      left: 0;
+      width: 500px;
+      height: 200px;
+      background: var(--sage);
+      clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+      transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .envelope.open .envelope-flap {
+      transform: rotateX(180deg);
+      top: -150px;
+    }
+
+    .envelope-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: var(--rose-red);
+      border-radius: 50%;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.6s;
+      box-shadow: 0 10px 30px rgba(255, 107, 139, 0.3);
+    }
+
+    .envelope-seal:hover {
+      transform: translate(-50%, -50%) scale(1.1);
     }
 
     /* Custom Reveal Animation */
@@ -125,6 +245,21 @@
       animation: bounce 3s infinite;
     }
     @keyframes bounce { 0%, 100% { bottom: 40px; } 50% { bottom: 55px; } }
+
+    /* Leaf Particle */
+    .leaf-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      animation: leafDrift linear forwards;
+    }
+
+    @keyframes leafDrift {
+      0% { transform: translate(0, 110vh) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.5; }
+      85% { opacity: 0.5; }
+      100% { transform: translate(100px, -10vh) rotate(720deg); opacity: 0; }
+    }
   </style>
  </head>
  <body class="h-full">
@@ -156,28 +291,98 @@
         Slow down. Breathe. Explore.
       </p>
 
-      <a href="#letter-sec" class="group relative inline-block px-14 py-5 overflow-hidden border border-sage/30 rounded-full transition-all">
-        <span class="relative z-10 serif-title text-[11px] text-sage group-hover:text-cream transition-colors duration-500">Unfold the Narrative</span>
+      <a href="#envelope-sec" class="group relative inline-block px-14 py-5 overflow-hidden border border-sage/30 rounded-full transition-all">
+        <span class="relative z-10 serif-title text-[11px] text-sage group-hover:text-cream transition-colors duration-500">Open Your Love Letter</span>
         <div class="absolute inset-0 bg-sage scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
       </a>
     </div>
     <div class="scroll-down">Scroll Deeply</div>
    </section>
 
-   <section id="letter-sec" class="min-h-screen bg-blush/20 py-32 px-6 flex items-center justify-center">
+   <section id="envelope-sec" class="min-h-screen py-32 px-6 flex items-center justify-center relative">
+    <!-- Bouquets -->
+    <div class="bouquet bouquet-left">
+      <!-- Peonies and greenery -->
+      <div class="flower" style="left: 50px; top: 50px; width: 120px;">
+        <svg viewBox="0 0 100 100">
+          <!-- Peony center -->
+          <circle cx="50" cy="50" r="15" fill="#FFB6C1"/>
+          <!-- Petals -->
+          <ellipse cx="35" cy="35" rx="12" ry="18" fill="#FF6B8B" transform="rotate(-20 35 35)"/>
+          <ellipse cx="65" cy="35" rx="12" ry="18" fill="#FF6B8B" transform="rotate(20 65 35)"/>
+          <ellipse cx="35" cy="65" rx="12" ry="18" fill="#FF6B8B" transform="rotate(20 35 65)"/>
+          <ellipse cx="65" cy="65" rx="12" ry="18" fill="#FF6B8B" transform="rotate(-20 65 65)"/>
+          <!-- Leaves -->
+          <path d="M30 80 Q 50 90 70 80" stroke="#4A5D3E" stroke-width="3" fill="none"/>
+        </svg>
+      </div>
+      <div class="flower" style="right: 30px; top: 120px; width: 100px; animation-delay: -1s;">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="12" fill="#FFB6C1"/>
+          <ellipse cx="40" cy="40" rx="10" ry="15" fill="#FF6B8B" transform="rotate(-15 40 40)"/>
+          <ellipse cx="60" cy="40" rx="10" ry="15" fill="#FF6B8B" transform="rotate(15 60 40)"/>
+          <path d="M40 75 Q 50 85 60 75" stroke="#5C6B4F" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="bouquet bouquet-right">
+      <div class="flower" style="left: 60px; top: 80px; width: 110px; animation-delay: -2s;">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="14" fill="#FFB6C1"/>
+          <ellipse cx="40" cy="40" rx="11" ry="16" fill="#FF6B8B" transform="rotate(-25 40 40)"/>
+          <ellipse cx="60" cy="40" rx="11" ry="16" fill="#FF6B8B" transform="rotate(25 60 40)"/>
+          <ellipse cx="40" cy="60" rx="11" ry="16" fill="#FF6B8B" transform="rotate(25 40 60)"/>
+          <ellipse cx="60" cy="60" rx="11" ry="16" fill="#FF6B8B" transform="rotate(-25 60 60)"/>
+          <path d="M35 85 Q 50 95 65 85" stroke="#4A5D3E" stroke-width="3" fill="none"/>
+        </svg>
+      </div>
+      <div class="flower" style="right: 40px; top: 40px; width: 90px; animation-delay: -3s;">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="10" fill="#FFB6C1"/>
+          <ellipse cx="45" cy="45" rx="8" ry="12" fill="#FF6B8B"/>
+          <ellipse cx="55" cy="45" rx="8" ry="12" fill="#FF6B8B"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Envelope and Letter -->
+    <div class="relative">
+      <div class="envelope" id="love-envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-seal">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="heart-letter absolute top-0 left-0" id="heart-letter">
+        <div class="letter-content">
+          <textarea id="letter-body" 
+                    class="w-full h-full bg-transparent border-none focus:ring-0 text-xl text-deep-sage resize-none overflow-auto font-light italic leading-relaxed"
+                    placeholder="Write your love letter here... Every word will be cherished. You can pour your heart out - this space is for your most intimate thoughts and feelings. Remember to save your changes!"></textarea>
+        </div>
+      </div>
+    </div>
+   </section>
+
+   <section id="letter-sec" class="min-h-screen bg-blush/20 py-32 px-6 flex items-center justify-center hidden">
     <div class="max-w-4xl w-full">
       <div class="letter-paper p-12 md:p-24 rounded-sm relative">
         <div class="absolute top-0 left-0 w-full h-2 bg-sage/10"></div>
         
         <h3 class="fancy-font text-5xl text-sage mb-12">To my <span class="partner-display">Beloved</span>,</h3>
         
-        <textarea id="letter-body" class="w-full bg-transparent border-none focus:ring-0 text-xl md:text-3xl text-deep-sage min-h-[600px] resize-none overflow-hidden font-light italic" 
-                  placeholder="The words start here..."></textarea>
+        <div id="letter-display" class="text-xl md:text-2xl text-deep-sage min-h-[600px] font-light italic leading-loose">
+          <!-- Letter content will appear here -->
+        </div>
         
         <div class="mt-20 border-t border-sage/10 pt-10 flex justify-between items-end">
           <div class="text-[10px] serif-title opacity-40">Hand-coded with devotion</div>
           <div class="text-right">
             <p class="fancy-font text-5xl text-sage">Yours Always</p>
+            <p class="partner-display fancy-font text-2xl mt-2 text-sage/70"></p>
           </div>
         </div>
       </div>
@@ -244,7 +449,33 @@
   </div>
 
   <script>
-    // Physics-Based Particle System
+    // Green Flying Hearts
+    function spawnGreenHearts() {
+      const container = document.body;
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'flying-heart';
+        heart.style.setProperty('--x', Math.random());
+        heart.style.setProperty('--r', Math.random() * 360);
+        
+        // Green heart with different shades
+        const shades = ['#7D8B6F', '#5C6B4F', '#4A5D3E', '#8FA57F', '#6C7B5F'];
+        const shade = shades[Math.floor(Math.random() * shades.length)];
+        
+        heart.innerHTML = `
+          <svg width="${Math.random() * 24 + 16}" height="${Math.random() * 24 + 16}" viewBox="0 0 24 24" fill="${shade}" opacity="${Math.random() * 0.5 + 0.3}">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        `;
+        
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 25000);
+      }, 1000);
+    }
+    
+    // Leaf Particles
     function spawnOrganicParticles() {
       const container = document.body;
       setInterval(() => {
@@ -252,7 +483,6 @@
         p.className = 'leaf-particle';
         const isLeaf = Math.random() > 0.4;
         
-        // Random organic SVG shapes (no cliché hearts)
         p.innerHTML = isLeaf ? 
           `<svg width="18" height="18" viewBox="0 0 20 20"><path d="M0 20 Q 10 0 20 20 Z" fill="var(--sage)" opacity="0.3"/></svg>` :
           `<svg width="12" height="12" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" stroke="var(--blush)" fill="none" stroke-width="0.5" opacity="0.6"/></svg>`;
@@ -263,6 +493,9 @@
         setTimeout(() => p.remove(), 20000);
       }, 1500);
     }
+
+    // Start animations
+    spawnGreenHearts();
     spawnOrganicParticles();
 
     // Interaction Sync
@@ -270,6 +503,13 @@
     const nUnderline = document.getElementById('name-underline');
     const nDisplays = document.querySelectorAll('.partner-display');
     const bInput = document.getElementById('letter-body');
+    const letterDisplay = document.getElementById('letter-display');
+    const envelope = document.getElementById('love-envelope');
+    const heartLetter = document.getElementById('heart-letter');
+    const envelopeSec = document.getElementById('envelope-sec');
+    const letterSec = document.getElementById('letter-sec');
+
+    let isLetterOpen = false;
 
     nInput.addEventListener('focus', () => nUnderline.style.width = '100%');
     nInput.addEventListener('blur', () => nUnderline.style.width = '0%');
@@ -278,11 +518,48 @@
       const val = e.target.value || "My Everything";
       nDisplays.forEach(d => d.textContent = val);
       if(window.elementSdk) window.elementSdk.setConfig({partner_name: val});
+      localStorage.setItem('partnerName', val);
     });
 
     bInput.addEventListener('input', (e) => {
+      letterDisplay.textContent = e.target.value;
       if(window.elementSdk) window.elementSdk.setConfig({letter_content: e.target.value});
+      localStorage.setItem('letterContent', e.target.value);
     });
+
+    // Envelope Click Handler
+    envelope.addEventListener('click', () => {
+      if (!isLetterOpen) {
+        envelope.classList.add('open');
+        setTimeout(() => {
+          heartLetter.classList.add('open');
+          isLetterOpen = true;
+          // Scroll to center the envelope
+          envelopeSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 600);
+      } else {
+        // Switch to letter view
+        envelopeSec.classList.add('hidden');
+        letterSec.classList.remove('hidden');
+        letterSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Initialize with saved data
+    function loadSavedData() {
+      const savedName = localStorage.getItem('partnerName');
+      const savedLetter = localStorage.getItem('letterContent');
+      
+      if (savedName) {
+        nInput.value = savedName;
+        nDisplays.forEach(d => d.textContent = savedName);
+      }
+      
+      if (savedLetter) {
+        bInput.value = savedLetter;
+        letterDisplay.textContent = savedLetter;
+      }
+    }
 
     // Image Uploading
     let activeSlot = 1;
@@ -343,7 +620,7 @@
     // Element SDK Management
     const defaultConfig = {
       partner_name: "My Everything",
-      letter_content: "In the quiet moments when the world fades away, I find myself drifting back to you. \n\nYou are not just a part of my life; you are the frequency my heart resonates with. Thank you for the way you see the world, and more importantly, for the way you see me.",
+      letter_content: "In the quiet moments when the world fades away, I find myself drifting back to you.\n\nYou are not just a part of my life; you are the frequency my heart resonates with. Thank you for the way you see the world, and more importantly, for the way you see me.\n\nWith all my love,",
       fortune: "In every lifetime, in every shape, my soul would seek yours."
     };
 
@@ -351,7 +628,12 @@
       nInput.value = cfg.partner_name || "";
       nDisplays.forEach(d => d.textContent = cfg.partner_name || "My Everything");
       bInput.value = cfg.letter_content || defaultConfig.letter_content;
+      letterDisplay.textContent = cfg.letter_content || defaultConfig.letter_content;
       document.getElementById('fortune-text').textContent = cfg.fortune || defaultConfig.fortune;
+      
+      // Save to localStorage
+      localStorage.setItem('partnerName', cfg.partner_name || "");
+      localStorage.setItem('letterContent', cfg.letter_content || defaultConfig.letter_content);
     }
 
     if (window.elementSdk) {
@@ -366,7 +648,9 @@
       });
     }
     
+    // Initialize
     initOracle();
+    loadSavedData();
     onConfigChange(defaultConfig);
   </script>
  </body>

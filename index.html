@@ -3,9 +3,9 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine Love Letter</title>
+  <title>Valentine Love Letter - Eternal Edition</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Great+Vibes&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Great+Vibes&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <script src="/_sdk/element_sdk.js"></script>
   <style>
     :root {
@@ -16,192 +16,227 @@
       --moss: #4A5D3E;
     }
 
-    body { background-color: var(--cream); color: var(--deep-sage); font-family: 'Lora', serif; overflow-x: hidden; }
+    body { background-color: var(--cream); color: var(--deep-sage); font-family: 'Lora', serif; overflow-x: hidden; cursor: crosshair; }
     .fancy-font { font-family: 'Great Vibes', cursive; }
-    .serif-title { font-family: 'Cormorant Garamond', serif; text-transform: uppercase; letter-spacing: 0.2em; }
+    .serif-title { font-family: 'Cormorant Garamond', serif; text-transform: uppercase; letter-spacing: 0.4em; }
 
-    /* Animated Vine Borders */
-    .vine-container {
+    /* Moving Vine Borders */
+    .vine-frame {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 100;
-      border: 25px solid transparent;
-      border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0 50 Q 25 0 50 50 T 100 50' fill='none' stroke='%237D8B6F' stroke-width='1.5'/%3E%3Ccircle cx='50' cy='50' r='2' fill='%234A5D3E'/%3E%3C/svg%3E") 30 round;
+      border: 30px solid transparent;
+      border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0 50 Q 25 0 50 50 T 100 50' fill='none' stroke='%237D8B6F' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%234A5D3E'/%3E%3C/svg%3E") 30 round;
+      animation: framePulse 10s ease-in-out infinite;
     }
 
-    /* Floating Particles */
-    .particle {
+    @keyframes framePulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.01); }
+    }
+
+    /* Particle System */
+    .leaf-particle {
       position: fixed;
       pointer-events: none;
-      opacity: 0.4;
       z-index: 1;
-      animation: float-up linear infinite;
+      animation: leafDrift linear forwards;
     }
 
-    @keyframes float-up {
-      0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.4; }
-      90% { opacity: 0.4; }
-      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    @keyframes leafDrift {
+      0% { transform: translate(0, 110vh) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.5; }
+      85% { opacity: 0.5; }
+      100% { transform: translate(100px, -10vh) rotate(720deg); opacity: 0; }
     }
 
-    /* Section Styles */
-    .hero-gradient {
-      background: radial-gradient(circle at center, rgba(232, 221, 212, 0.5) 0%, rgba(253, 248, 243, 1) 70%);
-    }
-
+    /* Section Aesthetics */
     .letter-paper {
       background: #fff;
-      background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
-      background-size: 30px 30px;
-      box-shadow: 20px 20px 60px #d9d4cf, -20px -20px 60px #ffffff;
-      line-height: 2.2;
-      letter-spacing: 0.08em;
+      box-shadow: 40px 40px 100px rgba(125, 139, 111, 0.1), -20px -20px 60px #ffffff;
+      line-height: 2.5;
+      letter-spacing: 0.12em;
+      transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
     }
+    
+    .letter-paper:hover { transform: translateY(-5px) rotate(0.5deg); }
 
-    /* The Tree */
-    .tree-branch {
-      stroke: var(--deep-sage);
-      stroke-width: 2;
+    /* The Willow Memory Tree */
+    .willow-branch {
+      stroke: var(--sage);
+      stroke-width: 1.5;
       fill: none;
-      stroke-linecap: round;
-      stroke-dasharray: 1000;
-      animation: draw 4s ease-out forwards;
+      stroke-dasharray: 1200;
+      animation: drawTree 6s ease-out forwards;
     }
 
-    @keyframes draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+    @keyframes drawTree { from { stroke-dashoffset: 1200; } to { stroke-dashoffset: 0; } }
 
-    .leaf-node {
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      filter: sepia(20%);
+    .memory-leaf {
+      position: absolute;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: sway 4s ease-in-out infinite;
+      transform-origin: top center;
     }
 
-    .leaf-node:hover {
-      transform: scale(1.1) rotate(3deg);
-      filter: sepia(0%);
-      z-index: 50;
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
     }
 
-    /* Scratch Card */
-    .scratch-box {
-      width: 300px;
-      height: 150px;
+    .memory-leaf:hover { transform: scale(1.2) rotate(0deg); z-index: 50; }
+
+    /* Unique Scratch Card */
+    .scratch-wrapper {
+      width: 340px;
+      height: 200px;
       position: relative;
-      touch-action: none;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
     }
 
     #scratch-canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="10" fill="rgba(125, 139, 111, 0.5)"/></svg>'), auto;
+      top: 0; left: 0;
+      cursor: pointer;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    .scroll-indicator {
-      animation: bounce 2s infinite;
+    /* Custom Reveal Animation */
+    .reveal-text {
+      animation: textInnerBreath 4s ease-in-out infinite;
+    }
+    @keyframes textInnerBreath {
+      0%, 100% { letter-spacing: 0.1em; opacity: 0.8; }
+      50% { letter-spacing: 0.15em; opacity: 1; }
     }
 
-    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+    .scroll-down {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      animation: bounce 3s infinite;
+    }
+    @keyframes bounce { 0%, 100% { bottom: 40px; } 50% { bottom: 55px; } }
   </style>
  </head>
  <body class="h-full">
-  <div class="vine-container"></div>
+  <div class="vine-frame"></div>
   
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+     <svg class="absolute -top-20 -left-20 w-96 h-96 opacity-10 text-sage" viewBox="0 0 100 100"><path d="M0 50 Q 50 0 100 50 T 0 50" fill="currentColor"/></svg>
+     <svg class="absolute -bottom-20 -right-20 w-96 h-96 opacity-10 text-sage" viewBox="0 0 100 100"><path d="M0 50 Q 50 0 100 50 T 0 50" fill="currentColor"/></svg>
+  </div>
+
   <div id="app-wrapper" class="h-full overflow-y-auto scroll-smooth">
    
-   <section class="min-h-screen flex flex-col items-center justify-center relative px-6 hero-gradient">
+   <section class="min-h-screen flex flex-col items-center justify-center relative p-8">
     <div class="text-center z-10">
-      <h2 class="serif-title text-sm mb-4">A Curated Moment for</h2>
-      <div class="relative inline-block mb-8">
-        <input type="text" id="partner-name" placeholder="Beloved" 
-               class="bg-transparent text-center text-7xl md:text-9xl fancy-font text-sage border-none outline-none focus:ring-0 w-full px-4">
-        <div class="h-px w-full bg-sage/30 absolute bottom-2"></div>
-      </div>
-      <p class="text-deep-sage italic max-w-md mx-auto mb-12 opacity-80">
-        "Love is not just a feeling, it's a garden we grow together, one leaf at a time."
-      </p>
-      <a href="#letter" class="inline-block border border-sage px-12 py-4 text-sage hover:bg-sage hover:text-cream transition-all duration-700 tracking-widest text-xs uppercase">
-        Explore the Heart
-      </a>
-    </div>
-    <div class="absolute bottom-10 scroll-indicator">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-    </div>
-   </section>
-
-   <section id="letter" class="min-h-screen bg-blush/30 py-24 px-6 flex items-center justify-center">
-    <div class="max-w-3xl w-full">
-      <div class="letter-paper p-10 md:p-20 rounded-sm relative overflow-hidden">
-        <div class="absolute -top-10 -right-10 opacity-10">
-          <svg width="200" height="200" viewBox="0 0 100 100"><path d="M10 50 Q 50 10 90 50 T 10 50" fill="var(--sage)" /></svg>
-        </div>
-        
-        <h3 class="fancy-font text-4xl text-sage mb-10">My Eternal <span class="partner-display">Beloved</span>,</h3>
-        
-        <textarea id="letter-body" class="w-full bg-transparent border-none focus:ring-0 text-xl md:text-2xl text-deep-sage min-h-[500px] resize-none overflow-hidden" 
-                  placeholder="In the silence between heartbeats, I find you..."></textarea>
-        
-        <div class="mt-12 flex flex-col items-end">
-          <p class="text-xs uppercase tracking-widest opacity-60">Yours, until the stars fade</p>
-          <p class="fancy-font text-4xl text-sage mt-2">Signature</p>
-        </div>
+      <div class="mb-6 opacity-60 flex justify-center space-x-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+          <span class="serif-title text-[10px]">Eternity Awaits</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
       </div>
       
-      <div class="mt-20 text-center">
-        <p class="serif-title text-xs mb-8">Scroll to see our memories bloom</p>
+      <div class="relative inline-block mb-10">
+        <input type="text" id="partner-name" placeholder="My Everything" 
+               class="bg-transparent text-center text-7xl md:text-[10rem] fancy-font text-sage border-none outline-none focus:ring-0 w-full px-12 transition-all duration-1000">
+        <div class="h-px w-0 bg-sage/40 absolute bottom-4 left-0 transition-all duration-1000" id="name-underline"></div>
+      </div>
+
+      <p class="text-deep-sage italic max-w-lg mx-auto mb-16 leading-loose opacity-70">
+        This is a digital sanctuary built from the fragments of our journey. <br>
+        Slow down. Breathe. Explore.
+      </p>
+
+      <a href="#letter-sec" class="group relative inline-block px-14 py-5 overflow-hidden border border-sage/30 rounded-full transition-all">
+        <span class="relative z-10 serif-title text-[11px] text-sage group-hover:text-cream transition-colors duration-500">Unfold the Narrative</span>
+        <div class="absolute inset-0 bg-sage scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500"></div>
+      </a>
+    </div>
+    <div class="scroll-down">Scroll Deeply</div>
+   </section>
+
+   <section id="letter-sec" class="min-h-screen bg-blush/20 py-32 px-6 flex items-center justify-center">
+    <div class="max-w-4xl w-full">
+      <div class="letter-paper p-12 md:p-24 rounded-sm relative">
+        <div class="absolute top-0 left-0 w-full h-2 bg-sage/10"></div>
+        
+        <h3 class="fancy-font text-5xl text-sage mb-12">To my <span class="partner-display">Beloved</span>,</h3>
+        
+        <textarea id="letter-body" class="w-full bg-transparent border-none focus:ring-0 text-xl md:text-3xl text-deep-sage min-h-[600px] resize-none overflow-hidden font-light italic" 
+                  placeholder="The words start here..."></textarea>
+        
+        <div class="mt-20 border-t border-sage/10 pt-10 flex justify-between items-end">
+          <div class="text-[10px] serif-title opacity-40">Hand-coded with devotion</div>
+          <div class="text-right">
+            <p class="fancy-font text-5xl text-sage">Yours Always</p>
+          </div>
+        </div>
       </div>
     </div>
    </section>
 
-   <section class="min-h-screen py-20 relative flex flex-col items-center justify-center">
-    <h3 class="serif-title text-xl mb-16">The Memory Willow</h3>
+   <section class="min-h-screen py-24 relative flex flex-col items-center justify-center overflow-hidden">
+    <h3 class="serif-title text-2xl mb-4">The Willow of Whispers</h3>
+    <p class="text-sage italic mb-20 opacity-60">Photos that bloom like leaves in the sun</p>
     
-    <div class="relative w-full max-w-4xl h-[600px] flex items-center justify-center">
-      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
-        <path class="tree-branch" d="M200 380 C 210 300 190 200 200 100" />
-        <path class="tree-branch" d="M200 300 C 150 280 80 250 50 200" />
-        <path class="tree-branch" d="M200 250 C 250 230 320 200 350 150" />
-        <path class="tree-branch" d="M200 180 C 160 140 100 100 80 50" />
-        <path class="tree-branch" d="M200 150 C 240 110 300 80 320 30" />
+    <div class="relative w-full max-w-5xl h-[700px] flex items-center justify-center">
+      <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 500 500">
+        <path class="willow-branch" d="M250 480 C 260 400 240 250 250 150" />
+        <path class="willow-branch" d="M250 350 C 180 320 100 280 40 220" />
+        <path class="willow-branch" d="M250 300 C 320 280 420 240 480 180" />
+        <path class="willow-branch" d="M250 220 C 150 180 80 120 60 40" />
+        <path class="willow-branch" d="M250 180 C 350 140 420 100 440 20" />
       </svg>
 
-      <div class="absolute top-[15%] left-[10%] leaf-node bg-white p-2 shadow-xl border border-sage/20 rotate-[-12deg]" onclick="uploadMemory(1)">
-        <div id="img-1" class="w-24 h-24 md:w-32 md:h-32 bg-cream flex items-center justify-center text-sage/40">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="memory-leaf top-[10%] left-[15%] bg-white p-3 shadow-2xl border border-sage/10 rotate-[-10deg]" onclick="popUpload(1)">
+        <div id="slot-1" class="w-28 h-28 md:w-40 md:h-40 bg-cream flex items-center justify-center overflow-hidden">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-sage/30"><path d="M12 5v14M5 12h14"/></svg>
         </div>
+        <div class="mt-2 h-4 w-full bg-sage/5"></div>
       </div>
 
-      <div class="absolute top-[35%] right-[5%] leaf-node bg-white p-2 shadow-xl border border-sage/20 rotate-[8deg]" onclick="uploadMemory(2)">
-        <div id="img-2" class="w-24 h-24 md:w-32 md:h-32 bg-cream flex items-center justify-center text-sage/40">
-           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="memory-leaf top-[40%] right-[10%] bg-white p-3 shadow-2xl border border-sage/10 rotate-[5deg]" onclick="popUpload(2)">
+        <div id="slot-2" class="w-28 h-28 md:w-40 md:h-40 bg-cream flex items-center justify-center overflow-hidden">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-sage/30"><path d="M12 5v14M5 12h14"/></svg>
         </div>
+        <div class="mt-2 h-4 w-full bg-sage/5"></div>
       </div>
 
-      <div class="absolute bottom-[20%] left-[25%] leaf-node bg-white p-2 shadow-xl border border-sage/20 rotate-[-5deg]" onclick="uploadMemory(3)">
-        <div id="img-3" class="w-24 h-24 md:w-32 md:h-32 bg-cream flex items-center justify-center text-sage/40">
-           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="memory-leaf bottom-[15%] left-[30%] bg-white p-3 shadow-2xl border border-sage/10 rotate-[-4deg]" onclick="popUpload(3)">
+        <div id="slot-3" class="w-28 h-28 md:w-40 md:h-40 bg-cream flex items-center justify-center overflow-hidden">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-sage/30"><path d="M12 5v14M5 12h14"/></svg>
         </div>
+        <div class="mt-2 h-4 w-full bg-sage/5"></div>
       </div>
     </div>
-    <input type="file" id="file-upload" class="hidden" accept="image/*">
+    <input type="file" id="image-loader" class="hidden" accept="image/*">
    </section>
 
-   <section class="min-h-screen bg-sage/10 flex flex-col items-center justify-center p-6">
-     <div class="max-w-md w-full text-center">
-       <h3 class="serif-title text-xl mb-4">A Secret Destiny</h3>
-       <p class="text-sm italic mb-10 opacity-70">Gently scratch the veil to reveal what the universe says about us...</p>
+   <section class="min-h-screen bg-sage/5 flex flex-col items-center justify-center p-8 text-center">
+     <div class="max-w-lg">
+       <div class="mb-10 inline-block border-b border-sage/20 pb-2">
+         <h3 class="serif-title text-xl">The Oracle's Blessing</h3>
+       </div>
+       <p class="text-sm italic mb-16 opacity-60">There are no coincidences in love. Scratch the silver to find your truth.</p>
        
-       <div class="scratch-box mx-auto bg-white rounded-lg shadow-inner overflow-hidden border border-sage/20">
-         <div class="absolute inset-0 flex items-center justify-center p-6 bg-white">
-           <p id="fortune-text" class="fancy-font text-3xl text-sage">"Every soul finds its home in another. I found mine in you."</p>
+       <div class="scratch-wrapper mx-auto bg-white">
+         <div class="absolute inset-0 flex items-center justify-center p-8 bg-white reveal-text">
+           <p id="fortune-text" class="fancy-font text-3xl text-sage">"In every lifetime, in every shape, my soul would seek yours."</p>
          </div>
-         <canvas id="scratch-canvas" width="300" height="150"></canvas>
+         <canvas id="scratch-canvas" width="340" height="200"></canvas>
        </div>
        
-       <div class="mt-20">
-         <p class="serif-title text-[10px] opacity-40 uppercase tracking-[0.4em]">Forever & Always</p>
+       <div class="mt-32">
+         <p class="serif-title text-[9px] opacity-30 uppercase tracking-[0.6em]">Design by Gemini — Crafted with Heart</p>
        </div>
      </div>
    </section>
@@ -209,99 +244,113 @@
   </div>
 
   <script>
-    // Particle System
-    function createParticles() {
+    // Physics-Based Particle System
+    function spawnOrganicParticles() {
       const container = document.body;
-      for (let i = 0; i < 15; i++) {
+      setInterval(() => {
         const p = document.createElement('div');
-        p.className = 'particle';
-        const isLeaf = Math.random() > 0.5;
+        p.className = 'leaf-particle';
+        const isLeaf = Math.random() > 0.4;
+        
+        // Random organic SVG shapes (no cliché hearts)
         p.innerHTML = isLeaf ? 
-          `<svg width="15" height="15" viewBox="0 0 20 20"><path d="M0 20 Q 10 0 20 20 Z" fill="var(--sage)" opacity="0.4"/></svg>` :
-          `<svg width="10" height="10" viewBox="0 0 20 20"><path d="M10 18 C 2 10 2 5 10 5 C 18 5 18 10 10 18" fill="var(--blush)" opacity="0.6"/></svg>`;
+          `<svg width="18" height="18" viewBox="0 0 20 20"><path d="M0 20 Q 10 0 20 20 Z" fill="var(--sage)" opacity="0.3"/></svg>` :
+          `<svg width="12" height="12" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" stroke="var(--blush)" fill="none" stroke-width="0.5" opacity="0.6"/></svg>`;
         
         p.style.left = Math.random() * 100 + 'vw';
-        p.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.animationDuration = (Math.random() * 8 + 12) + 's';
         container.appendChild(p);
-      }
+        setTimeout(() => p.remove(), 20000);
+      }, 1500);
     }
-    createParticles();
+    spawnOrganicParticles();
 
-    // Data Sync
-    const nameInput = document.getElementById('partner-name');
-    const displays = document.querySelectorAll('.partner-display');
-    const letterInput = document.getElementById('letter-body');
+    // Interaction Sync
+    const nInput = document.getElementById('partner-name');
+    const nUnderline = document.getElementById('name-underline');
+    const nDisplays = document.querySelectorAll('.partner-display');
+    const bInput = document.getElementById('letter-body');
 
-    nameInput.addEventListener('input', (e) => {
-      const val = e.target.value || "Beloved";
-      displays.forEach(d => d.textContent = val);
+    nInput.addEventListener('focus', () => nUnderline.style.width = '100%');
+    nInput.addEventListener('blur', () => nUnderline.style.width = '0%');
+    
+    nInput.addEventListener('input', (e) => {
+      const val = e.target.value || "My Everything";
+      nDisplays.forEach(d => d.textContent = val);
       if(window.elementSdk) window.elementSdk.setConfig({partner_name: val});
     });
 
-    letterInput.addEventListener('input', (e) => {
+    bInput.addEventListener('input', (e) => {
       if(window.elementSdk) window.elementSdk.setConfig({letter_content: e.target.value});
     });
 
-    // Image Uploads
-    let currentSlot = 1;
-    function uploadMemory(slot) {
-      currentSlot = slot;
-      document.getElementById('file-upload').click();
+    // Image Uploading
+    let activeSlot = 1;
+    function popUpload(id) {
+      activeSlot = id;
+      document.getElementById('image-loader').click();
     }
 
-    document.getElementById('file-upload').addEventListener('change', function(e) {
+    document.getElementById('image-loader').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(f) {
-          const container = document.getElementById(`img-${currentSlot}`);
-          container.innerHTML = `<img src="${f.target.result}" class="w-full h-full object-cover">`;
+        reader.onload = (f) => {
+          document.getElementById(`slot-${activeSlot}`).innerHTML = 
+            `<img src="${f.target.result}" class="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-1000">`;
         };
         reader.readAsDataURL(file);
       }
     });
 
-    // Scratch Card
+    // Advanced Scratch Oracle
     const canvas = document.getElementById('scratch-canvas');
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#7D8B6F';
-    ctx.fillRect(0, 0, 300, 150);
-    ctx.font = '14px Lora';
-    ctx.fillStyle = '#FDF8F3';
-    ctx.textAlign = 'center';
-    ctx.fillText('SCRATCH WITH LOVE', 150, 80);
+    
+    function initOracle() {
+        const grd = ctx.createLinearGradient(0, 0, 340, 200);
+        grd.addColorStop(0, '#7D8B6F');
+        grd.addColorStop(1, '#5C6B4F');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, 340, 200);
+        
+        ctx.font = '12px Cormorant Garamond';
+        ctx.fillStyle = '#FDF8F3';
+        ctx.textAlign = 'center';
+        ctx.letterSpacing = '5px';
+        ctx.fillText('SCRATCH TO REVEAL DESTINY', 170, 105);
+    }
 
-    let isDrawing = false;
-    function scratch(e) {
-      if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX || e.touches[0].clientX) - rect.left;
-      const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    let drawing = false;
+    function scratchAway(e) {
+      if (!drawing) return;
+      const r = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches[0].clientX) - r.left;
+      const y = (e.clientY || e.touches[0].clientY) - r.top;
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
-      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.arc(x, y, 25, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    canvas.addEventListener('mousedown', () => isDrawing = true);
-    canvas.addEventListener('touchstart', () => isDrawing = true);
-    window.addEventListener('mouseup', () => isDrawing = false);
-    window.addEventListener('touchend', () => isDrawing = false);
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', scratch);
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('touchstart', () => drawing = true);
+    window.addEventListener('mouseup', () => drawing = false);
+    window.addEventListener('touchend', () => drawing = false);
+    canvas.addEventListener('mousemove', scratchAway);
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratchAway(e); }, {passive: false});
 
-    // Element SDK
+    // Element SDK Management
     const defaultConfig = {
-      partner_name: "Beloved",
-      letter_content: "Your love is a journey I never want to end. In every breath, in every glance, I find a reason to love you more. You are my home, my peace, and my greatest adventure.",
-      fortune: "Every soul finds its home in another. I found mine in you."
+      partner_name: "My Everything",
+      letter_content: "In the quiet moments when the world fades away, I find myself drifting back to you. \n\nYou are not just a part of my life; you are the frequency my heart resonates with. Thank you for the way you see the world, and more importantly, for the way you see me.",
+      fortune: "In every lifetime, in every shape, my soul would seek yours."
     };
 
     function onConfigChange(cfg) {
-      nameInput.value = cfg.partner_name || "";
-      displays.forEach(d => d.textContent = cfg.partner_name || "Beloved");
-      letterInput.value = cfg.letter_content || defaultConfig.letter_content;
+      nInput.value = cfg.partner_name || "";
+      nDisplays.forEach(d => d.textContent = cfg.partner_name || "My Everything");
+      bInput.value = cfg.letter_content || defaultConfig.letter_content;
       document.getElementById('fortune-text').textContent = cfg.fortune || defaultConfig.fortune;
     }
 
@@ -316,6 +365,8 @@
         ])
       });
     }
+    
+    initOracle();
     onConfigChange(defaultConfig);
   </script>
  </body>

@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine Love Letter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Lora:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Lora', serif;
+    }
+    
+    .romantic-title {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    :root {
+      --cream: #FDF8F3;
+      --sage: #7D8B6F;
+      --deep-sage: #5C6B4F;
+      --blush: #E8DDD4;
+      --moss: #4A5D3E;
+    }
+    
+    .bg-cream { background-color: var(--cream); }
+    .bg-sage { background-color: var(--sage); }
+    .bg-blush { background-color: var(--blush); }
+    .text-sage { color: var(--sage); }
+    .text-deep-sage { color: var(--deep-sage); }
+    .text-moss { color: var(--moss); }
+    .border-sage { border-color: var(--sage); }
+    
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+    
+    .section {
+      min-height: 100%;
+      padding: 3rem 1.5rem;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .float-animation {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .sway-animation {
+      animation: sway 4s ease-in-out infinite;
+    }
+    
+    .fade-in {
+      animation: fadeIn 1s ease-out forwards;
+    }
+    
+    .letter-paper {
+      background: linear-gradient(135deg, #FDF8F3 0%, #F5EDE4 100%);
+      box-shadow: 0 10px 40px rgba(74, 93, 62, 0.15);
+    }
+    
+    .photo-frame {
+      background: linear-gradient(145deg, #F5EDE4, #FDF8F3);
+      box-shadow: 0 8px 32px rgba(74, 93, 62, 0.2);
+    }
+    
+    .nav-dot {
+      transition: all 0.3s ease;
+    }
+    
+    .nav-dot:hover, .nav-dot.active {
+      transform: scale(1.3);
+      background-color: var(--moss);
+    }
+    
+    .quiz-card {
+      background: linear-gradient(135deg, #FDF8F3 0%, #E8DDD4 100%);
+      transition: all 0.4s ease;
+    }
+    
+    .quiz-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(74, 93, 62, 0.2);
+    }
+    
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .upload-zone {
+      border: 2px dashed var(--sage);
+      transition: all 0.3s ease;
+    }
+    
+    .upload-zone:not(.readonly):hover {
+      border-color: var(--moss);
+      background-color: rgba(125, 139, 111, 0.05);
+    }
+    
+    .upload-zone.readonly {
+      border-style: solid;
+      border-color: transparent;
+      cursor: default;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+    
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    /* Luxury sparkle effects */
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1) rotate(180deg); }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(125, 139, 111, 0.5)); }
+      50% { filter: drop-shadow(0 0 20px rgba(125, 139, 111, 0.8)); }
+    }
+    
+    @keyframes slide-up-fade {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      10%, 30% { transform: scale(1.1); }
+      20%, 40% { transform: scale(0.95); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #fff, rgba(125, 139, 111, 0.8));
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+    
+    .luxury-gradient {
+      background: linear-gradient(135deg, 
+        rgba(253, 248, 243, 0.95) 0%, 
+        rgba(232, 221, 212, 0.9) 50%, 
+        rgba(253, 248, 243, 0.95) 100%);
+      background-size: 200% 200%;
+      animation: shimmer 8s linear infinite;
+    }
+    
+    .glass-morphism {
+      background: rgba(253, 248, 243, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(125, 139, 111, 0.2);
+    }
+    
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .animate-on-scroll.visible {
+      animation: slide-up-fade 0.8s ease-out forwards;
+    }
+    
+    .heartbeat-animation {
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+    
+    .hover-lift {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(74, 93, 62, 0.3);
+    }
+    
+    /* Parallax layers */
+    .parallax-layer {
+      transition: transform 0.3s ease-out;
+    }
+    
+    /* Cursor trail effect */
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(125, 139, 111, 0.6), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fade-out 1s forwards;
+    }
+    
+    @keyframes fade-out {
+      to { opacity: 0; transform: scale(2); }
+    }
+    
+    /* Smooth reveal for sections */
+    section {
+      opacity: 0;
+      animation: fadeIn 1.2s ease-out forwards;
+    }
+    
+    #section1 { animation-delay: 0.1s; }
+    #section2 { animation-delay: 0.2s; }
+    #section3 { animation-delay: 0.3s; }
+    
+    /* Enhanced photo frames with 3D effect */
+    .photo-frame-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .photo-frame-3d:hover {
+      transform: perspective(1000px) rotateY(5deg) rotateX(5deg) scale(1.05);
+    }
+    
+    /* Floating particles */
+    .floating-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    
+    @keyframes float-particle {
+      0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Scratch card canvas */
+    .scratch-canvas {
+      cursor: pointer;
+      touch-action: none;
+    }
+    
+    /* Countdown timer */
+    .countdown-box {
+      background: linear-gradient(135deg, rgba(253, 248, 243, 0.95), rgba(232, 221, 212, 0.9));
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(125, 139, 111, 0.3);
+    }
+    
+    @keyframes flip {
+      0%, 100% { transform: rotateY(0deg); }
+      50% { transform: rotateY(180deg); }
+    }
+    
+    .flip-animation {
+      animation: flip 1s ease-in-out;
+    }
+    
+    /* Heart rain */
+    @keyframes heart-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100%) rotate(360deg); opacity: 0; }
+    }
+    
+    .heart-rain {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: heart-fall linear forwards;
+    }
+    
+    /* Reason card reveal */
+    .reason-card {
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    
+    .reason-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    
+    .reason-card.flipped .reason-card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .reason-card-front,
+    .reason-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .reason-card-front {
+      background: linear-gradient(135deg, #7D8B6F, #5C6B4F);
+      color: white;
+    }
+    
+    .reason-card-back {
+      background: linear-gradient(135deg, #FDF8F3, #E8DDD4);
+      transform: rotateY(180deg);
+    }
+    
+    /* Music player animations */
+    @keyframes wave {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(-25%) translateY(10px); }
+      50% { transform: translateX(-50%) translateY(0); }
+      75% { transform: translateX(-25%) translateY(-10px); }
+    }
+    
+    @keyframes music-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .music-playing {
+      animation: music-pulse 2s ease-in-out infinite;
+    }
+    
+    /* Volume slider styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(125, 139, 111, 0.2);
+      outline: none;
+      border-radius: 10px;
+      height: 6px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #7D8B6F;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #5C6B4F;
+      transform: scale(1.2);
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #7D8B6F;
+      cursor: pointer;
+      border-radius: 50%;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="range"]::-moz-range-thumb:hover {
+      background: #5C6B4F;
+      transform: scale(1.2);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-cream overflow-x-hidden">
+  <div id="app-wrapper" class="h-full w-full overflow-auto scroll-smooth"><!-- Navigation Dots -->
+   <nav class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4"><a href="#section1" class="nav-dot w-3 h-3 rounded-full bg-sage active" title="Introduction"></a> <a href="#section2" class="nav-dot w-3 h-3 rounded-full bg-sage" title="Love Letter"></a> <a href="#section3" class="nav-dot w-3 h-3 rounded-full bg-sage" title="Interactive Games"></a> <a href="#section4" class="nav-dot w-3 h-3 rounded-full bg-sage" title="Memories &amp; Quiz"></a>
+   </nav><!-- Section 1: Introduction -->
+   <section id="section1" class="section relative flex items-center justify-center overflow-hidden"><!-- Decorative Elements -->
+    <div class="absolute inset-0 pointer-events-none"><!-- Top Left Rose Cluster -->
+     <svg class="absolute top-8 left-8 w-32 h-32 sway-animation parallax-layer" viewbox="0 0 120 120" fill="none"><g opacity="0.9"><!-- Rose 1 -->
+       <ellipse cx="40" cy="35" rx="18" ry="16" fill="#E8DDD4" />
+       <ellipse cx="40" cy="35" rx="12" ry="10" fill="#FDF8F3" />
+       <ellipse cx="40" cy="35" rx="6" ry="5" fill="#D4C4B5" />
+       <path d="M40 51 C40 70, 35 85, 38 95" stroke="#7D8B6F" stroke-width="2" fill="none" /> <!-- Leaves -->
+       <ellipse cx="28" cy="65" rx="10" ry="5" fill="#7D8B6F" transform="rotate(-30 28 65)" />
+       <ellipse cx="52" cy="62" rx="10" ry="5" fill="#5C6B4F" transform="rotate(25 52 62)" />
+      </g> <!-- Rose 2 --> <g opacity="0.8">
+       <ellipse cx="75" cy="50" rx="14" ry="12" fill="#FDF8F3" />
+       <ellipse cx="75" cy="50" rx="9" ry="7" fill="#E8DDD4" />
+       <ellipse cx="75" cy="50" rx="4" ry="3" fill="#D4C4B5" />
+       <path d="M75 62 C78 75, 72 88, 75 100" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+       <ellipse cx="85" cy="78" rx="8" ry="4" fill="#7D8B6F" transform="rotate(20 85 78)" />
+      </g>
+     </svg><!-- Top Right Leaves -->
+     <svg class="absolute top-12 right-16 w-28 h-28 float-animation parallax-layer" viewbox="0 0 100 100" fill="none" style="animation-delay: -2s;"><path d="M50 10 Q70 30, 50 60 Q30 30, 50 10" fill="#7D8B6F" opacity="0.8" /> <path d="M50 10 L50 70" stroke="#5C6B4F" stroke-width="1.5" /> <path d="M70 25 Q85 45, 70 75 Q55 45, 70 25" fill="#5C6B4F" opacity="0.7" transform="rotate(15 70 50)" /> <path d="M30 30 Q15 50, 30 80 Q45 50, 30 30" fill="#4A5D3E" opacity="0.6" transform="rotate(-10 30 55)" />
+     </svg><!-- Bottom Left Botanical -->
+     <svg class="absolute bottom-16 left-12 w-36 h-36 sway-animation parallax-layer" viewbox="0 0 140 140" fill="none" style="animation-delay: -1s;"><g><!-- Eucalyptus branch -->
+       <path d="M70 130 C60 100, 50 70, 55 30" stroke="#7D8B6F" stroke-width="2" fill="none" />
+       <ellipse cx="45" cy="45" rx="12" ry="8" fill="#7D8B6F" opacity="0.7" transform="rotate(-45 45 45)" />
+       <ellipse cx="60" cy="60" rx="10" ry="6" fill="#5C6B4F" opacity="0.8" transform="rotate(30 60 60)" />
+       <ellipse cx="50" cy="80" rx="11" ry="7" fill="#4A5D3E" opacity="0.6" transform="rotate(-25 50 80)" />
+       <ellipse cx="65" cy="95" rx="9" ry="5" fill="#7D8B6F" opacity="0.7" transform="rotate(40 65 95)" />
+      </g> <!-- Small white rose --> <g transform="translate(90, 40)">
+       <ellipse cx="0" cy="0" rx="12" ry="10" fill="#FDF8F3" />
+       <ellipse cx="0" cy="0" rx="7" ry="5" fill="#E8DDD4" />
+       <ellipse cx="0" cy="0" rx="3" ry="2" fill="#D4C4B5" />
+      </g>
+     </svg><!-- Bottom Right Rose -->
+     <svg class="absolute bottom-20 right-20 w-24 h-24 float-animation parallax-layer" viewbox="0 0 100 100" fill="none" style="animation-delay: -3s;"><g>
+       <ellipse cx="50" cy="40" rx="22" ry="20" fill="#E8DDD4" />
+       <ellipse cx="50" cy="40" rx="15" ry="13" fill="#FDF8F3" />
+       <ellipse cx="50" cy="40" rx="8" ry="6" fill="#D4C4B5" />
+       <path d="M50 60 C50 75, 48 90, 50 98" stroke="#7D8B6F" stroke-width="2" fill="none" />
+       <ellipse cx="38" cy="75" rx="12" ry="6" fill="#5C6B4F" transform="rotate(-35 38 75)" />
+       <ellipse cx="62" cy="72" rx="11" ry="5" fill="#7D8B6F" transform="rotate(30 62 72)" />
+      </g>
+     </svg><!-- Scattered petals -->
+     <svg class="absolute top-1/4 left-1/4 w-6 h-6 float-animation" viewbox="0 0 20 20" style="animation-delay: -4s;"><ellipse cx="10" cy="10" rx="8" ry="5" fill="#E8DDD4" opacity="0.5" transform="rotate(45 10 10)" />
+     </svg>
+     <svg class="absolute top-1/3 right-1/3 w-5 h-5 float-animation" viewbox="0 0 20 20" style="animation-delay: -2.5s;"><ellipse cx="10" cy="10" rx="7" ry="4" fill="#FDF8F3" opacity="0.6" transform="rotate(-30 10 10)" />
+     </svg>
+     <svg class="absolute bottom-1/3 left-1/3 w-4 h-4 sway-animation" viewbox="0 0 20 20" style="animation-delay: -1.5s;"><ellipse cx="10" cy="10" rx="6" ry="3" fill="#7D8B6F" opacity="0.4" transform="rotate(60 10 10)" />
+     </svg>
+    </div><!-- Main Title Content -->
+    <div class="text-center z-10 max-w-3xl px-6 fade-in">
+     <div class="mb-8">
+      <svg class="mx-auto w-20 h-20 mb-6 heartbeat-animation" viewbox="0 0 80 80" fill="none" style="filter: drop-shadow(0 4px 12px rgba(125, 139, 111, 0.4));"><path d="M40 70 C20 50, 10 35, 10 25 C10 15, 20 8, 30 12 C35 14, 38 18, 40 22 C42 18, 45 14, 50 12 C60 8, 70 15, 70 25 C70 35, 60 50, 40 70Z" fill="none" stroke="#7D8B6F" stroke-width="2" /> <path d="M40 65 C25 48, 18 36, 18 28 C18 20, 25 15, 32 18 C36 19, 38 22, 40 26 C42 22, 44 19, 48 18 C55 15, 62 20, 62 28 C62 36, 55 48, 40 65Z" fill="#E8DDD4" opacity="0.5" />
+      </svg>
+     </div>
+     <h1 id="main-title" class="romantic-title text-5xl md:text-7xl text-deep-sage font-medium leading-tight mb-6">Happy Valentine's Day<br><span class="text-sage italic">to the love of my life</span></h1>
+     <p id="partner-display" class="romantic-title text-3xl md:text-4xl text-moss italic mt-8 opacity-80"></p>
+     <div class="mt-12"><a href="#section2" class="inline-flex items-center gap-2 text-sage hover:text-moss transition-colors"> <span class="text-sm tracking-widest uppercase">Read My Letter</span>
+       <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+       </svg></a>
+     </div>
+    </div>
+   </section><!-- Section 2: Love Letter -->
+   <section id="section2" class="section bg-blush relative">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="romantic-title text-4xl md:text-5xl text-deep-sage text-center mb-12">My Letter to You</h2>
+     <div class="relative"><!-- Letter with Photos -->
+      <div class="flex flex-col lg:flex-row gap-8 items-start justify-center"><!-- Left Photo -->
+       <div class="hidden lg:block flex-shrink-0 self-start mt-20">
+        <div class="photo-frame photo-frame-3d p-3 rounded-lg transform -rotate-6 transition-transform duration-500">
+         <div id="photo-1" class="w-40 h-48 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(1)">
+          <div class="text-center p-4">
+           <svg class="w-10 h-10 mx-auto text-sage mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+           </svg><span class="text-xs text-sage">Click to add photo</span>
+          </div>
+         </div>
+         <p class="text-center text-sm text-sage mt-2 italic romantic-title">Our moment</p>
+        </div>
+       </div><!-- Letter -->
+       <div class="letter-paper luxury-gradient rounded-lg p-8 md:p-12 max-w-2xl w-full relative hover-lift"><!-- Decorative corner -->
+        <svg class="absolute top-4 right-4 w-16 h-16 opacity-30" viewbox="0 0 60 60" fill="none"><path d="M30 5 Q45 20, 30 40 Q15 20, 30 5" fill="#7D8B6F" /> <path d="M45 20 Q55 35, 45 55 Q35 35, 45 20" fill="#5C6B4F" opacity="0.7" />
+        </svg>
+        <div class="relative z-10">
+         <p class="romantic-title text-xl text-sage mb-4">My Dearest Love,</p><textarea id="letter-content" class="text-deep-sage leading-relaxed min-h-[200px] whitespace-pre-wrap w-full bg-transparent border-none resize-none focus:outline-none focus:ring-2 focus:ring-sage focus:ring-opacity-30 rounded p-2" placeholder="Write your heartfelt message...">Every moment with you feels like a beautiful dream I never want to wake from. Your smile lights up my darkest days, and your love gives me strength I never knew I had.
+
+On this Valentine's Day, I want you to know that you are my everything — my best friend, my soulmate, my forever.
+
+Thank you for choosing me, for loving me, and for being the most wonderful part of my life.</textarea>
+         <div class="mt-8 text-right">
+          <p class="romantic-title text-xl text-sage italic">Forever yours,</p>
+          <svg class="inline-block w-24 h-12 mt-2" viewbox="0 0 100 50" fill="none"><path d="M10 35 Q20 20, 35 30 T60 25 T90 30" stroke="#7D8B6F" stroke-width="2" fill="none" stroke-linecap="round" />
+          </svg>
+         </div>
+        </div>
+       </div><!-- Right Photos -->
+       <div class="hidden lg:flex flex-col gap-6 flex-shrink-0">
+        <div class="photo-frame photo-frame-3d p-3 rounded-lg transform rotate-3 transition-transform duration-500">
+         <div id="photo-2" class="w-36 h-44 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(2)">
+          <div class="text-center p-4">
+           <svg class="w-8 h-8 mx-auto text-sage mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+           </svg><span class="text-xs text-sage">Add photo</span>
+          </div>
+         </div>
+         <p class="text-center text-xs text-sage mt-2 italic romantic-title">Together</p>
+        </div>
+        <div class="photo-frame photo-frame-3d p-3 rounded-lg transform -rotate-2 transition-transform duration-500">
+         <div id="photo-3" class="w-32 h-40 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(3)">
+          <div class="text-center p-4">
+           <svg class="w-8 h-8 mx-auto text-sage mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+           </svg><span class="text-xs text-sage">Add photo</span>
+          </div>
+         </div>
+         <p class="text-center text-xs text-sage mt-2 italic romantic-title">Always</p>
+        </div>
+       </div>
+      </div><!-- Mobile Photos -->
+      <div class="lg:hidden flex justify-center gap-4 mt-8 flex-wrap">
+       <div class="photo-frame p-2 rounded-lg">
+        <div id="photo-1-mobile" class="w-24 h-28 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(1)">
+         <svg class="w-6 h-6 text-sage" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+         </svg>
+        </div>
+       </div>
+       <div class="photo-frame p-2 rounded-lg">
+        <div id="photo-2-mobile" class="w-24 h-28 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(2)">
+         <svg class="w-6 h-6 text-sage" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+         </svg>
+        </div>
+       </div>
+       <div class="photo-frame p-2 rounded-lg">
+        <div id="photo-3-mobile" class="w-24 h-28 rounded overflow-hidden bg-cream flex items-center justify-center upload-zone cursor-pointer" onclick="handlePhotoUpload(3)">
+         <svg class="w-6 h-6 text-sage" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+         </svg>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="text-center mt-12"><a href="#section3" class="inline-flex items-center gap-2 text-sage hover:text-moss transition-colors"> <span class="text-sm tracking-widest uppercase">Explore Interactive Games</span>
+       <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+       </svg></a>
+     </div>
+    </div>
+   </section><!-- Section 3: Background Music Player -->
+   <section id="section3" class="section bg-cream relative overflow-hidden">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="romantic-title text-4xl md:text-5xl text-deep-sage text-center mb-4">Our Love Song</h2>
+     <p class="text-center text-sage mb-12 italic">Set the perfect soundtrack to our story</p><!-- Music Player -->
+     <div class="max-w-2xl mx-auto hover-lift">
+      <div class="luxury-gradient rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl border-2 border-sage border-opacity-20"><!-- Animated Background -->
+       <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        <div id="music-wave-1" class="absolute w-full h-24 bg-sage" style="bottom: -50px; animation: wave 8s ease-in-out infinite;"></div>
+        <div id="music-wave-2" class="absolute w-full h-24 bg-moss" style="bottom: -60px; animation: wave 10s ease-in-out infinite reverse; animation-delay: -2s;"></div>
+       </div>
+       <div class="relative z-10"><!-- Music Icon/Visualizer -->
+        <div class="mb-8">
+         <div id="music-icon" class="inline-block transition-all duration-300">
+          <svg class="w-32 h-32 mx-auto text-sage" viewbox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="50" stroke="currentColor" stroke-width="2" fill="none" opacity="0.3" /> <circle cx="60" cy="60" r="40" stroke="currentColor" stroke-width="2" fill="none" opacity="0.5" /> <path d="M60 30 L60 75" stroke="currentColor" stroke-width="3" stroke-linecap="round" /> <ellipse cx="60" cy="75" rx="12" ry="8" fill="currentColor" /> <path d="M60 30 C75 30, 85 35, 85 45 L85 70" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" /> <ellipse cx="85" cy="70" rx="10" ry="7" fill="currentColor" /> <path d="M40 50 Q45 45, 50 50 T60 50" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.6" /> <path d="M35 60 Q40 55, 45 60 T55 60" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.6" />
+          </svg>
+         </div>
+        </div><!-- Song Info Display -->
+        <div id="song-info" class="mb-8 min-h-[4rem]">
+         <p id="song-name" class="romantic-title text-2xl text-deep-sage font-medium mb-2">No song selected</p>
+         <p id="song-status" class="text-sage italic text-sm">Upload your theme song to begin</p>
+        </div><!-- Upload Button (shown when no song) -->
+        <div id="upload-section"><button onclick="triggerMusicUpload()" class="px-10 py-4 bg-sage text-cream rounded-full hover:bg-moss transition-all text-lg romantic-title shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center gap-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg><span>Choose Your Song</span> </button>
+         <p class="text-xs text-sage mt-4 opacity-70">Supported formats: MP3, WAV, M4A, OGG</p>
+        </div><!-- Player Controls (shown when song loaded) -->
+        <div id="player-controls" class="hidden">
+         <div class="flex items-center justify-center gap-6 mb-6"><!-- Play/Pause Button --> <button id="play-pause-btn" onclick="togglePlayPause()" class="w-16 h-16 rounded-full bg-sage hover:bg-moss text-cream transition-all shadow-lg hover:shadow-xl transform hover:scale-110 flex items-center justify-center">
+           <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z" />
+           </svg>
+           <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewbox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+           </svg></button>
+         </div><!-- Progress Bar -->
+         <div class="mb-4">
+          <div class="flex justify-between text-xs text-sage mb-2"><span id="current-time">0:00</span> <span id="total-time">0:00</span>
+          </div>
+          <div class="w-full bg-blush rounded-full h-2 cursor-pointer" id="progress-bar-container" onclick="seekMusic(event)">
+           <div id="progress-bar" class="bg-sage h-2 rounded-full transition-all" style="width: 0%"></div>
+          </div>
+         </div><!-- Volume Control -->
+         <div class="flex items-center justify-center gap-4 mb-6">
+          <svg class="w-5 h-5 text-sage" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+          </svg><input type="range" id="volume-slider" min="0" max="100" value="70" class="w-32" oninput="changeVolume(this.value)"> <span id="volume-display" class="text-sm text-sage w-8">70%</span>
+         </div><!-- Change Song Button --> <button onclick="triggerMusicUpload()" class="px-6 py-2 bg-blush text-sage rounded-full hover:bg-sage hover:text-cream transition-all text-sm"> Change Song </button>
+        </div><!-- Loop Toggle -->
+        <div id="loop-section" class="hidden mt-6 pt-6 border-t border-sage border-opacity-20"><label class="inline-flex items-center gap-3 cursor-pointer"> <input type="checkbox" id="loop-checkbox" onchange="toggleLoop()" class="w-5 h-5 text-sage rounded focus:ring-sage"> <span class="text-sage">Loop song continuously</span> </label>
+        </div>
+       </div>
+      </div>
+     </div><!-- Music Instructions -->
+     <div class="mt-12 text-center max-w-xl mx-auto">
+      <div class="bg-blush rounded-2xl p-6">
+       <h3 class="romantic-title text-xl text-deep-sage mb-3">💡 Music Tip</h3>
+       <p class="text-sage text-sm leading-relaxed">Choose a song that's special to both of you! Your music will play in the background as you scroll through your love letter, creating the perfect romantic atmosphere.</p>
+      </div>
+     </div>
+     <div class="text-center mt-12"><a href="#section4" class="inline-flex items-center gap-2 text-sage hover:text-moss transition-colors"> <span class="text-sm tracking-widest uppercase">View Our Memories</span>
+       <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+       </svg></a>
+     </div>
+    </div>
+   </section><!-- Section 4: Memories & Quiz -->
+   <section id="section4" class="section relative"><!-- Decorative Background -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+     <svg class="absolute top-10 left-10 w-20 h-20 opacity-20" viewbox="0 0 80 80" fill="#7D8B6F"><path d="M40 5 Q60 25, 40 50 Q20 25, 40 5" />
+     </svg>
+     <svg class="absolute bottom-20 right-10 w-24 h-24 opacity-15" viewbox="0 0 80 80" fill="#5C6B4F"><path d="M40 10 Q65 35, 40 65 Q15 35, 40 10" />
+     </svg>
+    </div>
+    <div class="max-w-5xl mx-auto relative z-10"><!-- Memory Album -->
+     <div class="mb-20">
+      <h2 class="romantic-title text-4xl md:text-5xl text-deep-sage text-center mb-4">Our Memory Album</h2>
+      <p class="text-center text-sage mb-10 italic">Moments that made us, us</p>
+      <div class="memory-grid" id="memory-grid"><!-- Memory slots will be generated by JS -->
+      </div>
+     </div><!-- Divider -->
+     <div class="flex items-center justify-center gap-4 mb-16">
+      <div class="h-px bg-sage opacity-30 flex-1 max-w-[100px]"></div>
+      <svg class="w-8 h-8" viewbox="0 0 32 32" fill="none"><path d="M16 28 C8 20, 4 14, 4 10 C4 6, 8 3, 12 5 C14 6, 15 8, 16 10 C17 8, 18 6, 20 5 C24 3, 28 6, 28 10 C28 14, 24 20, 16 28Z" fill="#7D8B6F" opacity="0.5" />
+      </svg>
+      <div class="h-px bg-sage opacity-30 flex-1 max-w-[100px]"></div>
+     </div><!-- Quiz Section -->
+     <div>
+      <h2 class="romantic-title text-4xl md:text-5xl text-deep-sage text-center mb-4">How Well Do You Know Us?</h2>
+      <p class="text-center text-sage mb-10 italic">A little quiz about our love story</p>
+      <div id="quiz-container" class="space-y-6"><!-- Quiz cards generated by JS -->
+      </div>
+      <div id="quiz-result" class="hidden text-center mt-10 p-8 bg-blush rounded-2xl">
+       <div class="romantic-title text-3xl text-deep-sage mb-4"><span id="result-emoji" class="text-4xl block mb-2"></span> <span id="result-text"></span>
+       </div>
+       <p id="result-score" class="text-sage"></p><button onclick="resetQuiz()" class="mt-6 px-8 py-3 bg-sage text-cream rounded-full hover:bg-moss transition-colors romantic-title text-lg"> Try Again </button>
+      </div>
+     </div>
+    </div><!-- Footer -->
+    <div class="text-center mt-20 pb-8">
+     <svg class="mx-auto w-12 h-12 mb-4" viewbox="0 0 48 48" fill="none"><path d="M24 42 C12 30, 6 22, 6 16 C6 10, 12 6, 18 9 C21 10, 23 13, 24 16 C25 13, 27 10, 30 9 C36 6, 42 10, 42 16 C42 22, 36 30, 24 42Z" fill="#7D8B6F" opacity="0.6" />
+     </svg>
+     <p class="romantic-title text-sage text-lg italic">Made with love, for you</p>
+    </div>
+   </section><!-- Hidden file input --> <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)"> <input type="file" id="music-input" accept="audio/*" class="hidden" onchange="handleMusicSelect(event)">
+   <audio id="audio-player" preload="metadata"></audio><!-- Toast Notification -->
+   <div id="toast" class="toast bg-sage text-cream px-6 py-3 rounded-full shadow-lg"><span id="toast-message"></span>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      main_title: "Happy Valentine's Day\nto the love of my life",
+      partner_name: "",
+      letter_content: "Every moment with you feels like a beautiful dream I never want to wake from. Your smile lights up my darkest days, and your love gives me strength I never knew I had.\n\nOn this Valentine's Day, I want you to know that you are my everything — my best friend, my soulmate, my forever.\n\nThank you for choosing me, for loving me, and for being the most wonderful part of my life.",
+      memory_caption_1: "",
+      memory_caption_2: "",
+      memory_caption_3: "",
+      memory_caption_4: "",
+      memory_caption_5: "",
+      memory_caption_6: "",
+      quiz_q1: "Where did we first meet?",
+      quiz_a1: "At the coffee shop",
+      quiz_q2: "What's our song?",
+      quiz_a2: "Perfect by Ed Sheeran",
+      quiz_q3: "What's my favorite thing about you?",
+      quiz_a3: "Your beautiful smile",
+      background_color: "#FDF8F3",
+      surface_color: "#E8DDD4",
+      text_color: "#5C6B4F",
+      primary_action_color: "#7D8B6F",
+      secondary_action_color: "#4A5D3E",
+      font_family: "Lora",
+      font_size: 16
+    };
+    
+    // Check if in read-only mode (published/shared)
+    const isReadOnly = !window.elementSdk;
+    
+    let config = { ...defaultConfig };
+    let currentPhotoSlot = null;
+    let photos = { 1: null, 2: null, 3: null };
+    let memoryPhotos = [null, null, null, null, null, null];
+    let quizAnswers = {};
+    let quizSubmitted = false;
+    let scratchCanvas, scratchCtx;
+    let isScratching = false;
+    let countdownInterval;
+    let audioPlayer = null;
+    let isPlaying = false;
+    let currentSongName = '';
+    
+    // Music player functions
+    function triggerMusicUpload() {
+      if (isReadOnly) return;
+      document.getElementById('music-input').click();
+    }
+    
+    function handleMusicSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // Validate file type
+      const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/ogg', 'audio/mp4'];
+      if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|m4a|ogg)$/i)) {
+        showToast('Please select a valid audio file (MP3, WAV, M4A, or OGG)');
+        return;
+      }
+      
+      audioPlayer = document.getElementById('audio-player');
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        audioPlayer.src = e.target.result;
+        currentSongName = file.name.replace(/\.[^/.]+$/, ''); // Remove extension
+        
+        audioPlayer.addEventListener('loadedmetadata', () => {
+          document.getElementById('song-name').textContent = currentSongName;
+          document.getElementById('song-status').textContent = 'Ready to play';
+          document.getElementById('total-time').textContent = formatTime(audioPlayer.duration);
+          
+          // Show player controls, hide upload button
+          document.getElementById('upload-section').classList.add('hidden');
+          document.getElementById('player-controls').classList.remove('hidden');
+          document.getElementById('loop-section').classList.remove('hidden');
+          
+          showToast('Song loaded successfully! 🎵');
+        });
+        
+        // Update progress bar as song plays
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        
+        // Handle song end
+        audioPlayer.addEventListener('ended', () => {
+          if (!audioPlayer.loop) {
+            isPlaying = false;
+            updatePlayPauseButton();
+            document.getElementById('music-icon').classList.remove('music-playing');
+            document.getElementById('song-status').textContent = 'Song ended';
+          }
+        });
+      };
+      
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+    
+    function togglePlayPause() {
+      if (!audioPlayer) return;
+      
+      if (isPlaying) {
+        audioPlayer.pause();
+        isPlaying = false;
+        document.getElementById('song-status').textContent = 'Paused';
+        document.getElementById('music-icon').classList.remove('music-playing');
+      } else {
+        audioPlayer.play();
+        isPlaying = true;
+        document.getElementById('song-status').textContent = 'Now playing...';
+        document.getElementById('music-icon').classList.add('music-playing');
+      }
+      
+      updatePlayPauseButton();
+    }
+    
+    function updatePlayPauseButton() {
+      const playIcon = document.getElementById('play-icon');
+      const pauseIcon = document.getElementById('pause-icon');
+      
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      }
+    }
+    
+    function updateProgress() {
+      if (!audioPlayer) return;
+      
+      const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      document.getElementById('progress-bar').style.width = progress + '%';
+      document.getElementById('current-time').textContent = formatTime(audioPlayer.currentTime);
+    }
+    
+    function seekMusic(event) {
+      if (!audioPlayer) return;
+      
+      const progressBar = document.getElementById('progress-bar-container');
+      const clickX = event.offsetX;
+      const width = progressBar.offsetWidth;
+      const percentage = clickX / width;
+      
+      audioPlayer.currentTime = percentage * audioPlayer.duration;
+    }
+    
+    function changeVolume(value) {
+      if (!audioPlayer) return;
+      
+      audioPlayer.volume = value / 100;
+      document.getElementById('volume-display').textContent = value + '%';
+    }
+    
+    function toggleLoop() {
+      if (!audioPlayer) return;
+      
+      const loopCheckbox = document.getElementById('loop-checkbox');
+      audioPlayer.loop = loopCheckbox.checked;
+      
+      if (loopCheckbox.checked) {
+        showToast('Song will loop continuously 🔁');
+      }
+    }
+    
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+
+    
+    // Initialize memory grid
+    function initializeMemoryGrid() {
+      const grid = document.getElementById('memory-grid');
+      grid.innerHTML = '';
+      
+      for (let i = 0; i < 6; i++) {
+        const captionKey = `memory_caption_${i + 1}`;
+        const caption = config[captionKey] || defaultConfig[captionKey] || '';
+        
+        const slot = document.createElement('div');
+        slot.className = 'photo-frame p-3 rounded-lg';
+        const readOnlyClass = isReadOnly ? 'readonly' : '';
+        const cursorClass = isReadOnly ? 'cursor-default' : 'cursor-pointer';
+        slot.innerHTML = `
+          <div id="memory-${i}" class="w-full aspect-square rounded overflow-hidden bg-cream flex items-center justify-center upload-zone ${readOnlyClass} ${cursorClass}" onclick="handleMemoryUpload(${i})">
+            ${memoryPhotos[i] ? `<img src="${memoryPhotos[i]}" class="w-full h-full object-cover" alt="Memory ${i + 1}">` : `
+            <div class="text-center p-4">
+              <svg class="w-10 h-10 mx-auto text-sage mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span class="text-xs text-sage">${isReadOnly ? '' : 'Add memory'}</span>
+            </div>
+            `}
+          </div>
+          <p id="caption-${i}" class="text-center text-sm text-sage mt-2 italic romantic-title min-h-[1.5rem]">${caption}</p>
+        `;
+        grid.appendChild(slot);
+      }
+    }
+    
+    // Initialize quiz
+    function initializeQuiz() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = '';
+      document.getElementById('quiz-result').classList.add('hidden');
+      quizAnswers = {};
+      quizSubmitted = false;
+      
+      const questions = [
+        { q: config.quiz_q1 || defaultConfig.quiz_q1, a: config.quiz_a1 || defaultConfig.quiz_a1 },
+        { q: config.quiz_q2 || defaultConfig.quiz_q2, a: config.quiz_a2 || defaultConfig.quiz_a2 },
+        { q: config.quiz_q3 || defaultConfig.quiz_q3, a: config.quiz_a3 || defaultConfig.quiz_a3 }
+      ];
+      
+      questions.forEach((item, i) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card hover-lift p-6 md:p-8 rounded-2xl animate-on-scroll';
+        card.style.animationDelay = `${i * 0.2}s`;
+        card.innerHTML = `
+          <p class="romantic-title text-xl md:text-2xl text-deep-sage mb-4">Q${i + 1}: ${item.q}</p>
+          <input type="text" 
+                 id="quiz-answer-${i}" 
+                 class="w-full p-4 rounded-lg border-2 border-sage border-opacity-30 bg-cream focus:border-opacity-100 focus:outline-none transition-colors text-deep-sage"
+                 placeholder="Your answer..."
+                 ${quizSubmitted ? 'disabled' : ''}>
+          <div id="quiz-feedback-${i}" class="mt-3 hidden">
+            <p class="text-sm"></p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      
+      // Add submit button
+      const submitBtn = document.createElement('div');
+      submitBtn.className = 'text-center mt-8';
+      submitBtn.innerHTML = `
+        <button onclick="submitQuiz()" class="px-10 py-4 bg-sage text-cream rounded-full hover:bg-moss transition-colors romantic-title text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
+          Submit Answers
+        </button>
+      `;
+      container.appendChild(submitBtn);
+    }
+    
+    // Submit quiz
+    function submitQuiz() {
+      const answers = [
+        config.quiz_a1 || defaultConfig.quiz_a1,
+        config.quiz_a2 || defaultConfig.quiz_a2,
+        config.quiz_a3 || defaultConfig.quiz_a3
+      ];
+      
+      let score = 0;
+      
+      for (let i = 0; i < 3; i++) {
+        const input = document.getElementById(`quiz-answer-${i}`);
+        const feedback = document.getElementById(`quiz-feedback-${i}`);
+        const userAnswer = input.value.trim().toLowerCase();
+        const correctAnswer = answers[i].toLowerCase();
+        
+        feedback.classList.remove('hidden');
+        
+        if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+          score++;
+          feedback.innerHTML = `<p class="text-moss font-medium">✓ Correct!</p>`;
+          input.classList.add('border-moss');
+        } else {
+          feedback.innerHTML = `<p class="text-red-400">The answer was: ${answers[i]}</p>`;
+          input.classList.add('border-red-300');
+        }
+        input.disabled = true;
+      }
+      
+      quizSubmitted = true;
+      
+      // Show result
+      const resultDiv = document.getElementById('quiz-result');
+      const resultEmoji = document.getElementById('result-emoji');
+      const resultText = document.getElementById('result-text');
+      const resultScore = document.getElementById('result-score');
+      
+      resultDiv.classList.remove('hidden');
+      resultScore.textContent = `You got ${score} out of 3 correct!`;
+      
+      if (score === 3) {
+        resultEmoji.textContent = '💚';
+        resultText.textContent = "Perfect! You know our love story by heart!";
+      } else if (score === 2) {
+        resultEmoji.textContent = '🌿';
+        resultText.textContent = "So close! Our memories are fresh in your mind!";
+      } else if (score === 1) {
+        resultEmoji.textContent = '🌱';
+        resultText.textContent = "Not bad! There's always more to learn about us!";
+      } else {
+        resultEmoji.textContent = '🍃';
+        resultText.textContent = "Time to make more memories together!";
+      }
+      
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // Reset quiz
+    function resetQuiz() {
+      initializeQuiz();
+      document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Photo upload handlers
+    function handlePhotoUpload(slot) {
+      if (isReadOnly) return;
+      currentPhotoSlot = { type: 'letter', slot };
+      document.getElementById('photo-input').click();
+    }
+    
+    function handleMemoryUpload(index) {
+      if (isReadOnly) return;
+      currentPhotoSlot = { type: 'memory', index };
+      document.getElementById('photo-input').click();
+    }
+    
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgData = e.target.result;
+        
+        if (currentPhotoSlot.type === 'letter') {
+          photos[currentPhotoSlot.slot] = imgData;
+          updatePhotoSlot(currentPhotoSlot.slot, imgData);
+        } else {
+          memoryPhotos[currentPhotoSlot.index] = imgData;
+          updateMemorySlot(currentPhotoSlot.index, imgData);
+        }
+        
+        showToast('Photo added successfully!');
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+    
+    function updatePhotoSlot(slot, imgData) {
+      const desktop = document.getElementById(`photo-${slot}`);
+      const mobile = document.getElementById(`photo-${slot}-mobile`);
+      
+      const imgHTML = `<img src="${imgData}" class="w-full h-full object-cover" alt="Photo ${slot}">`;
+      
+      if (desktop) desktop.innerHTML = imgHTML;
+      if (mobile) mobile.innerHTML = imgHTML;
+    }
+    
+    function updateMemorySlot(index, imgData) {
+      const slot = document.getElementById(`memory-${index}`);
+      if (slot) {
+        slot.innerHTML = `<img src="${imgData}" class="w-full h-full object-cover" alt="Memory ${index + 1}">`;
+      }
+    }
+    
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    
+    // Render function
+    async function onConfigChange(cfg) {
+      // Update main title
+      const titleEl = document.getElementById('main-title');
+      const titleParts = (cfg.main_title || defaultConfig.main_title).split('\n');
+      titleEl.innerHTML = titleParts[0] + (titleParts[1] ? `<br/><span class="text-sage italic">${titleParts[1]}</span>` : '');
+      
+      // Update partner name
+      const partnerEl = document.getElementById('partner-display');
+      if (cfg.partner_name) {
+        partnerEl.textContent = cfg.partner_name;
+        partnerEl.style.display = 'block';
+      } else {
+        partnerEl.style.display = 'none';
+      }
+      
+      // Update letter content
+      const letterEl = document.getElementById('letter-content');
+      letterEl.value = cfg.letter_content || defaultConfig.letter_content;
+      
+      if (isReadOnly) {
+        letterEl.disabled = true;
+        letterEl.classList.add('cursor-default');
+        letterEl.classList.remove('focus:ring-2', 'focus:ring-sage', 'focus:ring-opacity-30');
+      }
+      
+      // Update memory captions
+      for (let i = 0; i < 6; i++) {
+        const captionEl = document.getElementById(`caption-${i}`);
+        if (captionEl) {
+          const captionKey = `memory_caption_${i + 1}`;
+          captionEl.textContent = cfg[captionKey] || defaultConfig[captionKey] || '';
+        }
+      }
+      
+      // Apply colors
+      document.documentElement.style.setProperty('--cream', cfg.background_color || defaultConfig.background_color);
+      document.documentElement.style.setProperty('--blush', cfg.surface_color || defaultConfig.surface_color);
+      document.documentElement.style.setProperty('--deep-sage', cfg.text_color || defaultConfig.text_color);
+      document.documentElement.style.setProperty('--sage', cfg.primary_action_color || defaultConfig.primary_action_color);
+      document.documentElement.style.setProperty('--moss', cfg.secondary_action_color || defaultConfig.secondary_action_color);
+      
+      // Apply font
+      const fontFamily = cfg.font_family || defaultConfig.font_family;
+      document.querySelectorAll('.romantic-title').forEach(el => {
+        el.style.fontFamily = `'Cormorant Garamond', ${fontFamily}, serif`;
+      });
+      document.body.style.fontFamily = `${fontFamily}, 'Lora', serif`;
+      
+      // Apply font size
+      const baseSize = cfg.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = `${baseSize}px`;
+      
+      // Reinitialize quiz if questions changed
+      if (!quizSubmitted) {
+        initializeQuiz();
+      }
+    }
+    
+    // Map to capabilities
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_color || defaultConfig.background_color,
+            set: (value) => { cfg.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+          },
+          {
+            get: () => cfg.surface_color || defaultConfig.surface_color,
+            set: (value) => { cfg.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+          },
+          {
+            get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => { cfg.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); }
+          },
+          {
+            get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => { cfg.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => { cfg.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => { cfg.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
+        }
+      };
+    }
+    
+    // Map to edit panel values
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ["main_title", cfg.main_title || defaultConfig.main_title],
+        ["partner_name", cfg.partner_name || defaultConfig.partner_name],
+        ["letter_content", cfg.letter_content || defaultConfig.letter_content],
+        ["countdown_date", cfg.countdown_date || defaultConfig.countdown_date],
+        ["countdown_title", cfg.countdown_title || defaultConfig.countdown_title],
+        ["scratch_message", cfg.scratch_message || defaultConfig.scratch_message],
+        ["fortune_1", cfg.fortune_1 || defaultConfig.fortune_1],
+        ["fortune_2", cfg.fortune_2 || defaultConfig.fortune_2],
+        ["fortune_3", cfg.fortune_3 || defaultConfig.fortune_3],
+        ["reason_1", cfg.reason_1 || defaultConfig.reason_1],
+        ["reason_2", cfg.reason_2 || defaultConfig.reason_2],
+        ["reason_3", cfg.reason_3 || defaultConfig.reason_3],
+        ["reason_4", cfg.reason_4 || defaultConfig.reason_4],
+        ["reason_5", cfg.reason_5 || defaultConfig.reason_5],
+        ["compatibility_result", cfg.compatibility_result || defaultConfig.compatibility_result],
+        ["memory_caption_1", cfg.memory_caption_1 || defaultConfig.memory_caption_1],
+        ["memory_caption_2", cfg.memory_caption_2 || defaultConfig.memory_caption_2],
+        ["memory_caption_3", cfg.memory_caption_3 || defaultConfig.memory_caption_3],
+        ["memory_caption_4", cfg.memory_caption_4 || defaultConfig.memory_caption_4],
+        ["memory_caption_5", cfg.memory_caption_5 || defaultConfig.memory_caption_5],
+        ["memory_caption_6", cfg.memory_caption_6 || defaultConfig.memory_caption_6],
+        ["quiz_q1", cfg.quiz_q1 || defaultConfig.quiz_q1],
+        ["quiz_a1", cfg.quiz_a1 || defaultConfig.quiz_a1],
+        ["quiz_q2", cfg.quiz_q2 || defaultConfig.quiz_q2],
+        ["quiz_a2", cfg.quiz_a2 || defaultConfig.quiz_a2],
+        ["quiz_q3", cfg.quiz_q3 || defaultConfig.quiz_q3],
+        ["quiz_a3", cfg.quiz_a3 || defaultConfig.quiz_a3]
+      ]);
+    }
+    
+    // Letter input handler
+    function setupLetterInput() {
+      const letterEl = document.getElementById('letter-content');
+      if (letterEl && !isReadOnly) {
+        let timeout;
+        letterEl.addEventListener('input', (e) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ letter_content: e.target.value });
+            }
+          }, 500);
+        });
+      }
+    }
+    
+    // Navigation highlighting
+    function updateNavigation() {
+      const sections = ['section1', 'section2', 'section3', 'section4'];
+      const dots = document.querySelectorAll('.nav-dot');
+      
+      const scrollPos = document.getElementById('app-wrapper').scrollTop;
+      
+      sections.forEach((id, index) => {
+        const section = document.getElementById(id);
+        if (section) {
+          const top = section.offsetTop - 100;
+          const bottom = top + section.offsetHeight;
+          
+          if (scrollPos >= top && scrollPos < bottom) {
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (dots[index]) dots[index].classList.add('active');
+          }
+        }
+      });
+    }
+    
+    // Initialize
+    initializeMemoryGrid();
+    initializeQuiz();
+    setupLetterInput();
+    
+    document.getElementById('app-wrapper').addEventListener('scroll', updateNavigation);
+    
+    // Create floating particles
+    function createFloatingParticles() {
+      const colors = ['rgba(125, 139, 111, 0.3)', 'rgba(232, 221, 212, 0.4)', 'rgba(253, 248, 243, 0.5)'];
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const particle = document.createElement('div');
+          particle.className = 'floating-particle';
+          particle.style.width = Math.random() * 6 + 3 + 'px';
+          particle.style.height = particle.style.width;
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+          particle.style.animation = `float-particle ${Math.random() * 10 + 15}s linear infinite`;
+          particle.style.animationDelay = Math.random() * 5 + 's';
+          document.getElementById('section1').appendChild(particle);
+          
+          setTimeout(() => particle.remove(), 25000);
+        }, i * 400);
+      }
+    }
+    
+    // Create sparkles on mouse move
+    let sparkleTimeout;
+    document.addEventListener('mousemove', (e) => {
+      if (window.innerWidth > 768) {
+        clearTimeout(sparkleTimeout);
+        sparkleTimeout = setTimeout(() => {
+          if (Math.random() > 0.7) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = e.clientX + 'px';
+            sparkle.style.top = e.clientY + 'px';
+            sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 2000);
+          }
+        }, 100);
+      }
+    });
+    
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+    
+    // Observe elements for scroll animation
+    setTimeout(() => {
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+    }, 500);
+    
+    // Parallax effect on scroll
+    document.getElementById('app-wrapper').addEventListener('scroll', () => {
+      const scrolled = document.getElementById('app-wrapper').scrollTop;
+      document.querySelectorAll('.parallax-layer').forEach((layer, i) => {
+        const speed = (i + 1) * 0.05;
+        layer.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
+    
+    // Create particles on page load
+    if (!isReadOnly) {
+      setTimeout(createFloatingParticles, 500);
+    }
+    
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+      config = window.elementSdk.config;
+    }
+    
+    onConfigChange(config);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4fdfd0905a16ee',t:'MTc2OTU5Njg1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

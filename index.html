@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blooming Romance - A Valentine's Love Letter</title>
+  <title>HEART MAP - A Valentine's Love Letter For My One & Only</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,6 +16,8 @@
       --moss: #4A5D3E;
       --rose-gold: #B76E79;
       --dusty-rose: #C9A9A6;
+      --soft-pink: #E8B4B8;
+      --pale-pink: #F5C6D6;
     }
     
     body {
@@ -53,11 +55,32 @@
       }
     }
     
+    @keyframes floatPetalPink {
+      0% {
+        transform: translateY(100vh) rotate(180deg) translateX(-50px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(540deg) translateX(50px);
+        opacity: 0;
+      }
+    }
+    
     .floating-petal {
       position: fixed;
       pointer-events: none;
       z-index: 0;
       animation: floatPetal linear forwards;
+    }
+    
+    .floating-petal.pink {
+      animation: floatPetalPink linear forwards;
     }
     
     /* Heart animation */
@@ -72,6 +95,21 @@
     
     .pulse-heart {
       animation: pulseHeart 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulseHeartPink {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px rgba(183, 110, 121, 0.3));
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 15px rgba(183, 110, 121, 0.5));
+      }
+    }
+    
+    .pulse-heart-pink {
+      animation: pulseHeartPink 3s ease-in-out infinite;
     }
     
     /* Fade animations */
@@ -148,18 +186,18 @@
     }
     
     .nav-dot:hover {
-      background: var(--sage);
+      background: var(--rose-gold);
       transform: scale(1.3);
     }
     
     .nav-dot.active {
-      background: var(--sage);
+      background: var(--rose-gold);
       transform: scale(1.5);
     }
     
     /* Hero content */
     .hero-content {
-      background: rgba(253, 248, 243, 0.9);
+      background: rgba(253, 248, 243, 0.95);
       border-radius: 20px;
       padding: 2rem;
       box-shadow: 0 10px 30px rgba(92, 107, 79, 0.1);
@@ -236,7 +274,7 @@
     .share-option:hover {
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(125, 139, 111, 0.2);
-      border-color: var(--sage);
+      border-color: var(--rose-gold);
     }
     
     /* Button styles */
@@ -244,6 +282,7 @@
       background: var(--sage);
       color: var(--cream);
       border: none;
+      transition: all 0.3s ease;
     }
     
     .sage-button:hover {
@@ -252,15 +291,50 @@
       box-shadow: 0 5px 15px rgba(125, 139, 111, 0.3);
     }
     
+    .pink-button {
+      background: var(--rose-gold);
+      color: var(--cream);
+      border: none;
+      transition: all 0.3s ease;
+    }
+    
+    .pink-button:hover {
+      background: #A55A65;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
+    }
+    
     .outline-button {
       background: transparent;
       color: var(--sage);
       border: 2px solid var(--sage);
+      transition: all 0.3s ease;
     }
     
     .outline-button:hover {
       background: var(--sage);
       color: var(--cream);
+    }
+    
+    .pink-outline-button {
+      background: transparent;
+      color: var(--rose-gold);
+      border: 2px solid var(--rose-gold);
+      transition: all 0.3s ease;
+    }
+    
+    .pink-outline-button:hover {
+      background: var(--rose-gold);
+      color: var(--cream);
+    }
+    
+    /* Gradient backgrounds */
+    .pink-gradient {
+      background: linear-gradient(135deg, rgba(232, 180, 184, 0.1) 0%, rgba(245, 198, 214, 0.1) 100%);
+    }
+    
+    .mixed-gradient {
+      background: linear-gradient(135deg, rgba(125, 139, 111, 0.1) 0%, rgba(183, 110, 121, 0.1) 100%);
     }
     
     /* Mobile responsive */
@@ -287,25 +361,30 @@
   <!-- Floating Petals -->
   <div id="petal-container"></div>
   
-  <!-- Welcome Screen - CREAM & GREEN VERSION -->
-  <div id="welcome-screen" class="fixed inset-0 z-50 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(125, 139, 111, 0.1) 0%, #FDF8F3 50%, #E8DDD4 100%);">
+  <!-- Welcome Screen - CREAM, GREEN & PINK VERSION -->
+  <div id="welcome-screen" class="fixed inset-0 z-50 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(183, 110, 121, 0.1) 0%, #FDF8F3 50%, #E8DDD4 100%);">
     <div class="text-center px-6 max-w-4xl">
       <div class="fade-in-up">
         <!-- Big Heart Icon -->
-        <div class="mb-8 pulse-heart">
-          <svg class="w-32 h-32 mx-auto" fill="#7D8B6F" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
+        <div class="mb-8">
+          <div class="relative inline-block">
+            <svg class="w-32 h-32 mx-auto pulse-heart" fill="#7D8B6F" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <svg class="w-24 h-24 mx-auto absolute top-4 left-4 pulse-heart-pink" fill="#B76E79" viewBox="0 0 24 24" style="opacity: 0.8;">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
         </div>
         
         <!-- Title -->
-        <h1 class="script-font text-6xl md:text-8xl mb-6" style="color: #7D8B6F;">
+        <h1 class="script-font text-6xl md:text-8xl mb-6" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
           Happy Valentine's Day
         </h1>
         
         <!-- Subtitle with decorative icons -->
         <div class="relative inline-block mb-12">
-          <svg class="absolute -left-12 top-1/2 transform -translate-y-1/2 w-8 h-8" style="color: rgba(125, 139, 111, 0.5)" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute -left-12 top-1/2 transform -translate-y-1/2 w-8 h-8 pulse-heart-pink" style="color: #B76E79; opacity: 0.7;" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/>
           </svg>
           
@@ -313,7 +392,7 @@
             Where every moment blooms with love
           </p>
           
-          <svg class="absolute -right-12 top-1/2 transform -translate-y-1/2 w-8 h-8" style="color: rgba(125, 139, 111, 0.5)" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute -right-12 top-1/2 transform -translate-y-1/2 w-8 h-8 pulse-heart" style="color: #7D8B6F; opacity: 0.7;" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/>
           </svg>
         </div>
@@ -325,7 +404,7 @@
         </p>
         
         <!-- Enter Button -->
-        <button id="enter-btn" class="px-12 py-4 rounded-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-lg romantic-title tracking-widest sage-button">
+        <button id="enter-btn" class="px-12 py-4 rounded-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-lg romantic-title tracking-widest pink-button">
           Enter Our Garden of Love
         </button>
       </div>
@@ -345,7 +424,7 @@
    <!-- Hero Section -->
    <section id="hero" class="min-h-screen flex items-center justify-center px-4">
     <div class="text-center max-w-4xl">
-      <div class="hero-content">
+      <div class="hero-content pink-gradient">
         <h1 class="romantic-title text-4xl md:text-5xl lg:text-7xl mb-4" style="color: #5C6B4F;">
           My Dearest
         </h1>
@@ -354,9 +433,9 @@
                id="partner-name" 
                placeholder="Type your partner's name here..." 
                class="partner-name-input mb-6"
-               style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: #7D8B6F; background: transparent; border: none; outline: none; text-align: center; width: 100%; max-width: 400px; margin: 0 auto; display: block;">
+               style="font-family: 'Dancing Script', cursive; font-size: 3rem; background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background: transparent; border: none; outline: none; text-align: center; width: 100%; max-width: 400px; margin: 0 auto; display: block;">
         
-        <div id="name-underline" class="h-px w-0 mx-auto transition-all duration-1000" style="background: linear-gradient(to right, transparent, #7D8B6F, transparent);"></div>
+        <div id="name-underline" class="h-px w-0 mx-auto transition-all duration-1000" style="background: linear-gradient(to right, transparent, #7D8B6F, #B76E79, transparent);"></div>
         
         <p class="text-lg md:text-xl italic max-w-2xl mx-auto my-8 leading-relaxed" style="color: rgba(92, 107, 79, 0.7);">
           Every rose in this garden represents a reason why I love you.<br class="hidden md:block">
@@ -364,40 +443,41 @@
         </p>
         
         <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center mb-8">
-          <button data-section="letter" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 w-full sm:w-auto romantic-title tracking-widest sage-button">
-            Open My Heart
+          <button data-section="letter" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 w-full sm:w-auto romantic-title tracking-widest pink-button">
+            <i class="fas fa-heart mr-2"></i>
+            To My Beloved
           </button>
           
-          <button data-section="memories" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 w-full sm:w-auto romantic-title tracking-widest outline-button">
+          <button data-section="memories" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 w-full sm:w-auto romantic-title tracking-widest pink-outline-button">
             <i class="fas fa-images"></i>
             Our Memories
           </button>
         </div>
         
         <!-- Music Player -->
-        <div class="music-player-bar p-4 rounded-xl max-w-md mx-auto" style="background: rgba(253, 248, 243, 0.9); border: 1px solid #E8DDD4;">
+        <div class="music-player-bar p-4 rounded-xl max-w-md mx-auto mixed-gradient" style="border: 1px solid #E8DDD4;">
           <div class="flex flex-col items-center gap-3">
             <div class="text-center w-full">
-              <div id="now-playing" class="script-font text-xl truncate" style="color: #7D8B6F;">Select a Song</div>
+              <div id="now-playing" class="script-font text-xl truncate" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Select a Song</div>
               <div id="song-info" class="text-sm italic truncate" style="color: rgba(92, 107, 79, 0.7);">Upload our love song</div>
             </div>
             
             <div class="flex items-center justify-between w-full px-2">
-              <button id="prev-btn" class="p-2 rounded-full transition-colors" style="background: rgba(125, 139, 111, 0.1);">
-                <i class="fas fa-step-backward" style="color: #7D8B6F;"></i>
+              <button id="prev-btn" class="p-2 rounded-full transition-colors" style="background: rgba(183, 110, 121, 0.1);">
+                <i class="fas fa-step-backward" style="color: #B76E79;"></i>
               </button>
               
-              <button id="play-btn" class="p-3 rounded-full shadow-lg transition-colors sage-button">
+              <button id="play-btn" class="p-3 rounded-full shadow-lg transition-colors pink-button">
                 <i id="play-icon" class="fas fa-play"></i>
                 <i id="pause-icon" class="fas fa-pause hidden"></i>
               </button>
               
-              <button id="next-btn" class="p-2 rounded-full transition-colors" style="background: rgba(125, 139, 111, 0.1);">
-                <i class="fas fa-step-forward" style="color: #7D8B6F;"></i>
+              <button id="next-btn" class="p-2 rounded-full transition-colors" style="background: rgba(183, 110, 121, 0.1);">
+                <i class="fas fa-step-forward" style="color: #B76E79;"></i>
               </button>
               
-              <button id="upload-song-btn" class="p-2 rounded-full transition-colors" style="background: rgba(125, 139, 111, 0.1);">
-                <i class="fas fa-upload" style="color: #7D8B6F;"></i>
+              <button id="upload-song-btn" class="p-2 rounded-full transition-colors" style="background: rgba(183, 110, 121, 0.1);">
+                <i class="fas fa-upload" style="color: #B76E79;"></i>
               </button>
             </div>
           </div>
@@ -412,29 +492,37 @@
       <h2 class="romantic-title text-3xl md:text-4xl lg:text-5xl text-center mb-8" style="color: #5C6B4F;">
         Sealed with Love
       </h2>
-      <p class="text-center text-lg md:text-xl italic mb-8" style="color: #7D8B6F;">
+      <p class="text-center text-lg md:text-xl italic mb-8" style="color: #B76E79;">
         Click the envelope to reveal my heart
       </p>
       
       <div class="flex flex-col items-center justify-center">
         <!-- Envelope -->
         <div class="relative w-full max-w-2xl">
-          <div id="envelope" class="relative cursor-pointer p-6 md:p-12 pt-16 md:pt-20 rounded-3xl shadow-xl" style="background: linear-gradient(to bottom, #F9F5F0, #F5F0E6); border: 2px solid #E8DDD4;">
+          <div id="envelope" class="relative cursor-pointer p-6 md:p-12 pt-16 md:pt-20 rounded-3xl shadow-xl pink-gradient" style="border: 2px solid #E8DDD4;">
             <!-- Heart Seal -->
-            <div id="wax-seal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-xl cursor-pointer" style="background: #7D8B6F;">
+            <div id="wax-seal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-xl cursor-pointer pulse-heart-pink" style="background: linear-gradient(135deg, #B76E79, #C9A9A6);">
               <i class="fas fa-heart text-white text-2xl md:text-4xl"></i>
             </div>
             
             <!-- Letter Content -->
             <div id="letter-content" class="letter-container p-4 md:p-8 mt-6 md:mt-8 opacity-0 transition-all duration-700">
               <div class="relative">
+                <!-- Decorative corner -->
+                <div class="absolute -top-2 -left-2 w-8 h-8 text-2xl" style="color: #B76E79;">
+                  ❦
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-8 h-8 text-2xl" style="color: #B76E79;">
+                  ❦
+                </div>
+                
                 <!-- Letter content -->
                 <div class="mb-6">
-                  <div class="text-right text-sm romantic-title mb-2" style="color: rgba(92, 107, 79, 0.7);">
+                  <div class="text-right text-sm romantic-title mb-2" style="color: rgba(183, 110, 121, 0.7);">
                     <div class="editable-content" contenteditable="true" data-placeholder="Click to edit date..."></div>
                   </div>
                   
-                  <h3 class="script-font text-2xl md:text-3xl text-center mb-8" style="color: #7D8B6F;">
+                  <h3 class="script-font text-2xl md:text-3xl text-center mb-8" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                     To My Dearest <span id="letter-recipient" class="editable-content" contenteditable="true" data-placeholder="Your partner's name"></span>
                   </h3>
                   
@@ -456,9 +544,9 @@
                     </p>
                   </div>
                   
-                  <div class="mt-10 pt-6" style="border-top: 1px solid rgba(92, 107, 79, 0.2);">
-                    <div class="editable-content script-font text-2xl md:text-3xl text-center" contenteditable="true" id="signature" data-placeholder="Your name" style="color: #7D8B6F;"></div>
-                    <div class="text-center text-sm romantic-title mt-2" style="color: rgba(92, 107, 79, 0.5);">
+                  <div class="mt-10 pt-6" style="border-top: 1px solid rgba(183, 110, 121, 0.2);">
+                    <div class="editable-content script-font text-2xl md:text-3xl text-center" contenteditable="true" id="signature" data-placeholder="Your name" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></div>
+                    <div class="text-center text-sm romantic-title mt-2" style="color: rgba(183, 110, 121, 0.5);">
                       Sealed with a kiss and all my heart
                     </div>
                   </div>
@@ -466,7 +554,7 @@
               </div>
             </div>
             
-            <p class="text-center mt-6 italic text-sm" style="color: rgba(92, 107, 79, 0.6);">
+            <p class="text-center mt-6 italic text-sm" style="color: rgba(183, 110, 121, 0.6);">
               Click the heart seal to open this letter of love
             </p>
           </div>
@@ -474,11 +562,11 @@
         
         <!-- Navigation Buttons -->
         <div class="flex justify-center gap-4 mt-8">
-          <button data-section="hero" class="section-btn px-4 py-2 rounded-full transition-all duration-300 outline-button">
+          <button data-section="hero" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-outline-button">
             <i class="fas fa-home mr-2"></i>
             Back to Home
           </button>
-          <button data-section="memories" class="section-btn px-4 py-2 rounded-full transition-all duration-300 sage-button">
+          <button data-section="memories" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-button">
             <i class="fas fa-images mr-2"></i>
             View Memories
           </button>
@@ -493,25 +581,25 @@
       <h2 class="romantic-title text-3xl md:text-4xl lg:text-5xl text-center mb-4" style="color: #5C6B4F;">
         Petals of Our Memories
       </h2>
-      <p class="text-center text-base md:text-xl italic mb-8 md:mb-16 max-w-2xl mx-auto" style="color: rgba(92, 107, 79, 0.7);">
+      <p class="text-center text-base md:text-xl italic mb-8 md:mb-16 max-w-2xl mx-auto" style="color: rgba(183, 110, 121, 0.7);">
         Each photo is a pressed flower in the book of our love story
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-        <!-- Memory 1 -->
+        <!-- Memory 1 - Rose -->
         <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #E8DDD4, #FDF8F3);">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg pink-gradient">
             <div id="memory-1" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300" style="color: rgba(125, 139, 111, 0.3);">
+              <div class="mb-4 transition-colors duration-300 pulse-heart-pink" style="color: rgba(183, 110, 121, 0.5);">
                 <i class="fas fa-heart text-6xl"></i>
               </div>
-              <span class="romantic-title transition-colors duration-300" style="color: rgba(125, 139, 111, 0.5);">
+              <span class="romantic-title transition-colors duration-300" style="color: rgba(183, 110, 121, 0.7);">
                 Add Our Memory
               </span>
-              <span class="text-xs mt-2" style="color: rgba(92, 107, 79, 0.5);">Click to upload photo</span>
+              <span class="text-xs mt-2" style="color: rgba(183, 110, 121, 0.5);">Click to upload photo</span>
               
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: rgba(125, 139, 111, 0.8);">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center pulse-heart-pink" style="background: rgba(183, 110, 121, 0.8);">
                   <i class="fas fa-plus text-white text-2xl"></i>
                 </div>
               </div>
@@ -521,21 +609,21 @@
             <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"
-                      style="color: rgba(92, 107, 79, 0.7); border-bottom: 1px solid rgba(92, 107, 79, 0.2);"></textarea>
+                      style="color: rgba(183, 110, 121, 0.7); border-bottom: 1px solid rgba(183, 110, 121, 0.2);"></textarea>
           </div>
         </div>
         
-        <!-- Memory 2 -->
+        <!-- Memory 2 - Mixed -->
         <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #E8DDD4, #FDF8F3);">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg mixed-gradient">
             <div id="memory-2" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300" style="color: rgba(125, 139, 111, 0.3);">
+              <div class="mb-4 transition-colors duration-300 pulse-heart" style="color: rgba(125, 139, 111, 0.5);">
                 <i class="fas fa-leaf text-6xl"></i>
               </div>
-              <span class="romantic-title transition-colors duration-300" style="color: rgba(125, 139, 111, 0.5);">
+              <span class="romantic-title transition-colors duration-300" style="color: rgba(125, 139, 111, 0.7);">
                 Add Our Memory
               </span>
-              <span class="text-xs mt-2" style="color: rgba(92, 107, 79, 0.5);">Click to upload photo</span>
+              <span class="text-xs mt-2" style="color: rgba(125, 139, 111, 0.5);">Click to upload photo</span>
               
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: rgba(125, 139, 111, 0.8);">
@@ -548,24 +636,24 @@
             <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"
-                      style="color: rgba(92, 107, 79, 0.7); border-bottom: 1px solid rgba(92, 107, 79, 0.2);"></textarea>
+                      style="color: rgba(125, 139, 111, 0.7); border-bottom: 1px solid rgba(125, 139, 111, 0.2);"></textarea>
           </div>
         </div>
         
-        <!-- Memory 3 -->
+        <!-- Memory 3 - Pink -->
         <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #E8DDD4, #FDF8F3);">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg pink-gradient">
             <div id="memory-3" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300" style="color: rgba(125, 139, 111, 0.3);">
+              <div class="mb-4 transition-colors duration-300 pulse-heart-pink" style="color: rgba(245, 198, 214, 0.7);">
                 <i class="fas fa-seedling text-6xl"></i>
               </div>
-              <span class="romantic-title transition-colors duration-300" style="color: rgba(125, 139, 111, 0.5);">
+              <span class="romantic-title transition-colors duration-300" style="color: rgba(183, 110, 121, 0.7);">
                 Add Our Memory
               </span>
-              <span class="text-xs mt-2" style="color: rgba(92, 107, 79, 0.5);">Click to upload photo</span>
+              <span class="text-xs mt-2" style="color: rgba(183, 110, 121, 0.5);">Click to upload photo</span>
               
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background: rgba(125, 139, 111, 0.8);">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center pulse-heart-pink" style="background: rgba(183, 110, 121, 0.8);">
                   <i class="fas fa-plus text-white text-2xl"></i>
                 </div>
               </div>
@@ -575,18 +663,18 @@
             <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"
-                      style="color: rgba(92, 107, 79, 0.7); border-bottom: 1px solid rgba(92, 107, 79, 0.2);"></textarea>
+                      style="color: rgba(183, 110, 121, 0.7); border-bottom: 1px solid rgba(183, 110, 121, 0.2);"></textarea>
           </div>
         </div>
       </div>
       
       <!-- Navigation Buttons -->
       <div class="flex justify-center gap-4 mb-12">
-        <button data-section="letter" class="section-btn px-4 py-2 rounded-full transition-all duration-300 outline-button">
+        <button data-section="letter" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-outline-button">
           <i class="fas fa-envelope mr-2"></i>
           Back to Letter
         </button>
-        <button data-section="hero" class="section-btn px-4 py-2 rounded-full transition-all duration-300 sage-button">
+        <button data-section="hero" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-button">
           <i class="fas fa-home mr-2"></i>
           Back to Home
         </button>
@@ -594,8 +682,8 @@
       
       <!-- Final Message -->
       <div class="text-center mt-12 md:mt-20 pt-8 md:pt-12">
-        <div class="inline-block p-6 md:p-8 rounded-3xl shadow-lg max-w-2xl" style="background: #FDF8F3; border: 1px solid #E8DDD4;">
-          <h3 class="script-font text-3xl md:text-4xl mb-4" style="color: #7D8B6F;">
+        <div class="inline-block p-6 md:p-8 rounded-3xl shadow-lg max-w-2xl pink-gradient" style="border: 1px solid #E8DDD4;">
+          <h3 class="script-font text-3xl md:text-4xl mb-4" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
             To My Eternal Valentine
           </h3>
           <p class="text-base md:text-lg italic mb-6" style="color: rgba(92, 107, 79, 0.7);">
@@ -603,20 +691,20 @@
             Through every season, in every bloom, my heart finds its home in you.
           </p>
           <div class="mt-6">
-            <div class="editable-content script-font text-xl md:text-2xl text-center" contenteditable="true" id="final-signature" data-placeholder="Forever Yours" style="color: #5C6B4F;"></div>
-            <div class="text-sm romantic-title mt-2" style="color: rgba(92, 107, 79, 0.5);">
+            <div class="editable-content script-font text-xl md:text-2xl text-center" contenteditable="true" id="final-signature" data-placeholder="Forever Yours" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></div>
+            <div class="text-sm romantic-title mt-2" style="color: rgba(183, 110, 121, 0.5);">
               and every day thereafter
             </div>
           </div>
 
           <!-- Share Button -->
           <div class="mt-8">
-            <button id="share-gift-btn" class="px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto sage-button">
+            <button id="share-gift-btn" class="px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto pink-button">
               <i class="fas fa-share-alt"></i>
               <span class="romantic-title text-lg">Share This Gift With Your Love</span>
               <i class="fas fa-heart animate-pulse"></i>
             </button>
-            <p class="text-sm mt-3 italic" style="color: rgba(92, 107, 79, 0.6);">
+            <p class="text-sm mt-3 italic" style="color: rgba(183, 110, 121, 0.6);">
               Once shared, your love story will become view-only for your partner!
             </p>
           </div>
@@ -628,9 +716,9 @@
 
   <!-- Share Modal -->
   <div id="share-modal" class="share-modal">
-    <div class="share-modal-content">
+    <div class="share-modal-content pink-gradient">
       <h3 class="text-2xl font-bold text-center mb-2" style="color: #5C6B4F;">Share Your Love Gift</h3>
-      <p class="text-center mb-6" style="color: rgba(92, 107, 79, 0.7);">Choose how to share this special gift</p>
+      <p class="text-center mb-6" style="color: rgba(183, 110, 121, 0.7);">Choose how to share this special gift</p>
       
       <div class="share-options">
         <div class="share-option" id="whatsapp-share">
@@ -641,7 +729,7 @@
         </div>
         
         <div class="share-option" id="copy-link">
-          <div class="share-icon rounded-full w-10 h-10 flex items-center justify-center" style="background: #7D8B6F; color: white;">
+          <div class="share-icon rounded-full w-10 h-10 flex items-center justify-center" style="background: #B76E79; color: white;">
             <i class="fas fa-link"></i>
           </div>
           <span class="font-medium" style="color: #5C6B4F;">Copy Link</span>
@@ -649,7 +737,7 @@
       </div>
       
       <div class="mt-6 text-center">
-        <button id="close-share-modal" class="px-6 py-2 rounded-full transition-all duration-300 outline-button">
+        <button id="close-share-modal" class="px-6 py-2 rounded-full transition-all duration-300 pink-outline-button">
           Cancel
         </button>
       </div>
@@ -955,7 +1043,7 @@
       
       // WhatsApp share
       whatsappShare.addEventListener('click', function() {
-        const text = `💚 A special Valentine's gift just for you! 💚\n\nI created a beautiful love letter just for you. Open it to see my heart:\n${window.location.href}`;
+        const text = `🌸💚 A special Valentine's gift just for you! 💚🌸\n\nI created a beautiful love letter just for you. Open it to see my heart:\n${window.location.href}`;
         const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
         window.open(url, '_blank');
       });
@@ -981,25 +1069,50 @@
     // ========== FLOATING PETALS ==========
     function initFloatingPetals() {
       createFloatingPetals();
-      setInterval(createFloatingPetals, 10000);
+      setInterval(createFloatingPetals, 8000); // Increased frequency
     }
     
     function createFloatingPetals() {
       const container = document.getElementById('petal-container');
-      const petalTypes = ['🍃', '🌿', '☘️', '🍀', '🌱', '🌾'];
       
-      for (let i = 0; i < 5; i++) {
-        const petal = document.createElement('div');
-        petal.className = 'floating-petal';
-        petal.textContent = petalTypes[Math.floor(Math.random() * petalTypes.length)];
-        petal.style.left = Math.random() * 100 + 'vw';
-        petal.style.fontSize = (Math.random() * 16 + 12) + 'px';
-        petal.style.opacity = Math.random() * 0.5 + 0.2;
-        petal.style.color = ['#7D8B6F', '#5C6B4F', '#4A5D3E'][Math.floor(Math.random() * 3)];
-        petal.style.animationDuration = Math.random() * 10 + 15 + 's';
-        
-        container.appendChild(petal);
-        setTimeout(() => petal.remove(), 25000);
+      // Mix of green and pink elements
+      const greenElements = ['🍃', '🌿', '☘️', '🍀', '🌱', '🌾'];
+      const pinkElements = ['🌸', '💮', '🏵️', '🌺', '🌷', '🌼', '💐', '🌹', '🌻', '💖', '💗', '💓', '💕', '💞'];
+      
+      // Create more petals (10 instead of 8)
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          const element = document.createElement('div');
+          
+          // Randomly choose between green or pink
+          const isPink = Math.random() > 0.4; // 60% chance of pink
+          const elements = isPink ? pinkElements : greenElements;
+          const elementType = elements[Math.floor(Math.random() * elements.length)];
+          
+          element.textContent = elementType;
+          element.className = 'floating-petal' + (isPink ? ' pink' : '');
+          
+          element.style.left = Math.random() * 100 + 'vw';
+          element.style.fontSize = (Math.random() * 20 + 14) + 'px';
+          element.style.opacity = Math.random() * 0.6 + 0.2;
+          
+          // Set color based on element type
+          if (isPink) {
+            // Pink colors
+            const pinkColors = ['#B76E79', '#C9A9A6', '#E8B4B8', '#F5C6D6', '#F8A5C2', '#FFB6C1', '#FFC0CB'];
+            element.style.color = pinkColors[Math.floor(Math.random() * pinkColors.length)];
+          } else {
+            // Green colors
+            const greenColors = ['#7D8B6F', '#5C6B4F', '#4A5D3E', '#6B7B5E', '#8A9B7C'];
+            element.style.color = greenColors[Math.floor(Math.random() * greenColors.length)];
+          }
+          
+          element.style.animationDuration = (Math.random() * 12 + 15) + 's';
+          element.style.zIndex = '0';
+          
+          container.appendChild(element);
+          setTimeout(() => element.remove(), 30000);
+        }, i * 300);
       }
     }
     
@@ -1007,18 +1120,33 @@
     function createHearts() {
       const container = document.getElementById('petal-container');
       
-      for (let i = 0; i < 10; i++) {
+      const heartTypes = ['💚', '💖', '💗', '💓', '💕', '💞', '💘', '💝']; // More heart variations
+      
+      for (let i = 0; i < 15; i++) { // Increased count
         setTimeout(() => {
           const heart = document.createElement('div');
-          heart.className = 'floating-petal';
-          heart.textContent = '💚';
+          heart.className = 'floating-petal pink';
+          
+          const heartType = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+          heart.textContent = heartType;
+          
           heart.style.left = Math.random() * 100 + 'vw';
-          heart.style.fontSize = (Math.random() * 20 + 16) + 'px';
-          heart.style.color = '#7D8B6F';
-          heart.style.animationDuration = Math.random() * 5 + 8 + 's';
+          heart.style.fontSize = (Math.random() * 25 + 18) + 'px';
+          
+          // Color based on heart type
+          if (heartType === '💚') {
+            heart.style.color = '#7D8B6F'; // Green
+          } else {
+            // Random pink colors
+            const pinkColors = ['#B76E79', '#E8B4B8', '#F5C6D6', '#FFB6C1', '#FFC0CB', '#FF69B4', '#FF1493'];
+            heart.style.color = pinkColors[Math.floor(Math.random() * pinkColors.length)];
+          }
+          
+          heart.style.animationDuration = (Math.random() * 7 + 8) + 's';
+          heart.style.opacity = Math.random() * 0.7 + 0.3;
           
           container.appendChild(heart);
-          setTimeout(() => heart.remove(), 15000);
+          setTimeout(() => heart.remove(), 20000);
         }, i * 100);
       }
     }

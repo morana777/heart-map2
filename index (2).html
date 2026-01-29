@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blooming Romance - A Valentine's Love Letter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --cream: #FDF8F3;
+      --sage: #7D8B6F;
+      --deep-sage: #5C6B4F;
+      --blush: #E8DDD4;
+      --moss: #4A5D3E;
+      --rose-gold: #B76E79;
+      --dusty-rose: #C9A9A6;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #FDF8F3 0%, #F9F5F0 100%);
+      font-family: 'Playfair Display', serif;
+      color: var(--deep-sage);
+      overflow-x: hidden;
+      cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%237D8B6F" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+    }
+    
+    .romantic-title {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    .script-font {
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+    
+    /* Floating petal animation */
+    @keyframes floatPetal {
+      0% {
+        transform: translateY(100vh) rotate(0deg) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg) translateX(100px);
+        opacity: 0;
+      }
+    }
+    
+    .floating-petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatPetal linear forwards;
+    }
+    
+    /* Rose heart animation */
+    @keyframes pulseHeart {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(183, 110, 121, 0.3));
+      }
+      50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px rgba(183, 110, 121, 0.5));
+      }
+    }
+    
+    .pulse-heart {
+      animation: pulseHeart 3s ease-in-out infinite;
+    }
+    
+    /* Envelope animation */
+    @keyframes envelopeOpen {
+      0% {
+        transform: translateY(0) rotateX(0);
+      }
+      50% {
+        transform: translateY(-20px) rotateX(10deg);
+      }
+      100% {
+        transform: translateY(0) rotateX(0);
+      }
+    }
+    
+    .envelope-open {
+      animation: envelopeOpen 2s ease-in-out;
+    }
+    
+    /* Letter paper texture */
+    .letter-paper {
+      background: linear-gradient(to bottom, #fffbf6 0%, #fef9f3 100%);
+      background-image: 
+        radial-gradient(#d4c4b5 1px, transparent 1px),
+        radial-gradient(#d4c4b5 1px, transparent 1px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      filter: sepia(10%);
+    }
+    
+    /* Luxury shimmer effect */
+    @keyframes shimmer {
+      0% {
+        background-position: -100% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    
+    .luxury-shimmer {
+      background: linear-gradient(
+        90deg,
+        rgba(253, 248, 243, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(253, 248, 243, 0) 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+    
+    /* Vine border animation */
+    @keyframes growVine {
+      from {
+        stroke-dashoffset: 1000;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    
+    .growing-vine {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: growVine 4s ease-out forwards;
+    }
+    
+    /* Romantic glow */
+    .romantic-glow {
+      filter: drop-shadow(0 0 20px rgba(183, 110, 121, 0.3));
+    }
+    
+    /* 3D card effect */
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .card-3d:hover {
+      transform: perspective(1000px) rotateY(5deg) rotateX(5deg) translateZ(20px);
+    }
+    
+    /* Scroll indicator */
+    @keyframes bounceDown {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+    
+    .bounce-down {
+      animation: bounceDown 2s ease-in-out infinite;
+    }
+    
+    /* Music player wave */
+    @keyframes musicWave {
+      0%, 100% {
+        height: 10px;
+      }
+      50% {
+        height: 30px;
+      }
+    }
+    
+    .music-wave {
+      animation: musicWave 1.5s ease-in-out infinite;
+    }
+    
+    /* Flower illustration styles */
+    .flower-illustration {
+      fill: none;
+      stroke: var(--rose-gold);
+      stroke-width: 1.5;
+    }
+    
+    .leaf-illustration {
+      fill: var(--sage);
+      opacity: 0.7;
+    }
+    
+    /* Decorative border */
+    .vintage-border {
+      border: 20px solid transparent;
+      border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,0 50,50 T100,50' fill='none' stroke='%23B76E79' stroke-width='2'/%3E%3Ccircle cx='25' cy='50' r='3' fill='%237D8B6F'/%3E%3Ccircle cx='75' cy='50' r='3' fill='%237D8B6F'/%3E%3C/svg%3E") 30 round;
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <!-- Floating Petals -->
+  <div id="petal-container" class="fixed inset-0 pointer-events-none z-0"></div>
+  
+  <!-- Navigation Roses -->
+  <nav class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-6">
+    <a href="#hero" class="nav-rose group" title="Beginning">
+      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Our Beginning</span>
+    </a>
+    <a href="#letter" class="nav-rose group" title="Love Letter">
+      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">My Letter</span>
+    </a>
+    <a href="#bouquet" class="nav-rose group" title="Our Bouquet">
+      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Flowers of Love</span>
+    </a>
+    <a href="#memories" class="nav-rose group" title="Memories">
+      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Our Moments</span>
+    </a>
+  </nav>
+
+  <div id="app-wrapper" class="h-full w-full overflow-auto scroll-smooth">
+   
+   <!-- Hero Section with Illustrations -->
+   <section id="hero" class="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <!-- Background with Illustrated Flowers -->
+    <div class="absolute inset-0">
+      <!-- Left Illustration: Rose Vine -->
+      <svg class="absolute left-0 bottom-0 w-64 h-64 opacity-20" viewBox="0 0 200 200">
+        <path class="flower-illustration" d="M50 180 Q30 120, 60 80 Q90 40, 120 60 Q150 80, 160 120 Q170 160, 140 180" />
+        <circle cx="90" cy="85" r="12" fill="#B76E79" opacity="0.6" />
+        <ellipse cx="75" cy="75" rx="8" ry="12" fill="#B76E79" opacity="0.5" transform="rotate(-30 75 75)" />
+        <ellipse cx="105" cy="75" rx="8" ry="12" fill="#B76E79" opacity="0.5" transform="rotate(30 105 75)" />
+        <path class="leaf-illustration" d="M40 140 Q20 120, 30 100" />
+        <path class="leaf-illustration" d="M70 160 Q50 140, 60 120" />
+      </svg>
+      
+      <!-- Right Illustration: Floral Cluster -->
+      <svg class="absolute right-0 top-0 w-56 h-56 opacity-15" viewBox="0 0 200 200">
+        <circle cx="150" cy="60" r="15" fill="#C9A9A6" opacity="0.7" />
+        <circle cx="130" cy="80" r="12" fill="#B76E79" opacity="0.6" />
+        <circle cx="170" cy="90" r="10" fill="#7D8B6F" opacity="0.5" />
+        <path class="leaf-illustration" d="M140 100 Q120 120, 130 140" />
+        <path class="leaf-illustration" d="M160 110 Q180 130, 170 150" />
+      </svg>
+      
+      <!-- Center Rose Illustration -->
+      <div class="absolute inset-0 flex items-center justify-center">
+        <svg class="w-64 h-64 pulse-heart" viewBox="0 0 200 200">
+          <!-- Rose -->
+          <ellipse cx="100" cy="80" rx="40" ry="35" fill="#B76E79" opacity="0.8" />
+          <ellipse cx="100" cy="80" rx="30" ry="25" fill="#FDF8F3" opacity="0.9" />
+          <ellipse cx="100" cy="80" rx="15" ry="12" fill="#C9A9A6" opacity="0.7" />
+          
+          <!-- Outer petals -->
+          <ellipse cx="70" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(-20 70 70)" />
+          <ellipse cx="130" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(20 130 70)" />
+          <ellipse cx="80" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(-10 80 100)" />
+          <ellipse cx="120" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(10 120 100)" />
+          
+          <!-- Stem and leaves -->
+          <path d="M100 115 L100 170" stroke="#7D8B6F" stroke-width="4" fill="none" />
+          <ellipse cx="85" cy="140" rx="15" ry="8" fill="#5C6B4F" transform="rotate(-30 85 140)" />
+          <ellipse cx="115" cy="150" rx="12" ry="6" fill="#7D8B6F" transform="rotate(25 115 150)" />
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="relative z-10 text-center px-6 max-w-4xl">
+      <div class="mb-8">
+        <h1 class="romantic-title text-5xl md:text-7xl lg:text-8xl text-deep-sage mb-4">
+          <span class="block">My Dearest</span>
+          <input type="text" 
+                 id="partner-name" 
+                 placeholder="My Love" 
+                 class="script-font text-6xl md:text-8xl lg:text-9xl text-rose-gold bg-transparent border-none outline-none text-center w-full max-w-md mx-auto placeholder-rose-gold/50 focus:placeholder-transparent transition-all duration-500">
+        </h1>
+        
+        <div class="h-px w-0 mx-auto bg-gradient-to-r from-transparent via-rose-gold to-transparent transition-all duration-1000" id="name-underline"></div>
+      </div>
+      
+      <p class="text-xl md:text-2xl text-deep-sage/70 italic max-w-2xl mx-auto mb-12 leading-relaxed">
+        Every rose in this garden represents a reason why I love you.<br>
+        Every petal holds a memory of us.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#letter" class="group relative px-8 py-4 bg-rose-gold text-cream rounded-full overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+          <span class="relative z-10 romantic-title tracking-widest">Open My Heart</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-moss to-deep-sage transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+        </a>
+        
+        <button onclick="playRomanticMusic()" class="group px-8 py-4 border-2 border-rose-gold text-rose-gold rounded-full hover:bg-rose-gold hover:text-cream transition-all duration-300 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <span class="romantic-title tracking-widest">Play Our Song</span>
+        </button>
+      </div>
+      
+      <div class="mt-20 bounce-down">
+        <span class="text-sm text-deep-sage/50 tracking-widest romantic-title">Scroll to explore our garden</span>
+        <svg class="w-6 h-6 mx-auto mt-2 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+      </div>
+    </div>
+   </section>
+   
+   <!-- Envelope & Letter Section -->
+   <section id="letter" class="min-h-screen py-20 bg-gradient-to-b from-cream to-blush relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-sage mb-16">
+        <span class="block mb-2">Sealed with Love</span>
+        <span class="text-2xl md:text-3xl text-rose-gold italic">Click the envelope to reveal my heart</span>
+      </h2>
+      
+      <div class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+        <!-- Left Side: Floral Illustration -->
+        <div class="relative w-full lg:w-1/3 max-w-md">
+          <div class="relative aspect-square">
+            <!-- Decorative frame with illustrations -->
+            <div class="w-full h-full rounded-3xl shadow-2xl bg-gradient-to-br from-cream to-blush p-8 transform rotate-3">
+              <svg class="w-full h-full" viewBox="0 0 200 200">
+                <!-- Floral wreath -->
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#E8DDD4" stroke-width="2" />
+                
+                <!-- Flowers around wreath -->
+                <g transform="translate(100, 30)">
+                  <circle r="10" fill="#B76E79" opacity="0.7" />
+                  <ellipse rx="8" ry="12" fill="#C9A9A6" opacity="0.6" transform="rotate(-30)" />
+                  <ellipse rx="8" ry="12" fill="#C9A9A6" opacity="0.6" transform="rotate(30)" />
+                </g>
+                
+                <g transform="translate(160, 70)">
+                  <circle r="8" fill="#7D8B6F" opacity="0.7" />
+                </g>
+                
+                <g transform="translate(170, 130)">
+                  <circle r="9" fill="#B76E79" opacity="0.6" />
+                </g>
+                
+                <g transform="translate(130, 170)">
+                  <circle r="7" fill="#C9A9A6" opacity="0.7" />
+                </g>
+                
+                <g transform="translate(70, 170)">
+                  <circle r="8" fill="#7D8B6F" opacity="0.6" />
+                </g>
+                
+                <g transform="translate(30, 130)">
+                  <circle r="10" fill="#B76E79" opacity="0.7" />
+                </g>
+                
+                <g transform="translate(40, 70)">
+                  <circle r="9" fill="#C9A9A6" opacity="0.6" />
+                </g>
+                
+                <g transform="translate(70, 30)">
+                  <circle r="8" fill="#7D8B6F" opacity="0.7" />
+                </g>
+                
+                <!-- Center message -->
+                <text x="100" y="100" text-anchor="middle" dy="0.3em" class="romantic-title" fill="#5C6B4F" font-size="14" opacity="0.8">My Love</text>
+              </svg>
+              
+              <!-- Floating illustration -->
+              <div class="absolute -top-6 -right-6 w-24 h-24">
+                <svg class="w-full h-full" viewBox="0 0 100 100">
+                  <path d="M50 20 Q60 10, 70 20 Q80 30, 70 40 Q60 50, 50 40 Q40 30, 30 40 Q20 50, 30 60 Q40 70, 50 60 Q60 70, 70 60 Q80 50, 70 40" 
+                        fill="#B76E79" opacity="0.7" />
+                  <circle cx="50" cy="40" r="8" fill="#FDF8F3" />
+                </svg>
+              </div>
+            </div>
+            <div class="absolute -inset-4 bg-gradient-to-r from-rose-gold/10 to-transparent rounded-3xl transform -rotate-3"></div>
+          </div>
+        </div>
+        
+        <!-- Center: Interactive Envelope -->
+        <div class="relative w-full lg:w-1/3 max-w-lg">
+          <div id="envelope" class="relative cursor-pointer transform transition-all duration-500 hover:scale-105" onclick="openEnvelope()">
+            <!-- Envelope Base -->
+            <div class="relative bg-gradient-to-br from-cream to-blush rounded-2xl shadow-2xl p-8 md:p-12 overflow-hidden vintage-border">
+              <!-- Envelope Pattern -->
+              <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-4 left-4 w-16 h-16 border-2 border-rose-gold rounded-full"></div>
+                <div class="absolute bottom-4 right-4 w-12 h-12 border-2 border-sage rounded-full"></div>
+              </div>
+              
+              <!-- Envelope Flap -->
+              <div id="envelope-flap" class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[100px] border-r-[100px] border-b-[80px] border-l-transparent border-r-transparent border-b-rose-gold/90 transition-all duration-700"></div>
+              
+              <!-- Red Wax Seal -->
+              <div id="wax-seal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-br from-rose-gold to-red-800 rounded-full flex items-center justify-center shadow-xl transition-all duration-700 cursor-pointer hover:scale-110" onclick="openEnvelope()">
+                <svg class="w-10 h-10 text-cream" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+              
+              <!-- Letter that appears when opened -->
+              <div id="letter-content" class="letter-paper rounded-xl p-6 md:p-10 mt-16 opacity-0 transition-all duration-700 transform translate-y-10 shadow-lg">
+                <div class="relative">
+                  <div class="absolute -top-3 -left-3 w-6 h-6">
+                    <svg class="w-full h-full text-rose-gold/50" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  </div>
+                  
+                  <textarea id="love-letter" 
+                            class="w-full min-h-[300px] md:min-h-[400px] bg-transparent border-none resize-none focus:outline-none text-lg md:text-xl leading-relaxed text-deep-sage placeholder-deep-sage/50 italic"
+                            placeholder="My dearest love, write your heart out here...">
+My Dearest [Name],
+
+From the moment our paths crossed, my world has been painted in shades of rose and gold. Your smile is the sunrise that brightens my darkest days, and your love is the gentle rain that nourishes my soul.
+
+Like these flowers that never fade in my heart, my love for you grows more beautiful with each passing season. You are the garden where all my dreams take root, the sanctuary where my soul finds peace.
+
+On this Valentine's Day, I want you to know that every petal, every thorn, every moment has been worth it - because it led me to you.
+
+Forever yours,
+[Your Name]
+                  </textarea>
+                  
+                  <div class="flex justify-between items-center mt-8 pt-6 border-t border-deep-sage/10">
+                    <div class="text-sm text-deep-sage/50 romantic-title">
+                      <span id="letter-date">January 28, 2026</span>
+                    </div>
+                    <div class="script-font text-2xl text-rose-gold" id="signature">Always Yours</div>
+                  </div>
+                </div>
+              </div>
+              
+              <p class="text-center mt-6 text-deep-sage/50 italic">Click the red seal to open</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Side: Botanical Illustration -->
+        <div class="relative w-full lg:w-1/3 max-w-md">
+          <div class="relative aspect-square">
+            <div class="w-full h-full rounded-3xl shadow-2xl bg-gradient-to-br from-blush to-cream p-8 transform -rotate-3">
+              <svg class="w-full h-full" viewBox="0 0 200 200">
+                <!-- Main floral stem -->
+                <path d="M100 180 Q100 140, 110 100 Q120 60, 100 20" stroke="#7D8B6F" stroke-width="3" fill="none" />
+                
+                <!-- Leaves -->
+                <ellipse cx="85" cy="120" rx="25" ry="12" fill="#5C6B4F" opacity="0.7" transform="rotate(-30 85 120)" />
+                <ellipse cx="115" cy="80" rx="20" ry="10" fill="#7D8B6F" opacity="0.8" transform="rotate(25 115 80)" />
+                <ellipse cx="95" cy="160" rx="18" ry="8" fill="#4A5D3E" opacity="0.6" transform="rotate(-15 95 160)" />
+                
+                <!-- Flowers -->
+                <g transform="translate(100, 50)">
+                  <circle r="15" fill="#B76E79" opacity="0.8" />
+                  <circle r="10" fill="#FDF8F3" opacity="0.9" />
+                  <circle r="5" fill="#C9A9A6" opacity="0.7" />
+                  
+                  <!-- Petals -->
+                  <ellipse rx="12" ry="18" fill="#C9A9A6" opacity="0.5" transform="rotate(-30) translate(-25, 0)" />
+                  <ellipse rx="12" ry="18" fill="#C9A9A6" opacity="0.5" transform="rotate(30) translate(25, 0)" />
+                </g>
+                
+                <g transform="translate(120, 120)">
+                  <circle r="12" fill="#7D8B6F" opacity="0.7" />
+                </g>
+                
+                <g transform="translate(80, 90)">
+                  <circle r="10" fill="#B76E79" opacity="0.6" />
+                </g>
+              </svg>
+              
+              <!-- Floating illustration -->
+              <div class="absolute -bottom-6 -left-6 w-20 h-20">
+                <svg class="w-full h-full" viewBox="0 0 100 100">
+                  <path d="M50 10 Q70 30, 50 60 Q30 30, 50 10" fill="#7D8B6F" opacity="0.7" />
+                  <ellipse cx="50" cy="35" rx="8" ry="5" fill="#5C6B4F" opacity="0.8" />
+                </svg>
+              </div>
+            </div>
+            <div class="absolute -inset-4 bg-gradient-to-l from-sage/10 to-transparent rounded-3xl transform rotate-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+   </section>
+   
+   <!-- Flower Bouquet Gallery -->
+   <section id="bouquet" class="min-h-screen py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cream/50 to-cream"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-sage mb-4">
+        The Language of Flowers
+      </h2>
+      <p class="text-center text-xl text-deep-sage/70 italic mb-16 max-w-2xl mx-auto">
+        Each bouquet tells a story of our love
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Bouquet 1: Red Roses -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-rose-gold/10 to-cream p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- Vase -->
+              <path d="M80 230 Q100 250, 120 230 L120 150 Q100 130, 80 150 Z" fill="#E8DDD4" />
+              
+              <!-- Rose stems -->
+              <path d="M100 150 L100 80" stroke="#7D8B6F" stroke-width="3" fill="none" />
+              <path d="M90 160 L80 100" stroke="#5C6B4F" stroke-width="2" fill="none" />
+              <path d="M110 155 L125 90" stroke="#7D8B6F" stroke-width="2.5" fill="none" />
+              
+              <!-- Roses -->
+              <g transform="translate(100, 70)">
+                <circle r="18" fill="#B76E79" />
+                <circle r="12" fill="#FDF8F3" />
+                <circle r="6" fill="#C9A9A6" />
+              </g>
+              
+              <g transform="translate(80, 90)">
+                <circle r="14" fill="#B76E79" opacity="0.9" />
+                <circle r="9" fill="#FDF8F3" />
+              </g>
+              
+              <g transform="translate(125, 80)">
+                <circle r="16" fill="#B76E79" opacity="0.8" />
+                <circle r="10" fill="#FDF8F3" />
+              </g>
+              
+              <!-- Leaves -->
+              <ellipse cx="95" cy="120" rx="15" ry="7" fill="#5C6B4F" transform="rotate(-25 95 120)" />
+              <ellipse cx="110" cy="110" rx="12" ry="6" fill="#7D8B6F" transform="rotate(20 110 110)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h3 class="romantic-title text-2xl text-white mb-2">Red Roses</h3>
+              <p class="text-white/90 text-sm">Passion, eternal love, and deep affection</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Passionate Love</h3>
+            <p class="text-deep-sage/70 mb-4">Like these crimson roses, my love for you burns bright and eternal.</p>
+            <div class="text-sm text-rose-gold italic">"I love you more than yesterday, less than tomorrow."</div>
+          </div>
+        </div>
+        
+        <!-- Bouquet 2: Peonies -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-dusty-rose/10 to-cream p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- Peony 1 -->
+              <g transform="translate(100, 80)">
+                <circle r="22" fill="#C9A9A6" />
+                <circle r="16" fill="#FDF8F3" />
+                <circle r="8" fill="#D4C4B5" />
+                
+                <!-- Fluffy petals -->
+                <ellipse rx="18" ry="25" fill="#C9A9A6" opacity="0.7" transform="rotate(-20) translate(-30, 0)" />
+                <ellipse rx="18" ry="25" fill="#C9A9A6" opacity="0.7" transform="rotate(20) translate(30, 0)" />
+                <ellipse rx="15" ry="22" fill="#D4C4B5" opacity="0.6" transform="rotate(-40) translate(-25, 10)" />
+                <ellipse rx="15" ry="22" fill="#D4C4B5" opacity="0.6" transform="rotate(40) translate(25, 10)" />
+              </g>
+              
+              <!-- Peony 2 -->
+              <g transform="translate(70, 120)">
+                <circle r="18" fill="#B76E79" opacity="0.8" />
+                <circle r="12" fill="#FDF8F3" />
+              </g>
+              
+              <!-- Peony 3 -->
+              <g transform="translate(130, 130)">
+                <circle r="16" fill="#C9A9A6" opacity="0.9" />
+                <circle r="10" fill="#FDF8F3" />
+              </g>
+              
+              <!-- Stems -->
+              <path d="M100 100 L100 180" stroke="#7D8B6F" stroke-width="2" fill="none" />
+              <path d="M70 140 L70 200" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+              <path d="M130 150 L130 210" stroke="#7D8B6F" stroke-width="1.5" fill="none" />
+              
+              <!-- Leaves -->
+              <ellipse cx="90" cy="160" rx="20" ry="10" fill="#5C6B4F" transform="rotate(-30 90 160)" />
+              <ellipse cx="110" cy="170" rx="18" ry="9" fill="#7D8B6F" transform="rotate(25 110 170)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h3 class="romantic-title text-2xl text-white mb-2">Pink Peonies</h3>
+              <p class="text-white/90 text-sm">Romance, prosperity, and happy marriage</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Gentle Romance</h3>
+            <p class="text-deep-sage/70 mb-4">Soft and full, like the gentle love that grows between us each day.</p>
+            <div class="text-sm text-rose-gold italic">"In your arms, I've found my forever home."</div>
+          </div>
+        </div>
+        
+        <!-- Bouquet 3: Wildflowers -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-sage/10 to-cream p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- Various wildflowers -->
+              <g transform="translate(100, 80)">
+                <circle r="10" fill="#B76E79" />
+                <!-- Petals -->
+                <circle cx="-15" cy="0" r="6" fill="#7D8B6F" />
+                <circle cx="15" cy="0" r="6" fill="#7D8B6F" />
+                <circle cx="0" cy="-15" r="6" fill="#C9A9A6" />
+                <circle cx="0" cy="15" r="6" fill="#C9A9A6" />
+              </g>
+              
+              <g transform="translate(70, 120)">
+                <circle r="8" fill="#7D8B6F" />
+                <ellipse rx="12" ry="6" fill="#5C6B4F" transform="rotate(45)" />
+              </g>
+              
+              <g transform="translate(130, 100)">
+                <circle r="7" fill="#C9A9A6" />
+                <ellipse rx="10" ry="4" fill="#B76E79" opacity="0.7" transform="rotate(-30)" />
+              </g>
+              
+              <g transform="translate(90, 150)">
+                <circle r="9" fill="#5C6B4F" />
+                <!-- Star shape -->
+                <polygon points="0,-10 3,-3 10,0 3,3 0,10 -3,3 -10,0 -3,-3" fill="#7D8B6F" opacity="0.8" />
+              </g>
+              
+              <g transform="translate(120, 160)">
+                <circle r="6" fill="#B76E79" />
+                <ellipse rx="9" ry="5" fill="#C9A9A6" opacity="0.6" transform="rotate(20)" />
+              </g>
+              
+              <!-- Grass and stems -->
+              <path d="M100 90 L100 180" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+              <path d="M70 130 L70 200" stroke="#4A5D3E" stroke-width="1" fill="none" />
+              <path d="M130 110 L130 190" stroke="#5C6B4F" stroke-width="1" fill="none" />
+              <path d="M90 160 L90 220" stroke="#4A5D3E" stroke-width="1" fill="none" />
+              <path d="M120 170 L120 230" stroke="#5C6B4F" stroke-width="1" fill="none" />
+              
+              <!-- Grass blades -->
+              <ellipse cx="60" cy="200" rx="15" ry="3" fill="#4A5D3E" transform="rotate(-20 60 200)" />
+              <ellipse cx="140" cy="190" rx="12" ry="2" fill="#5C6B4F" transform="rotate(15 140 190)" />
+              <ellipse cx="80" cy="210" rx="10" ry="2" fill="#4A5D3E" transform="rotate(-10 80 210)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h3 class="romantic-title text-2xl text-white mb-2">Wildflowers</h3>
+              <p class="text-white/90 text-sm">Freedom, joy, and natural beauty</p>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Free Spirit</h3>
+            <p class="text-deep-sage/70 mb-4">Our love grows wild and free, beautiful in its natural state.</p>
+            <div class="text-sm text-rose-gold italic">"With you, I am my most authentic self."</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Second row -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+        <!-- Bouquet 4: White Roses -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-cream to-blush p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- White roses -->
+              <g transform="translate(100, 80)">
+                <circle r="20" fill="#FDF8F3" stroke="#E8DDD4" stroke-width="2" />
+                <circle r="14" fill="#FFFFFF" />
+                <circle r="7" fill="#E8DDD4" />
+                
+                <!-- Delicate petals -->
+                <ellipse rx="15" ry="22" fill="#FDF8F3" opacity="0.8" transform="rotate(-25) translate(-28, 0)" />
+                <ellipse rx="15" ry="22" fill="#FDF8F3" opacity="0.8" transform="rotate(25) translate(28, 0)" />
+                <ellipse rx="12" ry="18" fill="#FFFFFF" opacity="0.7" transform="rotate(-45) translate(-25, 5)" />
+                <ellipse rx="12" ry="18" fill="#FFFFFF" opacity="0.7" transform="rotate(45) translate(25, 5)" />
+              </g>
+              
+              <g transform="translate(70, 130)">
+                <circle r="16" fill="#FDF8F3" />
+                <circle r="10" fill="#FFFFFF" />
+              </g>
+              
+              <g transform="translate(130, 120)">
+                <circle r="14" fill="#FDF8F3" />
+                <circle r="8" fill="#FFFFFF" />
+              </g>
+              
+              <!-- Stems -->
+              <path d="M100 100 L100 180" stroke="#7D8B6F" stroke-width="2" fill="none" />
+              <path d="M70 150 L70 210" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+              <path d="M130 140 L130 200" stroke="#7D8B6F" stroke-width="1.5" fill="none" />
+              
+              <!-- Green leaves -->
+              <ellipse cx="90" cy="140" rx="18" ry="8" fill="#5C6B4F" transform="rotate(-30 90 140)" />
+              <ellipse cx="110" cy="130" rx="15" ry="7" fill="#7D8B6F" transform="rotate(20 110 130)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Pure Devotion</h3>
+            <p class="text-deep-sage/70 mb-4">My love for you is pure, honest, and everlasting.</p>
+            <div class="text-sm text-rose-gold italic">"You are the purest love I've ever known."</div>
+          </div>
+        </div>
+        
+        <!-- Bouquet 5: Lavender -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-purple-100/20 to-cream p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- Lavender stems -->
+              <path d="M100 180 L100 80" stroke="#7D8B6F" stroke-width="2" fill="none" />
+              <path d="M80 190 L80 100" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+              <path d="M120 185 L120 90" stroke="#7D8B6F" stroke-width="1.5" fill="none" />
+              
+              <!-- Lavender flowers -->
+              <g transform="translate(100, 70)">
+                <!-- Main spike -->
+                <rect x="-4" y="-30" width="8" height="30" rx="4" fill="#9D8BC9" />
+                <!-- Smaller spikes -->
+                <circle cx="0" cy="-15" r="6" fill="#7B68C9" />
+                <circle cx="0" cy="-5" r="5" fill="#7B68C9" />
+                <circle cx="0" cy="5" r="4" fill="#7B68C9" />
+              </g>
+              
+              <g transform="translate(80, 90)">
+                <rect x="-3" y="-25" width="6" height="25" rx="3" fill="#9D8BC9" />
+                <circle cx="0" cy="-12" r="5" fill="#7B68C9" />
+                <circle cx="0" cy="-2" r="4" fill="#7B68C9" />
+              </g>
+              
+              <g transform="translate(120, 85)">
+                <rect x="-3.5" y="-28" width="7" height="28" rx="3.5" fill="#9D8BC9" />
+                <circle cx="0" cy="-14" r="5.5" fill="#7B68C9" />
+                <circle cx="0" cy="-4" r="4.5" fill="#7B68C9" />
+                <circle cx="0" cy="6" r="3.5" fill="#7B68C9" />
+              </g>
+              
+              <!-- Leaves -->
+              <ellipse cx="95" cy="130" rx="15" ry="6" fill="#5C6B4F" transform="rotate(-25 95 130)" />
+              <ellipse cx="105" cy="120" rx="12" ry="5" fill="#7D8B6F" transform="rotate(20 105 120)" />
+              <ellipse cx="85" cy="160" rx="10" ry="4" fill="#4A5D3E" transform="rotate(-15 85 160)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Peaceful Love</h3>
+            <p class="text-deep-sage/70 mb-4">Your love brings me peace and serenity like a gentle lavender field.</p>
+            <div class="text-sm text-rose-gold italic">"In your presence, my soul finds peace."</div>
+          </div>
+        </div>
+        
+        <!-- Bouquet 6: Mixed Garden -->
+        <div class="card-3d group relative overflow-hidden rounded-3xl shadow-xl bg-white">
+          <div class="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-rose-gold/10 to-cream p-8">
+            <svg class="w-full h-full" viewBox="0 0 200 250">
+              <!-- Mixed flowers arrangement -->
+              <g transform="translate(100, 80)">
+                <!-- Rose -->
+                <circle r="15" fill="#B76E79" />
+                <circle r="10" fill="#FDF8F3" />
+                <!-- Daisy -->
+                <circle cx="25" cy="0" r="8" fill="#FDF8F3" />
+                <circle cx="25" cy="0" r="4" fill="#FFD700" />
+                <!-- Small flower -->
+                <circle cx="-20" cy="15" r="6" fill="#7D8B6F" />
+                <ellipse rx="10" ry="4" fill="#5C6B4F" transform="rotate(45 -20 15)" />
+              </g>
+              
+              <g transform="translate(70, 130)">
+                <!-- Purple flower -->
+                <circle r="9" fill="#9D8BC9" />
+                <!-- Petals -->
+                <circle cx="-8" cy="0" r="5" fill="#7B68C9" />
+                <circle cx="8" cy="0" r="5" fill="#7B68C9" />
+              </g>
+              
+              <g transform="translate(130, 120)">
+                <!-- Yellow flower -->
+                <circle r="7" fill="#FFD700" />
+                <ellipse rx="12" ry="5" fill="#FFC107" transform="rotate(30)" />
+              </g>
+              
+              <!-- Stems -->
+              <path d="M100 95 L100 180" stroke="#7D8B6F" stroke-width="2" fill="none" />
+              <path d="M70 140 L70 200" stroke="#5C6B4F" stroke-width="1.5" fill="none" />
+              <path d="M130 130 L130 190" stroke="#7D8B6F" stroke-width="1.5" fill="none" />
+              
+              <!-- Variety of leaves -->
+              <ellipse cx="90" cy="140" rx="18" ry="7" fill="#5C6B4F" transform="rotate(-25 90 140)" />
+              <ellipse cx="110" cy="150" rx="15" ry="6" fill="#7D8B6F" transform="rotate(30 110 150)" />
+              <ellipse cx="85" cy="170" rx="12" ry="5" fill="#4A5D3E" transform="rotate(-10 85 170)" />
+              <ellipse cx="115" cy="130" rx="10" ry="4" fill="#5C6B4F" transform="rotate(15 115 130)" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="romantic-title text-2xl text-deep-sage mb-3">Complete Love</h3>
+            <p class="text-deep-sage/70 mb-4">Every flower, every color represents a different aspect of our beautiful love.</p>
+            <div class="text-sm text-rose-gold italic">"Our love is a garden of endless beauty."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+   </section>
+   
+   <!-- Memories Section -->
+   <section id="memories" class="min-h-screen py-20 relative">
+    <!-- Decorative background with subtle illustrations -->
+    <div class="absolute inset-0 opacity-5">
+      <svg class="w-full h-full" viewBox="0 0 1000 1000">
+        <!-- Scattered small flowers -->
+        <circle cx="100" cy="150" r="15" fill="#B76E79" opacity="0.3" />
+        <circle cx="300" cy="80" r="12" fill="#7D8B6F" opacity="0.3" />
+        <circle cx="700" cy="120" r="10" fill="#C9A9A6" opacity="0.3" />
+        <circle cx="900" cy="200" r="14" fill="#B76E79" opacity="0.3" />
+        <circle cx="200" cy="300" r="11" fill="#7D8B6F" opacity="0.3" />
+        <circle cx="800" cy="350" r="13" fill="#C9A9A6" opacity="0.3" />
+        <circle cx="150" cy="500" r="9" fill="#B76E79" opacity="0.3" />
+        <circle cx="600" cy="450" r="16" fill="#7D8B6F" opacity="0.3" />
+        <circle cx="400" cy="600" r="12" fill="#C9A9A6" opacity="0.3" />
+        <circle cx="850" cy="550" r="10" fill="#B76E79" opacity="0.3" />
+      </svg>
+    </div>
+    
+    <div class="relative z-10 max-w-6xl mx-auto px-6">
+      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-sage mb-4">
+        Petals of Our Memories
+      </h2>
+      <p class="text-center text-xl text-deep-sage/70 italic mb-16 max-w-2xl mx-auto">
+        Each photo is a pressed flower in the book of our love story
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <!-- Memory Upload 1 -->
+        <div class="group relative">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+            <div id="memory-1" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(1)">
+              <!-- Flower illustration placeholder -->
+              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="20" fill="currentColor" opacity="0.3" />
+                <circle cx="50" cy="50" r="12" fill="currentColor" opacity="0.5" />
+                <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.7" />
+                <ellipse cx="35" cy="35" rx="10" ry="15" fill="currentColor" opacity="0.4" transform="rotate(-30 35 35)" />
+                <ellipse cx="65" cy="35" rx="10" ry="15" fill="currentColor" opacity="0.4" transform="rotate(30 65 35)" />
+              </svg>
+              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              
+              <!-- Plus icon -->
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+                      placeholder="Describe this beautiful moment..." 
+                      rows="2"></textarea>
+          </div>
+        </div>
+        
+        <!-- Memory Upload 2 -->
+        <div class="group relative">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+            <div id="memory-2" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(2)">
+              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="18" fill="currentColor" opacity="0.3" />
+                <circle cx="50" cy="50" r="10" fill="currentColor" opacity="0.5" />
+                <ellipse cx="40" cy="40" rx="8" ry="12" fill="currentColor" opacity="0.4" transform="rotate(-20 40 40)" />
+                <ellipse cx="60" cy="40" rx="8" ry="12" fill="currentColor" opacity="0.4" transform="rotate(20 60 40)" />
+              </svg>
+              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+                      placeholder="Describe this beautiful moment..." 
+                      rows="2"></textarea>
+          </div>
+        </div>
+        
+        <!-- Memory Upload 3 -->
+        <div class="group relative">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+            <div id="memory-3" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(3)">
+              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="22" fill="currentColor" opacity="0.3" />
+                <circle cx="50" cy="50" r="14" fill="currentColor" opacity="0.5" />
+                <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.7" />
+                <ellipse cx="35" cy="35" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(-25 35 35)" />
+                <ellipse cx="65" cy="35" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(25 65 35)" />
+                <ellipse cx="35" cy="65" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(25 35 65)" />
+                <ellipse cx="65" cy="65" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(-25 65 65)" />
+              </svg>
+              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+                      placeholder="Describe this beautiful moment..." 
+                      rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Music Player -->
+      <div class="max-w-2xl mx-auto mt-20">
+        <div class="luxury-shimmer rounded-3xl p-8 bg-gradient-to-br from-white to-blush shadow-xl border border-deep-sage/10">
+          <h3 class="romantic-title text-3xl text-center text-deep-sage mb-8">Our Love's Soundtrack</h3>
+          
+          <div class="flex flex-col items-center gap-6">
+            <div id="music-visualizer" class="flex items-end gap-1 h-20">
+              <!-- Music bars will be generated by JS -->
+            </div>
+            
+            <div class="text-center">
+              <div id="now-playing" class="script-font text-2xl text-rose-gold mb-2">Select a Song</div>
+              <div id="song-info" class="text-deep-sage/70 text-sm italic">Upload a song that defines our love</div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+              <button onclick="previousSong()" class="p-3 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
+                <svg class="w-6 h-6 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+              </button>
+              
+              <button onclick="togglePlay()" id="play-btn" class="p-4 rounded-full bg-rose-gold text-white hover:bg-rose-gold/90 transition-colors shadow-lg">
+                <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+              
+              <button onclick="nextSong()" class="p-3 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
+                <svg class="w-6 h-6 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="w-full max-w-md">
+              <div class="flex justify-between text-sm text-deep-sage/70 mb-2">
+                <span id="current-time">0:00</span>
+                <span id="total-time">0:00</span>
+              </div>
+              <input type="range" min="0" max="100" value="0" class="w-full h-2 bg-deep-sage/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rose-gold" id="progress-bar">
+            </div>
+            
+            <button onclick="uploadSong()" class="px-6 py-3 rounded-full border-2 border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white transition-colors flex items-center gap-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+              </svg>
+              <span class="romantic-title">Upload Our Song</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Final Message -->
+      <div class="text-center mt-20 pt-12 border-t border-deep-sage/10">
+        <div class="inline-block p-6 bg-gradient-to-br from-white to-blush rounded-3xl shadow-lg">
+          <h3 class="script-font text-4xl text-rose-gold mb-4">To My Eternal Valentine</h3>
+          <p class="text-lg text-deep-sage/70 italic max-w-2xl mx-auto">
+            Like these flowers that never truly fade, my love for you is eternal.<br>
+            Through every season, in every bloom, my heart finds its home in you.
+          </p>
+          <div class="mt-6">
+            <div class="script-font text-2xl text-deep-sage" id="final-signature">Forever Yours</div>
+            <div class="text-sm text-deep-sage/50 romantic-title mt-2">January 28, 2026, and every day thereafter</div>
+          </div>
+        </div>
+      </div>
+    </div>
+   </section>
+   
+   <!-- Hidden File Inputs -->
+   <input type="file" id="memory-upload" class="hidden" accept="image/*" onchange="handleMemoryUpload(event)">
+   <input type="file" id="song-upload" class="hidden" accept="audio/*" onchange="handleSongUpload(event)">
+   <audio id="audio-player" preload="metadata"></audio>
+  </div>
+
+  <script>
+    // Initialize floating petals
+    function createFloatingPetals() {
+      const container = document.getElementById('petal-container');
+      const petalTypes = ['🌹', '🌸', '🌺', '💐', '🌷', '🥀'];
+      
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const petal = document.createElement('div');
+          petal.className = 'floating-petal';
+          petal.textContent = petalTypes[Math.floor(Math.random() * petalTypes.length)];
+          petal.style.left = Math.random() * 100 + 'vw';
+          petal.style.fontSize = Math.random() * 20 + 16 + 'px';
+          petal.style.opacity = Math.random() * 0.5 + 0.2;
+          petal.style.color = ['#B76E79', '#7D8B6F', '#C9A9A6'][Math.floor(Math.random() * 3)];
+          petal.style.animationDuration = Math.random() * 10 + 15 + 's';
+          petal.style.animationDelay = Math.random() * 5 + 's';
+          
+          container.appendChild(petal);
+          setTimeout(() => petal.remove(), 25000);
+        }, i * 500);
+      }
+    }
+    
+    // Partner name input animation
+    const partnerNameInput = document.getElementById('partner-name');
+    const nameUnderline = document.getElementById('name-underline');
+    
+    partnerNameInput.addEventListener('focus', () => {
+      nameUnderline.style.width = '80%';
+    });
+    
+    partnerNameInput.addEventListener('blur', () => {
+      if (!partnerNameInput.value) {
+        nameUnderline.style.width = '0%';
+      }
+    });
+    
+    partnerNameInput.addEventListener('input', (e) => {
+      const name = e.target.value || 'My Love';
+      // Update signature in letter
+      const letterContent = document.getElementById('love-letter');
+      if (letterContent.value.includes('[Name]')) {
+        letterContent.value = letterContent.value.replace(/\[Name\]/g, name);
+      }
+      // Update final signature
+      document.getElementById('final-signature').textContent = `Forever Yours, ${name}`;
+    });
+    
+    // Envelope opening
+    let envelopeOpened = false;
+    function openEnvelope() {
+      if (envelopeOpened) return;
+      
+      const envelope = document.getElementById('envelope');
+      const flap = document.getElementById('envelope-flap');
+      const seal = document.getElementById('wax-seal');
+      const letter = document.getElementById('letter-content');
+      
+      envelope.classList.add('envelope-open');
+      flap.style.borderBottomWidth = '0px';
+      seal.style.opacity = '0';
+      seal.style.transform = 'translate(-50%, -50%) scale(0)';
+      
+      setTimeout(() => {
+        letter.style.opacity = '1';
+        letter.style.transform = 'translateY(0)';
+        envelopeOpened = true;
+        
+        // Create some floating hearts
+        createHearts();
+      }, 500);
+    }
+    
+    function createHearts() {
+      const container = document.getElementById('petal-container');
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'floating-petal';
+          heart.innerHTML = '❤️';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.fontSize = Math.random() * 24 + 20 + 'px';
+          heart.style.animationDuration = Math.random() * 5 + 8 + 's';
+          heart.style.animationDelay = Math.random() * 2 + 's';
+          
+          container.appendChild(heart);
+          setTimeout(() => heart.remove(), 15000);
+        }, i * 100);
+      }
+    }
+    
+    // Memory upload
+    let currentMemorySlot = null;
+    function uploadMemory(slot) {
+      currentMemorySlot = slot;
+      document.getElementById('memory-upload').click();
+    }
+    
+    function handleMemoryUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const memoryDiv = document.getElementById(`memory-${currentMemorySlot}`);
+        if (memoryDiv) {
+          memoryDiv.innerHTML = `
+            <img src="${e.target.result}" 
+                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+                 alt="Our memory">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          `;
+          memoryDiv.classList.add('group');
+        }
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+    
+    // Music player
+    let audio = document.getElementById('audio-player');
+    let isPlaying = false;
+    let currentSongIndex = 0;
+    let songs = [];
+    
+    function uploadSong() {
+      document.getElementById('song-upload').click();
+    }
+    
+    function handleSongUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        songs.push({
+          src: e.target.result,
+          name: file.name.replace(/\.[^/.]+$/, ""),
+          type: file.type
+        });
+        
+        if (songs.length === 1) {
+          loadSong(0);
+        }
+        
+        updateNowPlaying();
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+    
+    function loadSong(index) {
+      if (songs.length === 0) return;
+      
+      currentSongIndex = index;
+      const song = songs[currentSongIndex];
+      audio.src = song.src;
+      updateNowPlaying();
+      createVisualizer();
+    }
+    
+    function updateNowPlaying() {
+      if (songs.length === 0) {
+        document.getElementById('now-playing').textContent = 'Select a Song';
+        document.getElementById('song-info').textContent = 'Upload a song that defines our love';
+      } else {
+        document.getElementById('now-playing').textContent = songs[currentSongIndex].name;
+        document.getElementById('song-info').textContent = 'Our love song';
+      }
+    }
+    
+    function togglePlay() {
+      if (songs.length === 0) {
+        uploadSong();
+        return;
+      }
+      
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+      updatePlayButton();
+    }
+    
+    function updatePlayButton() {
+      const playIcon = document.getElementById('play-icon');
+      const pauseIcon = document.getElementById('pause-icon');
+      
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      }
+    }
+    
+    function previousSong() {
+      if (songs.length === 0) return;
+      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+      loadSong(currentSongIndex);
+      if (isPlaying) {
+        audio.play();
+      }
+    }
+    
+    function nextSong() {
+      if (songs.length === 0) return;
+      currentSongIndex = (currentSongIndex + 1) % songs.length;
+      loadSong(currentSongIndex);
+      if (isPlaying) {
+        audio.play();
+      }
+    }
+    
+    function createVisualizer() {
+      const visualizer = document.getElementById('music-visualizer');
+      visualizer.innerHTML = '';
+      
+      for (let i = 0; i < 20; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'music-wave bg-rose-gold/50 rounded-full w-2';
+        bar.style.animationDelay = `${i * 0.1}s`;
+        bar.style.height = `${Math.random() * 40 + 10}px`;
+        visualizer.appendChild(bar);
+      }
+    }
+    
+    // Progress bar update
+    audio.addEventListener('timeupdate', () => {
+      const progressBar = document.getElementById('progress-bar');
+      const currentTime = document.getElementById('current-time');
+      const totalTime = document.getElementById('total-time');
+      
+      if (audio.duration) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = progress;
+        currentTime.textContent = formatTime(audio.currentTime);
+        totalTime.textContent = formatTime(audio.duration);
+      }
+    });
+    
+    // Seek functionality
+    document.getElementById('progress-bar').addEventListener('input', (e) => {
+      if (audio.duration) {
+        audio.currentTime = (e.target.value / 100) * audio.duration;
+      }
+    });
+    
+    // Format time helper
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    // Play romantic music (default)
+    function playRomanticMusic() {
+      if (songs.length === 0) {
+        alert('Upload a song first to set the mood! 💕');
+      } else {
+        if (!isPlaying) {
+          togglePlay();
+        }
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createFloatingPetals();
+      updateNowPlaying();
+      
+      // Auto-play petals animation
+      setInterval(() => {
+        if (Math.random() > 0.7) {
+          createFloatingPetals();
+        }
+      }, 10000);
+    });
+    
+    // Update current date in letter (already set to January 28, 2026)
+    // The date is hardcoded in the HTML as per your image
+  </script>
+ </body>
+</html>

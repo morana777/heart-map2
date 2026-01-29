@@ -10,21 +10,21 @@
   <script src="/_sdk/element_sdk.js"></script>
   <style>
     :root {
-      --cream: #FDF8F3;
-      --sage: #7D8B6F;
-      --deep-sage: #5C6B4F;
-      --blush: #E8DDD4;
-      --moss: #4A5D3E;
-      --rose-gold: #B76E79;
-      --dusty-rose: #C9A9A6;
+      --light-pink: #FFF0F5;
+      --soft-pink: #FFE4E8;
+      --rose-pink: #FFB6C1;
+      --valentine-red: #D70060;
+      --deep-red: #B00030;
+      --gold: #FFD700;
+      --light-red: #FFC0CB;
     }
     
     body {
-      background: linear-gradient(135deg, #FDF8F3 0%, #F9F5F0 100%);
+      background: linear-gradient(135deg, var(--light-pink) 0%, var(--soft-pink) 100%);
       font-family: 'Playfair Display', serif;
-      color: var(--deep-sage);
+      color: var(--deep-red);
       overflow-x: hidden;
-      cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%237D8B6F" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+      cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23D70060" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
     }
     
     .romantic-title {
@@ -68,11 +68,11 @@
     @keyframes pulseHeart {
       0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 10px rgba(183, 110, 121, 0.3));
+        filter: drop-shadow(0 0 10px rgba(215, 0, 96, 0.3));
       }
       50% {
         transform: scale(1.05);
-        filter: drop-shadow(0 0 20px rgba(183, 110, 121, 0.5));
+        filter: drop-shadow(0 0 20px rgba(215, 0, 96, 0.5));
       }
     }
     
@@ -106,33 +106,47 @@
     }
     
     .heart-letter {
-      background: linear-gradient(to bottom, #fffbf6 0%, #fef9f3 100%);
+      background: linear-gradient(to bottom, #fff0f0 0%, #ffe6e6 100%);
       background-image: 
-        radial-gradient(#d4c4b5 1px, transparent 1px),
-        radial-gradient(#d4c4b5 1px, transparent 1px);
+        radial-gradient(var(--rose-pink) 1px, transparent 1px),
+        radial-gradient(var(--rose-pink) 1px, transparent 1px);
       background-size: 30px 30px;
       background-position: 0 0, 15px 15px;
-      filter: sepia(10%);
       clip-path: polygon(50% 0%, 100% 35%, 100% 100%, 0 100%, 0 35%);
       padding: 60px 40px 40px;
       min-height: 500px;
       transform: rotate(-2deg);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 30px rgba(215, 0, 96, 0.1);
+      border: 2px solid var(--rose-pink);
     }
     
     /* Letter text styling */
     .letter-text {
       font-family: 'Dancing Script', cursive;
-      font-size: 1.5rem;
-      line-height: 1.8;
-      color: #5C6B4F;
+      font-size: 1.8rem;
+      line-height: 1.6;
+      color: var(--deep-red);
       text-align: center;
       white-space: pre-line;
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      resize: none;
+      border: none;
+      outline: none;
     }
     
     .letter-line {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+    
+    .letter-signature {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--valentine-red);
     }
     
     /* Luxury shimmer effect */
@@ -148,33 +162,17 @@
     .luxury-shimmer {
       background: linear-gradient(
         90deg,
-        rgba(253, 248, 243, 0) 0%,
+        rgba(255, 240, 245, 0) 0%,
         rgba(255, 255, 255, 0.6) 50%,
-        rgba(253, 248, 243, 0) 100%
+        rgba(255, 240, 245, 0) 100%
       );
       background-size: 200% 100%;
       animation: shimmer 3s infinite;
     }
     
-    /* Vine border animation */
-    @keyframes growVine {
-      from {
-        stroke-dashoffset: 1000;
-      }
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-    
-    .growing-vine {
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-      animation: growVine 4s ease-out forwards;
-    }
-    
     /* Romantic glow */
     .romantic-glow {
-      filter: drop-shadow(0 0 20px rgba(183, 110, 121, 0.3));
+      filter: drop-shadow(0 0 20px rgba(215, 0, 96, 0.3));
     }
     
     /* 3D card effect */
@@ -215,18 +213,6 @@
       animation: musicWave 1.5s ease-in-out infinite;
     }
     
-    /* Flower illustration styles */
-    .flower-illustration {
-      fill: none;
-      stroke: var(--rose-gold);
-      stroke-width: 1.5;
-    }
-    
-    .leaf-illustration {
-      fill: var(--sage);
-      opacity: 0.7;
-    }
-    
     /* Envelope styles */
     .envelope-container {
       position: relative;
@@ -236,13 +222,13 @@
     }
     
     .envelope-base {
-      background: linear-gradient(145deg, #f7f2ec, #f0e6dd);
+      background: linear-gradient(145deg, var(--light-pink), var(--soft-pink));
       border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(183, 110, 121, 0.2);
+      box-shadow: 0 20px 40px rgba(215, 0, 96, 0.2);
       position: relative;
       padding: 40px;
       min-height: 400px;
-      border: 2px solid #E8DDD4;
+      border: 3px solid var(--valentine-red);
     }
     
     .envelope-flap {
@@ -254,7 +240,7 @@
       height: 0;
       border-left: 150px solid transparent;
       border-right: 150px solid transparent;
-      border-bottom: 80px solid #B76E79;
+      border-bottom: 80px solid var(--valentine-red);
       z-index: 1;
       transition: all 0.7s ease;
     }
@@ -271,12 +257,12 @@
       transform: translate(-50%, -50%);
       width: 80px;
       height: 80px;
-      background: radial-gradient(circle at 30% 30%, #B76E79, #8b0000);
+      background: radial-gradient(circle at 30% 30%, var(--valentine-red), var(--deep-red));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+      box-shadow: 0 5px 15px rgba(176, 0, 48, 0.4);
       cursor: pointer;
       transition: all 0.7s ease;
       z-index: 2;
@@ -285,6 +271,24 @@
     .envelope-open .wax-seal {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0);
+    }
+    
+    /* Heart border for memories */
+    .heart-border {
+      border: 2px solid var(--valentine-red);
+      border-radius: 20px;
+      position: relative;
+    }
+    
+    .heart-border::before {
+      content: '❤️';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--light-pink);
+      padding: 0 10px;
+      font-size: 1.2rem;
     }
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -296,16 +300,16 @@
   <!-- Navigation Roses -->
   <nav class="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-6">
     <a href="#hero" class="nav-rose group" title="Beginning">
-      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
-      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Beginning</span>
+      <div class="w-4 h-4 bg-valentine-red rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-valentine-red romantic-title whitespace-nowrap">Beginning</span>
     </a>
     <a href="#letter" class="nav-rose group" title="Love Letter">
-      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
-      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Love Letter</span>
+      <div class="w-4 h-4 bg-valentine-red rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-valentine-red romantic-title whitespace-nowrap">Love Letter</span>
     </a>
     <a href="#memories" class="nav-rose group" title="Memories">
-      <div class="w-4 h-4 bg-rose-gold rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
-      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-rose-gold romantic-title whitespace-nowrap">Memories</span>
+      <div class="w-4 h-4 bg-valentine-red rounded-full transition-all duration-300 group-hover:scale-150 group-hover:shadow-lg"></div>
+      <span class="absolute right-6 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-sm text-valentine-red romantic-title whitespace-nowrap">Memories</span>
     </a>
   </nav>
 
@@ -317,41 +321,35 @@
     <div class="absolute inset-0">
       <!-- Left Illustration: Rose Vine -->
       <svg class="absolute left-0 bottom-0 w-64 h-64 opacity-20" viewBox="0 0 200 200">
-        <path class="flower-illustration" d="M50 180 Q30 120, 60 80 Q90 40, 120 60 Q150 80, 160 120 Q170 160, 140 180" />
-        <circle cx="90" cy="85" r="12" fill="#B76E79" opacity="0.6" />
-        <ellipse cx="75" cy="75" rx="8" ry="12" fill="#B76E79" opacity="0.5" transform="rotate(-30 75 75)" />
-        <ellipse cx="105" cy="75" rx="8" ry="12" fill="#B76E79" opacity="0.5" transform="rotate(30 105 75)" />
-        <path class="leaf-illustration" d="M40 140 Q20 120, 30 100" />
-        <path class="leaf-illustration" d="M70 160 Q50 140, 60 120" />
+        <path class="stroke-valentine-red" stroke-width="2" d="M50 180 Q30 120, 60 80 Q90 40, 120 60 Q150 80, 160 120 Q170 160, 140 180" />
+        <circle cx="90" cy="85" r="12" fill="var(--valentine-red)" opacity="0.6" />
+        <ellipse cx="75" cy="75" rx="8" ry="12" fill="var(--valentine-red)" opacity="0.5" transform="rotate(-30 75 75)" />
+        <ellipse cx="105" cy="75" rx="8" ry="12" fill="var(--valentine-red)" opacity="0.5" transform="rotate(30 105 75)" />
+        <path d="M40 140 Q20 120, 30 100" stroke="var(--deep-red)" stroke-width="1.5" fill="none" opacity="0.7" />
+        <path d="M70 160 Q50 140, 60 120" stroke="var(--deep-red)" stroke-width="1.5" fill="none" opacity="0.7" />
       </svg>
       
       <!-- Right Illustration: Floral Cluster -->
       <svg class="absolute right-0 top-0 w-56 h-56 opacity-15" viewBox="0 0 200 200">
-        <circle cx="150" cy="60" r="15" fill="#C9A9A6" opacity="0.7" />
-        <circle cx="130" cy="80" r="12" fill="#B76E79" opacity="0.6" />
-        <circle cx="170" cy="90" r="10" fill="#7D8B6F" opacity="0.5" />
-        <path class="leaf-illustration" d="M140 100 Q120 120, 130 140" />
-        <path class="leaf-illustration" d="M160 110 Q180 130, 170 150" />
+        <circle cx="150" cy="60" r="15" fill="var(--rose-pink)" opacity="0.7" />
+        <circle cx="130" cy="80" r="12" fill="var(--valentine-red)" opacity="0.6" />
+        <circle cx="170" cy="90" r="10" fill="var(--deep-red)" opacity="0.5" />
+        <path d="M140 100 Q120 120, 130 140" stroke="var(--deep-red)" stroke-width="1.5" fill="none" opacity="0.7" />
+        <path d="M160 110 Q180 130, 170 150" stroke="var(--deep-red)" stroke-width="1.5" fill="none" opacity="0.7" />
       </svg>
       
-      <!-- Center Rose Illustration -->
+      <!-- Center Heart Illustration -->
       <div class="absolute inset-0 flex items-center justify-center">
         <svg class="w-64 h-64 pulse-heart" viewBox="0 0 200 200">
-          <!-- Rose -->
-          <ellipse cx="100" cy="80" rx="40" ry="35" fill="#B76E79" opacity="0.8" />
-          <ellipse cx="100" cy="80" rx="30" ry="25" fill="#FDF8F3" opacity="0.9" />
-          <ellipse cx="100" cy="80" rx="15" ry="12" fill="#C9A9A6" opacity="0.7" />
-          
-          <!-- Outer petals -->
-          <ellipse cx="70" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(-20 70 70)" />
-          <ellipse cx="130" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(20 130 70)" />
-          <ellipse cx="80" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(-10 80 100)" />
-          <ellipse cx="120" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(10 120 100)" />
-          
-          <!-- Stem and leaves -->
-          <path d="M100 115 L100 170" stroke="#7D8B6F" stroke-width="4" fill="none" />
-          <ellipse cx="85" cy="140" rx="15" ry="8" fill="#5C6B4F" transform="rotate(-30 85 140)" />
-          <ellipse cx="115" cy="150" rx="12" ry="6" fill="#7D8B6F" transform="rotate(25 115 150)" />
+          <path d="M100,180 C70,150 20,110 30,60 C40,30 70,20 100,40 C130,20 160,30 170,60 C180,110 130,150 100,180 Z" 
+                fill="var(--valentine-red)" 
+                opacity="0.8" />
+          <path d="M100,170 C75,145 30,110 40,65 C48,40 70,30 100,50 C130,30 152,40 160,65 C170,110 125,145 100,170 Z" 
+                fill="var(--light-pink)" 
+                opacity="0.9" />
+          <path d="M100,160 C80,140 40,110 50,70 C57,50 75,40 100,60 C125,40 143,50 150,70 C160,110 120,140 100,160 Z" 
+                fill="var(--rose-pink)" 
+                opacity="0.7" />
         </svg>
       </div>
     </div>
@@ -359,29 +357,29 @@
     <!-- Main Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl">
       <div class="mb-8">
-        <h1 class="romantic-title text-5xl md:text-7xl lg:text-8xl text-deep-sage mb-4">
+        <h1 class="romantic-title text-5xl md:text-7xl lg:text-8xl text-deep-red mb-4">
           <span class="block">My Dearest</span>
           <input type="text" 
                  id="partner-name" 
                  placeholder="My Love" 
-                 class="script-font text-6xl md:text-8xl lg:text-9xl text-rose-gold bg-transparent border-none outline-none text-center w-full max-w-md mx-auto placeholder-rose-gold/50 focus:placeholder-transparent transition-all duration-500">
+                 class="script-font text-6xl md:text-8xl lg:text-9xl text-valentine-red bg-transparent border-none outline-none text-center w-full max-w-md mx-auto placeholder-valentine-red/50 focus:placeholder-transparent transition-all duration-500">
         </h1>
         
-        <div class="h-px w-0 mx-auto bg-gradient-to-r from-transparent via-rose-gold to-transparent transition-all duration-1000" id="name-underline"></div>
+        <div class="h-px w-0 mx-auto bg-gradient-to-r from-transparent via-valentine-red to-transparent transition-all duration-1000" id="name-underline"></div>
       </div>
       
-      <p class="text-xl md:text-2xl text-deep-sage/70 italic max-w-2xl mx-auto mb-12 leading-relaxed">
-        Every rose in this garden represents a reason why I love you.<br>
-        Every petal holds a memory of us.
+      <p class="text-xl md:text-2xl text-deep-red/70 italic max-w-2xl mx-auto mb-12 leading-relaxed">
+        Every heartbeat reminds me of you.<br>
+        Every moment is a treasure with you.
       </p>
       
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#letter" class="group relative px-8 py-4 bg-rose-gold text-cream rounded-full overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+        <a href="#letter" class="group relative px-8 py-4 bg-valentine-red text-light-pink rounded-full overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
           <span class="relative z-10 romantic-title tracking-widest">Open My Heart</span>
-          <div class="absolute inset-0 bg-gradient-to-r from-moss to-deep-sage transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-deep-red to-valentine-red transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
         </a>
         
-        <button onclick="playRomanticMusic()" class="group px-8 py-4 border-2 border-rose-gold text-rose-gold rounded-full hover:bg-rose-gold hover:text-cream transition-all duration-300 flex items-center gap-3">
+        <button onclick="playRomanticMusic()" class="group px-8 py-4 border-2 border-valentine-red text-valentine-red rounded-full hover:bg-valentine-red hover:text-light-pink transition-all duration-300 flex items-center gap-3">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
           </svg>
@@ -390,8 +388,8 @@
       </div>
       
       <div class="mt-20 bounce-down">
-        <span class="text-sm text-deep-sage/50 tracking-widest romantic-title">Scroll to explore our garden</span>
-        <svg class="w-6 h-6 mx-auto mt-2 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <span class="text-sm text-deep-red/50 tracking-widest romantic-title">Scroll to explore my love</span>
+        <svg class="w-6 h-6 mx-auto mt-2 text-valentine-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
         </svg>
       </div>
@@ -399,11 +397,11 @@
    </section>
    
    <!-- Envelope & Letter Section -->
-   <section id="letter" class="min-h-screen py-20 bg-gradient-to-b from-cream to-blush relative">
+   <section id="letter" class="min-h-screen py-20 bg-gradient-to-b from-light-pink to-soft-pink relative">
     <div class="max-w-6xl mx-auto px-6">
-      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-sage mb-16">
+      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-red mb-16">
         <span class="block mb-2">Sealed with Love</span>
-        <span class="text-2xl md:text-3xl text-rose-gold italic">Click the envelope to reveal my heart</span>
+        <span class="text-2xl md:text-3xl text-valentine-red italic">Click the envelope to reveal my heart</span>
       </h2>
       
       <div class="flex flex-col items-center justify-center gap-12">
@@ -417,7 +415,7 @@
               
               <!-- Red Wax Seal -->
               <div id="wax-seal" class="wax-seal" onclick="openEnvelope()">
-                <svg class="w-10 h-10 text-cream" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-10 h-10 text-light-pink" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </div>
@@ -425,15 +423,15 @@
               <!-- Letter that appears when opened -->
               <div id="letter-content" class="heart-letter-container opacity-0 transition-all duration-700 transform translate-y-10">
                 <div class="heart-letter">
-                  <div class="relative">
+                  <div class="relative h-full">
                     <div class="absolute -top-8 left-1/2 transform -translate-x-1/2">
-                      <svg class="w-12 h-12 text-rose-gold/50" fill="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-12 h-12 text-valentine-red/50" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                       </svg>
                     </div>
                     
                     <textarea id="love-letter" 
-                              class="w-full h-full min-h-[400px] bg-transparent border-none resize-none focus:outline-none letter-text placeholder-deep-sage/50"
+                              class="letter-text"
                               placeholder="My dearest love, write your heart out here...">
 My  
 Dearest  
@@ -450,20 +448,7 @@ in shades
 of rose  
 and gold.  
 
-Your smile  
-is the sunrise  
-that brightens  
-my darkest  
-days,  
-
-And your love  
-is the gentle rain  
-that nourishes  
-my soul.  
-
-Like these flowers  
-that never fade  
-in my heart,  
+In my heart,  
 
 My love for you  
 grows more beautiful  
@@ -478,13 +463,28 @@ The sanctuary
 where my soul  
 finds peace.  
 
+Your smile  
+is the sunrise  
+that brightens  
+my darkest  
+days,  
+
+And your love  
+is the gentle rain  
+that nourishes  
+my soul.  
+
 On this Valentine's Day,  
 I want you to know  
-that every petal,  
-every thorn,  
-every moment  
-has been worth it -  
-because it led me to you.  
+that every moment  
+with you is precious,  
+
+Every memory  
+is a treasure,  
+
+And every tomorrow  
+is a promise of  
+more love to come.  
 
 January  
 28, 2026  
@@ -495,19 +495,19 @@ Always Yours
                 </div>
               </div>
               
-              <p class="text-center mt-6 text-deep-sage/50 italic">Click the red seal to open</p>
+              <p class="text-center mt-6 text-deep-red/50 italic">Click the red seal to open</p>
             </div>
           </div>
         </div>
         
         <!-- Instructions for personalization -->
-        <div class="max-w-2xl mx-auto text-center bg-white/50 p-8 rounded-3xl shadow-lg">
-          <h3 class="romantic-title text-2xl text-deep-sage mb-4">Personalize Your Love Letter</h3>
-          <p class="text-deep-sage/70 mb-6">
+        <div class="max-w-2xl mx-auto text-center bg-white/50 p-8 rounded-3xl shadow-lg heart-border">
+          <h3 class="romantic-title text-2xl text-deep-red mb-4">✨ Personalize Your Love Letter ✨</h3>
+          <p class="text-deep-red/70 mb-6">
             Click on the text in the heart-shaped letter to edit it. Write your own heartfelt message to your beloved. 
             The name you entered above will automatically appear in the letter where [Name] is written.
           </p>
-          <div class="flex items-center justify-center gap-4 text-sm text-deep-sage/60">
+          <div class="flex items-center justify-center gap-4 text-sm text-deep-red/60">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
             </svg>
@@ -519,51 +519,47 @@ Always Yours
    </section>
    
    <!-- Memories Section -->
-   <section id="memories" class="min-h-screen py-20 relative">
-    <!-- Decorative background with subtle illustrations -->
-    <div class="absolute inset-0 opacity-5">
+   <section id="memories" class="min-h-screen py-20 relative bg-gradient-to-b from-soft-pink to-light-pink">
+    <!-- Decorative background with subtle hearts -->
+    <div class="absolute inset-0 opacity-10">
       <svg class="w-full h-full" viewBox="0 0 1000 1000">
-        <!-- Scattered small flowers -->
-        <circle cx="100" cy="150" r="15" fill="#B76E79" opacity="0.3" />
-        <circle cx="300" cy="80" r="12" fill="#7D8B6F" opacity="0.3" />
-        <circle cx="700" cy="120" r="10" fill="#C9A9A6" opacity="0.3" />
-        <circle cx="900" cy="200" r="14" fill="#B76E79" opacity="0.3" />
-        <circle cx="200" cy="300" r="11" fill="#7D8B6F" opacity="0.3" />
-        <circle cx="800" cy="350" r="13" fill="#C9A9A6" opacity="0.3" />
-        <circle cx="150" cy="500" r="9" fill="#B76E79" opacity="0.3" />
-        <circle cx="600" cy="450" r="16" fill="#7D8B6F" opacity="0.3" />
-        <circle cx="400" cy="600" r="12" fill="#C9A9A6" opacity="0.3" />
-        <circle cx="850" cy="550" r="10" fill="#B76E79" opacity="0.3" />
+        <!-- Scattered hearts -->
+        <path d="M100,150 C70,120 20,80 30,30 C40,0 70,-10 100,10 C130,-10 160,0 170,30 C180,80 130,120 100,150 Z" fill="var(--valentine-red)" transform="translate(0,0)" />
+        <path d="M300,80 C280,60 240,40 250,10 C255,-5 270,-10 290,0 C310,-10 325,-5 330,10 C340,40 320,60 300,80 Z" fill="var(--rose-pink)" transform="translate(200,0)" />
+        <path d="M700,120 C675,95 625,65 635,25 C642,0 670,-10 700,10 C730,-10 758,0 765,25 C775,65 725,95 700,120 Z" fill="var(--valentine-red)" transform="translate(500,0)" />
+        <path d="M150,500 C130,480 90,450 100,410 C105,395 120,390 140,400 C160,390 175,395 180,410 C190,450 170,480 150,500 Z" fill="var(--deep-red)" transform="translate(0,300)" />
+        <path d="M600,450 C575,425 525,395 535,355 C542,330 570,320 600,340 C630,320 658,330 665,355 C675,395 625,425 600,450 Z" fill="var(--rose-pink)" transform="translate(400,300)" />
       </svg>
     </div>
     
     <div class="relative z-10 max-w-6xl mx-auto px-6">
-      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-sage mb-4">
-        Petals of Our Memories
+      <h2 class="romantic-title text-4xl md:text-5xl text-center text-deep-red mb-4">
+        💖 Our Precious Memories 💖
       </h2>
-      <p class="text-center text-xl text-deep-sage/70 italic mb-16 max-w-2xl mx-auto">
-        Each photo is a pressed flower in the book of our love story
+      <p class="text-center text-xl text-deep-red/70 italic mb-16 max-w-2xl mx-auto">
+        Each memory is a precious gem in the treasure chest of our love
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
         <!-- Memory Upload 1 -->
         <div class="group relative">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-rose-pink to-light-pink heart-border">
             <div id="memory-1" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(1)">
-              <!-- Flower illustration placeholder -->
-              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="20" fill="currentColor" opacity="0.3" />
-                <circle cx="50" cy="50" r="12" fill="currentColor" opacity="0.5" />
-                <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.7" />
-                <ellipse cx="35" cy="35" rx="10" ry="15" fill="currentColor" opacity="0.4" transform="rotate(-30 35 35)" />
-                <ellipse cx="65" cy="35" rx="10" ry="15" fill="currentColor" opacity="0.4" transform="rotate(30 65 35)" />
+              <!-- Heart illustration placeholder -->
+              <svg class="w-32 h-32 text-valentine-red/30 group-hover:text-valentine-red/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <path d="M50,85 C35,70 15,50 20,25 C25,10 40,5 50,15 C60,5 75,10 80,25 C85,50 65,70 50,85 Z" 
+                      fill="currentColor" 
+                      opacity="0.3" />
+                <path d="M50,75 C40,65 25,50 30,30 C34,20 45,15 50,25 C55,15 66,20 70,30 C75,50 60,65 50,75 Z" 
+                      fill="currentColor" 
+                      opacity="0.5" />
               </svg>
-              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
-              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              <span class="romantic-title text-valentine-red/50 group-hover:text-valentine-red transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-red/50 mt-2">Click to upload photo</span>
               
               <!-- Plus icon -->
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                <div class="w-16 h-16 bg-valentine-red/80 rounded-full flex items-center justify-center">
                   <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                   </svg>
@@ -572,7 +568,7 @@ Always Yours
             </div>
           </div>
           <div class="mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+            <textarea class="w-full bg-transparent border-b border-deep-red/20 focus:border-valentine-red focus:outline-none resize-none p-2 text-center italic text-deep-red/70 placeholder-deep-red/30" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -580,19 +576,21 @@ Always Yours
         
         <!-- Memory Upload 2 -->
         <div class="group relative">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-rose-pink to-light-pink heart-border">
             <div id="memory-2" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(2)">
-              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="18" fill="currentColor" opacity="0.3" />
-                <circle cx="50" cy="50" r="10" fill="currentColor" opacity="0.5" />
-                <ellipse cx="40" cy="40" rx="8" ry="12" fill="currentColor" opacity="0.4" transform="rotate(-20 40 40)" />
-                <ellipse cx="60" cy="40" rx="8" ry="12" fill="currentColor" opacity="0.4" transform="rotate(20 60 40)" />
+              <svg class="w-32 h-32 text-valentine-red/30 group-hover:text-valentine-red/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <path d="M50,80 C40,70 25,55 30,35 C34,25 45,20 50,30 C55,20 66,25 70,35 C75,55 60,70 50,80 Z" 
+                      fill="currentColor" 
+                      opacity="0.3" />
+                <path d="M50,70 C45,65 35,55 38,40 C40,35 45,30 50,35 C55,30 60,35 62,40 C65,55 55,65 50,70 Z" 
+                      fill="currentColor" 
+                      opacity="0.5" />
               </svg>
-              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
-              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              <span class="romantic-title text-valentine-red/50 group-hover:text-valentine-red transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-red/50 mt-2">Click to upload photo</span>
               
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                <div class="w-16 h-16 bg-valentine-red/80 rounded-full flex items-center justify-center">
                   <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                   </svg>
@@ -601,7 +599,7 @@ Always Yours
             </div>
           </div>
           <div class="mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+            <textarea class="w-full bg-transparent border-b border-deep-red/20 focus:border-valentine-red focus:outline-none resize-none p-2 text-center italic text-deep-red/70 placeholder-deep-red/30" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -609,22 +607,24 @@ Always Yours
         
         <!-- Memory Upload 3 -->
         <div class="group relative">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-blush to-cream">
+          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg transform group-hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-rose-pink to-light-pink heart-border">
             <div id="memory-3" class="w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-300 relative" onclick="uploadMemory(3)">
-              <svg class="w-32 h-32 text-rose-gold/30 group-hover:text-rose-gold/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="22" fill="currentColor" opacity="0.3" />
-                <circle cx="50" cy="50" r="14" fill="currentColor" opacity="0.5" />
-                <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.7" />
-                <ellipse cx="35" cy="35" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(-25 35 35)" />
-                <ellipse cx="65" cy="35" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(25 65 35)" />
-                <ellipse cx="35" cy="65" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(25 35 65)" />
-                <ellipse cx="65" cy="65" rx="12" ry="18" fill="currentColor" opacity="0.4" transform="rotate(-25 65 65)" />
+              <svg class="w-32 h-32 text-valentine-red/30 group-hover:text-valentine-red/50 transition-colors duration-300 mb-4" viewBox="0 0 100 100">
+                <path d="M50,90 C30,70 10,50 20,20 C25,5 40,0 50,15 C60,0 75,5 80,20 C90,50 70,70 50,90 Z" 
+                      fill="currentColor" 
+                      opacity="0.3" />
+                <path d="M50,80 C35,65 20,50 25,25 C30,15 40,10 50,20 C60,10 70,15 75,25 C80,50 65,65 50,80 Z" 
+                      fill="currentColor" 
+                      opacity="0.5" />
+                <path d="M50,70 C40,60 30,45 35,30 C38,25 42,20 50,25 C58,20 62,25 65,30 C70,45 60,60 50,70 Z" 
+                      fill="currentColor" 
+                      opacity="0.7" />
               </svg>
-              <span class="romantic-title text-rose-gold/50 group-hover:text-rose-gold transition-colors duration-300">Add Our Memory</span>
-              <span class="text-xs text-deep-sage/50 mt-2">Click to upload photo</span>
+              <span class="romantic-title text-valentine-red/50 group-hover:text-valentine-red transition-colors duration-300">Add Our Memory</span>
+              <span class="text-xs text-deep-red/50 mt-2">Click to upload photo</span>
               
               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 bg-rose-gold/80 rounded-full flex items-center justify-center">
+                <div class="w-16 h-16 bg-valentine-red/80 rounded-full flex items-center justify-center">
                   <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                   </svg>
@@ -633,7 +633,7 @@ Always Yours
             </div>
           </div>
           <div class="mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30" 
+            <textarea class="w-full bg-transparent border-b border-deep-red/20 focus:border-valentine-red focus:outline-none resize-none p-2 text-center italic text-deep-red/70 placeholder-deep-red/30" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -642,8 +642,8 @@ Always Yours
       
       <!-- Music Player -->
       <div class="max-w-2xl mx-auto mt-20">
-        <div class="luxury-shimmer rounded-3xl p-8 bg-gradient-to-br from-white to-blush shadow-xl border border-deep-sage/10">
-          <h3 class="romantic-title text-3xl text-center text-deep-sage mb-8">Our Love's Soundtrack</h3>
+        <div class="luxury-shimmer rounded-3xl p-8 bg-gradient-to-br from-white to-soft-pink shadow-xl border border-deep-red/10 heart-border">
+          <h3 class="romantic-title text-3xl text-center text-deep-red mb-8">🎵 Our Love's Soundtrack 🎵</h3>
           
           <div class="flex flex-col items-center gap-6">
             <div id="music-visualizer" class="flex items-end gap-1 h-20">
@@ -651,18 +651,18 @@ Always Yours
             </div>
             
             <div class="text-center">
-              <div id="now-playing" class="script-font text-2xl text-rose-gold mb-2">Select a Song</div>
-              <div id="song-info" class="text-deep-sage/70 text-sm italic">Upload a song that defines our love</div>
+              <div id="now-playing" class="script-font text-2xl text-valentine-red mb-2">Select a Song</div>
+              <div id="song-info" class="text-deep-red/70 text-sm italic">Upload a song that defines our love</div>
             </div>
             
             <div class="flex items-center gap-4">
-              <button onclick="previousSong()" class="p-3 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
-                <svg class="w-6 h-6 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+              <button onclick="previousSong()" class="p-3 rounded-full bg-valentine-red/10 hover:bg-valentine-red/20 transition-colors">
+                <svg class="w-6 h-6 text-valentine-red" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                 </svg>
               </button>
               
-              <button onclick="togglePlay()" id="play-btn" class="p-4 rounded-full bg-rose-gold text-white hover:bg-rose-gold/90 transition-colors shadow-lg">
+              <button onclick="togglePlay()" id="play-btn" class="p-4 rounded-full bg-valentine-red text-white hover:bg-valentine-red/90 transition-colors shadow-lg">
                 <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
@@ -671,22 +671,22 @@ Always Yours
                 </svg>
               </button>
               
-              <button onclick="nextSong()" class="p-3 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
-                <svg class="w-6 h-6 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+              <button onclick="nextSong()" class="p-3 rounded-full bg-valentine-red/10 hover:bg-valentine-red/20 transition-colors">
+                <svg class="w-6 h-6 text-valentine-red" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                 </svg>
               </button>
             </div>
             
             <div class="w-full max-w-md">
-              <div class="flex justify-between text-sm text-deep-sage/70 mb-2">
+              <div class="flex justify-between text-sm text-deep-red/70 mb-2">
                 <span id="current-time">0:00</span>
                 <span id="total-time">0:00</span>
               </div>
-              <input type="range" min="0" max="100" value="0" class="w-full h-2 bg-deep-sage/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rose-gold" id="progress-bar">
+              <input type="range" min="0" max="100" value="0" class="w-full h-2 bg-deep-red/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-valentine-red" id="progress-bar">
             </div>
             
-            <button onclick="uploadSong()" class="px-6 py-3 rounded-full border-2 border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white transition-colors flex items-center gap-3">
+            <button onclick="uploadSong()" class="px-6 py-3 rounded-full border-2 border-valentine-red text-valentine-red hover:bg-valentine-red hover:text-white transition-colors flex items-center gap-3">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
               </svg>
@@ -697,16 +697,16 @@ Always Yours
       </div>
       
       <!-- Final Message -->
-      <div class="text-center mt-20 pt-12 border-t border-deep-sage/10">
-        <div class="inline-block p-6 bg-gradient-to-br from-white to-blush rounded-3xl shadow-lg">
-          <h3 class="script-font text-4xl text-rose-gold mb-4" id="final-greeting">To My Eternal Valentine</h3>
-          <p class="text-lg text-deep-sage/70 italic max-w-2xl mx-auto">
-            Like these flowers that never truly fade, my love for you is eternal.<br>
-            Through every season, in every bloom, my heart finds its home in you.
+      <div class="text-center mt-20 pt-12 border-t border-deep-red/10">
+        <div class="inline-block p-6 bg-gradient-to-br from-white to-soft-pink rounded-3xl shadow-lg heart-border">
+          <h3 class="script-font text-4xl text-valentine-red mb-4" id="final-greeting">To My Eternal Valentine</h3>
+          <p class="text-lg text-deep-red/70 italic max-w-2xl mx-auto">
+            Like the roses that bloom in spring, my love for you grows stronger every day.<br>
+            You are my today, my tomorrow, and my forever.
           </p>
           <div class="mt-6">
-            <div class="script-font text-2xl text-deep-sage" id="final-signature">Forever Yours</div>
-            <div class="text-sm text-deep-sage/50 romantic-title mt-2">January 28, 2026, and every day thereafter</div>
+            <div class="script-font text-2xl text-deep-red" id="final-signature">Forever Yours</div>
+            <div class="text-sm text-deep-red/50 romantic-title mt-2">January 28, 2026, and every day thereafter</div>
           </div>
         </div>
       </div>
@@ -723,7 +723,7 @@ Always Yours
     // Initialize floating petals
     function createFloatingPetals() {
       const container = document.getElementById('petal-container');
-      const petalTypes = ['🌹', '🌸', '🌺', '💐', '🌷', '🥀'];
+      const petalTypes = ['❤️', '💖', '💕', '💗', '💓', '💞', '💘', '💝'];
       
       for (let i = 0; i < 30; i++) {
         setTimeout(() => {
@@ -733,7 +733,7 @@ Always Yours
           petal.style.left = Math.random() * 100 + 'vw';
           petal.style.fontSize = Math.random() * 20 + 16 + 'px';
           petal.style.opacity = Math.random() * 0.5 + 0.2;
-          petal.style.color = ['#B76E79', '#7D8B6F', '#C9A9A6'][Math.floor(Math.random() * 3)];
+          petal.style.color = ['#D70060', '#B00030', '#FFB6C1'][Math.floor(Math.random() * 3)];
           petal.style.animationDuration = Math.random() * 10 + 15 + 's';
           petal.style.animationDelay = Math.random() * 5 + 's';
           
@@ -760,20 +760,25 @@ Always Yours
     
     partnerNameInput.addEventListener('input', (e) => {
       const name = e.target.value || 'My Love';
-      // Update signature in letter
-      if (loveLetter.value.includes('[Name]')) {
-        loveLetter.value = loveLetter.value.replace(/\[Name\]/g, name);
-      }
+      // Update name in letter
+      updateLetterName(name);
       // Update final signature
       document.getElementById('final-signature').textContent = `Forever Yours, ${name}`;
       document.getElementById('final-greeting').textContent = `To My Dearest ${name}`;
     });
     
+    function updateLetterName(name) {
+      const letterContent = loveLetter.value;
+      if (letterContent.includes('[Name]')) {
+        loveLetter.value = letterContent.replace(/\[Name\]/g, name);
+      }
+    }
+    
     // Also update letter when user manually types in the letter
-    loveLetter.addEventListener('input', (e) => {
+    loveLetter.addEventListener('input', () => {
       const name = partnerNameInput.value || 'My Love';
-      if (e.target.value.includes('[Name]')) {
-        e.target.value = e.target.value.replace(/\[Name\]/g, name);
+      if (loveLetter.value.includes('[Name]')) {
+        loveLetter.value = loveLetter.value.replace(/\[Name\]/g, name);
       }
     });
     
@@ -803,6 +808,8 @@ Always Yours
         // Focus on the letter textarea for easy editing
         setTimeout(() => {
           loveLetter.focus();
+          // Set cursor to beginning
+          loveLetter.setSelectionRange(0, 0);
         }, 500);
       }, 500);
     }
@@ -957,7 +964,7 @@ Always Yours
       
       for (let i = 0; i < 20; i++) {
         const bar = document.createElement('div');
-        bar.className = 'music-wave bg-rose-gold/50 rounded-full w-2';
+        bar.className = 'music-wave bg-valentine-red/50 rounded-full w-2';
         bar.style.animationDelay = `${i * 0.1}s`;
         bar.style.height = `${Math.random() * 40 + 10}px`;
         visualizer.appendChild(bar);
@@ -1008,6 +1015,10 @@ Always Yours
       createFloatingPetals();
       updateNowPlaying();
       
+      // Initialize name in letter
+      const name = partnerNameInput.value || 'My Love';
+      updateLetterName(name);
+      
       // Auto-play petals animation
       setInterval(() => {
         if (Math.random() > 0.7) {
@@ -1017,7 +1028,6 @@ Always Yours
     });
     
     // Update current date in letter (already set to January 28, 2026)
-    // The date is hardcoded in the HTML as per your image
   </script>
  </body>
 </html>

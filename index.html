@@ -276,6 +276,114 @@
       gap: 8px;
       box-shadow: 0 4px 15px rgba(183, 110, 121, 0.3);
     }
+
+    /* Cute share button style */
+    .share-button {
+      background: linear-gradient(135deg, #B76E79 0%, #C86B78 100%);
+      box-shadow: 0 4px 15px rgba(183, 110, 121, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .share-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(183, 110, 121, 0.4);
+    }
+
+    /* Editable letter content */
+    .editable-content {
+      min-height: 20px;
+      outline: none;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .editable-content:focus {
+      background-color: rgba(183, 110, 121, 0.05);
+      box-shadow: 0 0 0 2px rgba(183, 110, 121, 0.1);
+    }
+
+    /* View-only mode styles */
+    body.view-only .editable-content {
+      background-color: transparent !important;
+      box-shadow: none !important;
+      cursor: default;
+    }
+
+    body.view-only input,
+    body.view-only textarea,
+    body.view-only button:not(.share-button) {
+      pointer-events: none !important;
+      opacity: 0.7;
+    }
+
+    body.view-only #share-gift-btn {
+      display: none !important;
+    }
+
+    /* Hero section layout fix */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(5px);
+      background: rgba(253, 248, 243, 0.7);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(92, 107, 79, 0.1);
+    }
+
+    /* Floating flowers background */
+    .floating-flowers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Music player responsive fix */
+    .music-player-compact {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Progress bar styling */
+    .progress-container {
+      width: 100%;
+      position: relative;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(92, 107, 79, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #B76E79, #C86B78);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .progress-handle {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      background: #B76E79;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(183, 110, 121, 0.3);
+      cursor: pointer;
+      z-index: 2;
+    }
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
@@ -349,140 +457,136 @@
     </a>
   </nav>
 
-  <!-- Mobile Music Player Bar (Fixed at bottom) -->
-  <div id="music-player-bar" class="fixed bottom-0 left-0 right-0 z-50 music-player-bar mx-4 mb-4 p-4 hidden">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <button onclick="togglePlay()" id="play-btn-bar" class="p-2 rounded-full bg-rose-gold text-white hover:bg-rose-gold/90 transition-colors">
-          <svg id="play-icon-bar" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <svg id="pause-icon-bar" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-          </svg>
-        </button>
-        
-        <div class="min-w-0 flex-1">
-          <div id="now-playing-bar" class="text-sm font-medium text-deep-sage truncate">Select a Song</div>
-          <div class="flex items-center gap-2">
-            <span id="current-time-bar" class="text-xs text-deep-sage/70">0:00</span>
-            <input type="range" min="0" max="100" value="0" class="flex-1 h-1 bg-deep-sage/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rose-gold" id="progress-bar-bar">
-            <span id="total-time-bar" class="text-xs text-deep-sage/70">0:00</span>
-          </div>
-        </div>
-      </div>
-      
-      <button onclick="uploadSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
-        <svg class="w-5 h-5 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-
   <div id="app-wrapper" class="h-full w-full overflow-auto scroll-smooth hidden">
-   
-   <!-- Music Player at Top (After welcome slide) -->
-   <div class="sticky top-0 z-30 music-player-bar mx-4 mt-4 p-4">
-     <div class="flex flex-col items-center gap-3">
-       <div class="text-center w-full">
-         <div id="now-playing" class="script-font text-xl text-rose-gold truncate">Select a Song</div>
-         <div id="song-info" class="text-deep-sage/70 text-sm italic truncate">Upload a song that defines our love</div>
-       </div>
-       
-       <div class="flex items-center justify-between w-full">
-         <button onclick="previousSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
-           <svg class="w-5 h-5 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-           </svg>
-         </button>
-         
-         <button onclick="togglePlay()" id="play-btn-top" class="p-3 rounded-full bg-rose-gold text-white hover:bg-rose-gold/90 transition-colors shadow-lg">
-           <svg id="play-icon-top" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M8 5v14l11-7z"/>
-           </svg>
-           <svg id="pause-icon-top" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-           </svg>
-         </button>
-         
-         <button onclick="nextSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors">
-           <svg class="w-5 h-5 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-           </svg>
-         </button>
-       </div>
-       
-       <div class="w-full">
-         <div class="flex justify-between text-xs text-deep-sage/70 mb-1">
-           <span id="current-time">0:00</span>
-           <span id="total-time">0:00</span>
-         </div>
-         <input type="range" min="0" max="100" value="0" class="w-full h-1.5 bg-deep-sage/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rose-gold" id="progress-bar">
-       </div>
-     </div>
-   </div>
    
    <!-- Hero Section with Illustrations -->
    <section id="hero" class="min-h-screen relative flex items-center justify-center overflow-hidden">
-    <!-- Background with Illustrated Flowers - FIXED FOR MOBILE -->
-    <div class="absolute inset-0 hero-flowers">
-      <!-- Center Rose Illustration (Smaller on mobile) -->
-      <div class="absolute inset-0 flex items-center justify-center">
-        <svg class="w-32 h-32 md:w-64 md:h-64 pulse-heart" viewBox="0 0 200 200">
+    <!-- Floating flowers background - MOVED TO BACKGROUND -->
+    <div class="floating-flowers">
+      <!-- Center Rose Illustration - BACKGROUND ONLY -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-20">
+        <svg class="w-64 h-64 md:w-96 md:h-96" viewBox="0 0 200 200">
           <!-- Rose -->
-          <ellipse cx="100" cy="80" rx="40" ry="35" fill="#B76E79" opacity="0.8" />
-          <ellipse cx="100" cy="80" rx="30" ry="25" fill="#FDF8F3" opacity="0.9" />
+          <ellipse cx="100" cy="80" rx="40" ry="35" fill="#B76E79" opacity="0.6" />
+          <ellipse cx="100" cy="80" rx="30" ry="25" fill="#FDF8F3" opacity="0.8" />
           <ellipse cx="100" cy="80" rx="15" ry="12" fill="#C9A9A6" opacity="0.7" />
           
           <!-- Outer petals -->
-          <ellipse cx="70" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(-20 70 70)" />
-          <ellipse cx="130" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.6" transform="rotate(20 130 70)" />
-          <ellipse cx="80" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(-10 80 100)" />
-          <ellipse cx="120" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.5" transform="rotate(10 120 100)" />
+          <ellipse cx="70" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.4" transform="rotate(-20 70 70)" />
+          <ellipse cx="130" cy="70" rx="20" ry="30" fill="#B76E79" opacity="0.4" transform="rotate(20 130 70)" />
+          <ellipse cx="80" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.3" transform="rotate(-10 80 100)" />
+          <ellipse cx="120" cy="100" rx="20" ry="25" fill="#C9A9A6" opacity="0.3" transform="rotate(10 120 100)" />
           
           <!-- Stem and leaves -->
-          <path d="M100 115 L100 170" stroke="#7D8B6F" stroke-width="4" fill="none" />
-          <ellipse cx="85" cy="140" rx="15" ry="8" fill="#5C6B4F" transform="rotate(-30 85 140)" />
-          <ellipse cx="115" cy="150" rx="12" ry="6" fill="#7D8B6F" transform="rotate(25 115 150)" />
+          <path d="M100 115 L100 170" stroke="#7D8B6F" stroke-width="4" fill="none" opacity="0.5" />
+          <ellipse cx="85" cy="140" rx="15" ry="8" fill="#5C6B4F" opacity="0.4" transform="rotate(-30 85 140)" />
+          <ellipse cx="115" cy="150" rx="12" ry="6" fill="#7D8B6F" opacity="0.4" transform="rotate(25 115 150)" />
+        </svg>
+      </div>
+
+      <!-- Decorative flowers around the edges -->
+      <div class="absolute top-1/4 left-1/4 w-16 h-16 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="20" fill="#B76E79" opacity="0.3" />
+          <circle cx="50" cy="50" r="12" fill="#C9A9A6" opacity="0.4" />
+        </svg>
+      </div>
+      <div class="absolute bottom-1/4 right-1/4 w-20 h-20 opacity-10">
+        <svg class="w-full h-full" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="25" fill="#7D8B6F" opacity="0.3" />
+          <ellipse cx="35" cy="35" rx="15" ry="10" fill="#5C6B4F" opacity="0.4" transform="rotate(-30 35 35)" />
         </svg>
       </div>
     </div>
     
-    <!-- Main Content -->
+    <!-- Main Content - NOW CLEARLY VISIBLE -->
     <div class="relative z-10 text-center px-6 max-w-4xl">
-      <div class="mb-8">
-        <h1 class="romantic-title text-4xl md:text-5xl lg:text-7xl text-deep-sage mb-4">
-          <span class="block">My Dearest</span>
-          <input type="text" 
-                 id="partner-name" 
-                 placeholder="My Love" 
-                 class="script-font text-5xl md:text-6xl lg:text-8xl text-rose-gold bg-transparent border-none outline-none text-center w-full max-w-md mx-auto placeholder-rose-gold/50 focus:placeholder-transparent transition-all duration-500">
-        </h1>
+      <div class="hero-content">
+        <div class="mb-8">
+          <h1 class="romantic-title text-4xl md:text-5xl lg:text-7xl text-deep-sage mb-4">
+            <span class="block">My Dearest</span>
+            <input type="text" 
+                   id="partner-name" 
+                   placeholder="My Love" 
+                   class="script-font text-5xl md:text-6xl lg:text-8xl text-rose-gold bg-transparent border-none outline-none text-center w-full max-w-md mx-auto placeholder-rose-gold/50 focus:placeholder-transparent transition-all duration-500">
+          </h1>
+          
+          <div class="h-px w-0 mx-auto bg-gradient-to-r from-transparent via-rose-gold to-transparent transition-all duration-1000" id="name-underline"></div>
+        </div>
         
-        <div class="h-px w-0 mx-auto bg-gradient-to-r from-transparent via-rose-gold to-transparent transition-all duration-1000" id="name-underline"></div>
+        <p class="text-lg md:text-xl text-deep-sage/70 italic max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
+          Every rose in this garden represents a reason why I love you.<br class="hidden md:block">
+          Every petal holds a memory of us.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center mb-8">
+          <a href="#letter" class="group relative px-6 md:px-8 py-3 md:py-4 bg-rose-gold text-cream rounded-full overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto">
+            <span class="relative z-10 romantic-title tracking-widest text-sm md:text-base">Open My Heart</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-moss to-deep-sage transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+          </a>
+          
+          <button onclick="scrollToMemories()" class="group px-6 md:px-8 py-3 md:py-4 border-2 border-rose-gold text-rose-gold rounded-full hover:bg-rose-gold hover:text-cream transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 w-full sm:w-auto">
+            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="romantic-title tracking-widest text-sm md:text-base">Our Memories</span>
+          </button>
+        </div>
+        
+        <!-- Music Player (Cute little bar under the buttons) -->
+        <div id="hero-music-player" class="music-player-bar music-player-compact p-4">
+          <div class="flex flex-col items-center gap-3">
+            <div class="text-center w-full">
+              <div id="now-playing" class="script-font text-xl text-rose-gold truncate">Select a Song</div>
+              <div id="song-info" class="text-deep-sage/70 text-sm italic truncate">Upload our love song</div>
+            </div>
+            
+            <div class="flex items-center justify-between w-full px-2">
+              <button onclick="previousSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors" title="Previous">
+                <svg class="w-4 h-4 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </svg>
+              </button>
+              
+              <button onclick="togglePlay()" id="play-btn-top" class="p-3 rounded-full bg-rose-gold text-white hover:bg-rose-gold/90 transition-colors shadow-lg" title="Play/Pause">
+                <svg id="play-icon-top" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pause-icon-top" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+              
+              <button onclick="nextSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors" title="Next">
+                <svg class="w-4 h-4 text-rose-gold" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </svg>
+              </button>
+              
+              <button onclick="uploadSong()" class="p-2 rounded-full bg-rose-gold/10 hover:bg-rose-gold/20 transition-colors" title="Upload Song">
+                <svg class="w-4 h-4 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="w-full px-2">
+              <div class="flex justify-between text-xs text-deep-sage/70 mb-2">
+                <span id="current-time">0:00</span>
+                <span id="total-time">0:00</span>
+              </div>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-handle" id="progress-handle" style="left: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
-      <p class="text-lg md:text-xl text-deep-sage/70 italic max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
-        Every rose in this garden represents a reason why I love you.<br class="hidden md:block">
-        Every petal holds a memory of us.
-      </p>
-      
-      <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
-        <a href="#letter" class="group relative px-6 md:px-8 py-3 md:py-4 bg-rose-gold text-cream rounded-full overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto">
-          <span class="relative z-10 romantic-title tracking-widest text-sm md:text-base">Open My Heart</span>
-          <div class="absolute inset-0 bg-gradient-to-r from-moss to-deep-sage transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
-        </a>
-        
-        <button onclick="scrollToMemories()" class="group px-6 md:px-8 py-3 md:py-4 border-2 border-rose-gold text-rose-gold rounded-full hover:bg-rose-gold hover:text-cream transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 w-full sm:w-auto">
-          <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-          <span class="romantic-title tracking-widest text-sm md:text-base">Our Memories</span>
-        </button>
-      </div>
-      
-      <div class="mt-12 md:mt-20 bounce-down">
+      <div class="mt-8 bounce-down">
         <span class="text-xs md:text-sm text-deep-sage/50 tracking-widest romantic-title">Scroll to explore our garden</span>
         <svg class="w-5 h-5 md:w-6 md:h-6 mx-auto mt-1 md:mt-2 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -529,30 +633,40 @@
                     </svg>
                   </div>
                   
-                  <!-- Letter content -->
+                  <!-- Letter content (NOW EDITABLE) -->
                   <div class="mb-4 md:mb-6">
                     <div class="text-right text-xs md:text-sm text-deep-sage/70 romantic-title mb-2">
-                      <span id="letter-date">January 28, 2026</span>
+                      <input type="text" id="letter-date" class="bg-transparent border-none outline-none text-right text-deep-sage/70 romantic-title editable-content" value="January 28, 2026" style="width: 150px;">
                     </div>
                     
                     <div class="script-font text-2xl md:text-3xl text-rose-gold text-center mb-4 md:mb-8">
-                      To My Dearest <span id="letter-recipient">My Love</span>
+                      To My Dearest <span id="letter-recipient" class="editable-content">My Love</span>
                     </div>
                     
                     <div class="space-y-2 md:space-y-4 text-sm md:text-lg text-deep-sage leading-relaxed">
-                      <p class="indent-4 md:indent-8">My love,</p>
+                      <p class="indent-4 md:indent-8">
+                        <span class="editable-content">My love,</span>
+                      </p>
                       
-                      <p>Your smile is the sunrise that brightens my darkest days, and your love is the gentle rain that nourishes my soul. In your eyes, I've found a home; in your embrace, I've found peace.</p>
+                      <p class="editable-content" data-placeholder="Write your love letter here...">
+                        Your smile is the sunrise that brightens my darkest days, and your love is the gentle rain that nourishes my soul. In your eyes, I've found a home; in your embrace, I've found peace.
+                      </p>
                       
-                      <p>Like the flowers that never fade in this garden, my love for you grows more beautiful with each passing season. You are the soil where all my dreams take root.</p>
+                      <p class="editable-content">
+                        Like the flowers that never fade in this garden, my love for you grows more beautiful with each passing season. You are the soil where all my dreams take root.
+                      </p>
                       
-                      <p>On this Valentine's Day, I want you to know that every moment with you has been a gift. You are my greatest adventure and my forever love.</p>
+                      <p class="editable-content">
+                        On this Valentine's Day, I want you to know that every moment with you has been a gift. You are my greatest adventure and my forever love.
+                      </p>
                       
-                      <p class="mt-4 md:mt-8">With all my love, forever and always,</p>
+                      <p class="mt-4 md:mt-8 editable-content">
+                        With all my love, forever and always,
+                      </p>
                     </div>
                     
                     <div class="mt-6 md:mt-10 pt-4 md:pt-6 border-t border-deep-sage/20">
-                      <div class="script-font text-2xl md:text-3xl text-rose-gold text-center" id="signature">Your Loving Partner</div>
+                      <input type="text" id="signature" class="script-font text-2xl md:text-3xl text-rose-gold text-center bg-transparent border-none outline-none editable-content w-full" value="Your Loving Partner">
                       <div class="text-center text-xs md:text-sm text-deep-sage/50 romantic-title mt-1 md:mt-2">Sealed with a kiss and all my heart</div>
                     </div>
                   </div>
@@ -647,7 +761,7 @@
             </div>
           </div>
           <div class="mt-3 md:mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
+            <textarea class="memory-caption w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -676,7 +790,7 @@
             </div>
           </div>
           <div class="mt-3 md:mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
+            <textarea class="memory-caption w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -708,7 +822,7 @@
             </div>
           </div>
           <div class="mt-3 md:mt-4">
-            <textarea class="w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
+            <textarea class="memory-caption w-full bg-transparent border-b border-deep-sage/20 focus:border-rose-gold focus:outline-none resize-none p-2 text-center italic text-deep-sage/70 placeholder-deep-sage/30 text-sm md:text-base" 
                       placeholder="Describe this beautiful moment..." 
                       rows="2"></textarea>
           </div>
@@ -724,8 +838,22 @@
             Through every season, in every bloom, my heart finds its home in you.
           </p>
           <div class="mt-4 md:mt-6">
-            <div class="script-font text-xl md:text-2xl text-deep-sage" id="final-signature">Forever Yours</div>
+            <input type="text" id="final-signature" class="script-font text-xl md:text-2xl text-deep-sage bg-transparent border-none outline-none text-center editable-content w-full" value="Forever Yours">
             <div class="text-xs md:text-sm text-deep-sage/50 romantic-title mt-1 md:mt-2">January 28, 2026, and every day thereafter</div>
+          </div>
+
+          <!-- Cute Share Button at the Very End -->
+          <div class="mt-8 md:mt-12">
+            <button id="share-gift-btn" onclick="shareGift()" class="share-button px-8 py-4 text-cream rounded-full flex items-center justify-center gap-3 mx-auto">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+              </svg>
+              <span class="romantic-title text-lg">Share This Gift With Your Love</span>
+              <svg class="w-5 h-5 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </button>
+            <p class="text-sm text-deep-sage/60 mt-3 italic">Once shared, your love story will become view-only for your partner!</p>
           </div>
         </div>
       </div>
@@ -829,8 +957,80 @@
       // Update letter recipient
       letterRecipient.textContent = name;
       // Update final signature
-      document.getElementById('final-signature').textContent = `Forever Yours, ${name}`;
+      document.getElementById('final-signature').value = `Forever Yours, ${name}`;
     });
+    
+    // Editable letter content setup
+    function setupEditableContent() {
+      const editableElements = document.querySelectorAll('.editable-content');
+      
+      editableElements.forEach(element => {
+        // Set placeholder if data-placeholder attribute exists
+        if (element.hasAttribute('data-placeholder')) {
+          if (!element.textContent.trim()) {
+            element.textContent = element.getAttribute('data-placeholder');
+            element.classList.add('text-deep-sage/50');
+          }
+        }
+        
+        // Focus event
+        element.addEventListener('focus', function() {
+          if (this.hasAttribute('data-placeholder') && this.textContent === this.getAttribute('data-placeholder')) {
+            this.textContent = '';
+            this.classList.remove('text-deep-sage/50');
+          }
+          this.style.backgroundColor = 'rgba(183, 110, 121, 0.05)';
+        });
+        
+        // Blur event
+        element.addEventListener('blur', function() {
+          this.style.backgroundColor = '';
+          if (this.hasAttribute('data-placeholder') && !this.textContent.trim()) {
+            this.textContent = this.getAttribute('data-placeholder');
+            this.classList.add('text-deep-sage/50');
+          }
+        });
+        
+        // Input event for partner name sync
+        if (element.id === 'letter-recipient') {
+          element.addEventListener('input', function() {
+            document.getElementById('final-signature').value = `Forever Yours, ${this.textContent || 'My Love'}`;
+          });
+        }
+      });
+    }
+    
+    // Enable view-only mode
+    function enableViewOnlyMode() {
+      document.body.classList.add('view-only');
+      // Save state to localStorage so it persists
+      localStorage.setItem('valentineGiftViewOnly', 'true');
+      alert('Gift shared! Your partner will see this in view-only mode with music auto-playing. Copy the URL and send it to them!');
+    }
+    
+    // Share gift function
+    function shareGift() {
+      // First, let user choose/confirm song
+      if (songs.length === 0 || songs[0].name === 'Our Love Song') {
+        alert('Please upload your special love song before sharing!');
+        uploadSong();
+        return;
+      }
+      
+      // Create a shareable URL (in a real app, this would generate a unique link)
+      const shareUrl = window.location.href;
+      
+      // Enable view-only mode
+      enableViewOnlyMode();
+      
+      // Auto-play music for the partner
+      setTimeout(() => {
+        if (!isPlaying) {
+          togglePlay();
+          showAutoplayIndicator();
+        }
+      }, 1000);
+    }
     
     // Envelope opening
     let envelopeOpened = false;
@@ -907,12 +1107,83 @@
     let currentSongIndex = 0;
     let songs = [];
     
-    // Check if on mobile
-    const isMobile = window.innerWidth <= 768;
+    // Custom progress bar functionality
+    function setupProgressBar() {
+      const progressContainer = document.querySelector('.progress-container');
+      const progressFill = document.getElementById('progress-fill');
+      const progressHandle = document.getElementById('progress-handle');
+      
+      if (!progressContainer || !progressFill || !progressHandle) return;
+      
+      let isDragging = false;
+      
+      // Click to seek
+      progressContainer.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+        
+        const rect = progressContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        const percentage = (clickX / width) * 100;
+        
+        audio.currentTime = (percentage / 100) * audio.duration;
+        updateProgressBar();
+      });
+      
+      // Drag handle
+      progressHandle.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('mouseup', stopDrag);
+        e.preventDefault();
+      });
+      
+      progressHandle.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        document.addEventListener('touchmove', handleDrag);
+        document.addEventListener('touchend', stopDrag);
+        e.preventDefault();
+      });
+      
+      function handleDrag(e) {
+        if (!isDragging || !audio.duration) return;
+        
+        const rect = progressContainer.getBoundingClientRect();
+        let clientX;
+        
+        if (e.type.includes('mouse')) {
+          clientX = e.clientX;
+        } else if (e.touches && e.touches[0]) {
+          clientX = e.touches[0].clientX;
+        } else {
+          return;
+        }
+        
+        const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+        const percentage = (clickX / rect.width) * 100;
+        
+        audio.currentTime = (percentage / 100) * audio.duration;
+        updateProgressBar();
+      }
+      
+      function stopDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', handleDrag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchmove', handleDrag);
+        document.removeEventListener('touchend', stopDrag);
+      }
+    }
     
-    // Show appropriate music player
-    if (isMobile) {
-      document.getElementById('music-player-bar').classList.remove('hidden');
+    function updateProgressBar() {
+      const progressFill = document.getElementById('progress-fill');
+      const progressHandle = document.getElementById('progress-handle');
+      
+      if (!progressFill || !progressHandle || !audio.duration) return;
+      
+      const percentage = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = `${percentage}%`;
+      progressHandle.style.left = `${percentage}%`;
     }
     
     function uploadSong() {
@@ -925,17 +1196,21 @@
       
       const reader = new FileReader();
       reader.onload = function(e) {
-        songs.push({
+        songs = [{
           src: e.target.result,
           name: file.name.replace(/\.[^/.]+$/, ""),
           type: file.type
-        });
+        }];
         
-        if (songs.length === 1) {
-          loadSong(0);
-        }
-        
+        loadSong(0);
         updateNowPlaying();
+        
+        // Auto-play when user selects a song
+        setTimeout(() => {
+          if (!isPlaying) {
+            togglePlay();
+          }
+        }, 500);
       };
       reader.readAsDataURL(file);
       event.target.value = '';
@@ -954,12 +1229,10 @@
       if (songs.length === 0) {
         document.getElementById('now-playing').textContent = 'Select a Song';
         document.getElementById('song-info').textContent = 'Upload a song that defines our love';
-        document.getElementById('now-playing-bar').textContent = 'Select a Song';
       } else {
         const songName = songs[currentSongIndex].name;
         document.getElementById('now-playing').textContent = songName;
         document.getElementById('song-info').textContent = 'Our love song';
-        document.getElementById('now-playing-bar').textContent = songName;
       }
     }
     
@@ -979,27 +1252,15 @@
     }
     
     function updatePlayButton() {
-      const playIcon = document.getElementById('play-icon');
-      const pauseIcon = document.getElementById('pause-icon');
       const playIconTop = document.getElementById('play-icon-top');
       const pauseIconTop = document.getElementById('pause-icon-top');
-      const playIconBar = document.getElementById('play-icon-bar');
-      const pauseIconBar = document.getElementById('pause-icon-bar');
       
       if (isPlaying) {
-        playIcon?.classList.add('hidden');
-        pauseIcon?.classList.remove('hidden');
         playIconTop?.classList.add('hidden');
         pauseIconTop?.classList.remove('hidden');
-        playIconBar?.classList.add('hidden');
-        pauseIconBar?.classList.remove('hidden');
       } else {
-        playIcon?.classList.remove('hidden');
-        pauseIcon?.classList.add('hidden');
         playIconTop?.classList.remove('hidden');
         pauseIconTop?.classList.add('hidden');
-        playIconBar?.classList.remove('hidden');
-        pauseIconBar?.classList.add('hidden');
       }
     }
     
@@ -1023,34 +1284,13 @@
     
     // Progress bar update
     audio.addEventListener('timeupdate', () => {
-      const progressBar = document.getElementById('progress-bar');
-      const progressBarBar = document.getElementById('progress-bar-bar');
       const currentTime = document.getElementById('current-time');
       const totalTime = document.getElementById('total-time');
-      const currentTimeBar = document.getElementById('current-time-bar');
-      const totalTimeBar = document.getElementById('total-time-bar');
       
       if (audio.duration) {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        progressBar.value = progress;
-        progressBarBar.value = progress;
         currentTime.textContent = formatTime(audio.currentTime);
         totalTime.textContent = formatTime(audio.duration);
-        currentTimeBar.textContent = formatTime(audio.currentTime);
-        totalTimeBar.textContent = formatTime(audio.duration);
-      }
-    });
-    
-    // Seek functionality
-    document.getElementById('progress-bar').addEventListener('input', (e) => {
-      if (audio.duration) {
-        audio.currentTime = (e.target.value / 100) * audio.duration;
-      }
-    });
-    
-    document.getElementById('progress-bar-bar').addEventListener('input', (e) => {
-      if (audio.duration) {
-        audio.currentTime = (e.target.value / 100) * audio.duration;
+        updateProgressBar();
       }
     });
     
@@ -1066,8 +1306,21 @@
       document.getElementById('memories').scrollIntoView({ behavior: 'smooth' });
     }
     
+    // Check for view-only mode on load
+    function checkViewOnlyMode() {
+      if (localStorage.getItem('valentineGiftViewOnly') === 'true') {
+        document.body.classList.add('view-only');
+        // Auto-play music for recipient
+        setTimeout(() => {
+          if (songs.length > 0 && !isPlaying) {
+            togglePlay();
+            showAutoplayIndicator();
+          }
+        }, 2000);
+      }
+    }
+    
     // Initialize with a default romantic song (can be replaced by user)
-    // This ensures music plays automatically when site is shared
     const defaultSong = {
       src: 'https://assets.codepen.io/1468070/romantic-music.mp3', // Placeholder - user should upload their own
       name: 'Our Love Song',
@@ -1077,6 +1330,9 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       createFloatingPetals();
+      setupEditableContent();
+      setupProgressBar();
+      checkViewOnlyMode();
       
       // Add default song
       songs.push(defaultSong);

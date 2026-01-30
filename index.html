@@ -28,6 +28,7 @@
       overflow-x: hidden;
       margin: 0;
       padding: 0;
+      overflow-y: auto;
     }
     
     .romantic-title {
@@ -355,6 +356,20 @@
       border-bottom: 1px solid rgba(183, 110, 121, 0.1);
     }
     
+    /* Section visibility control */
+    .section {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+    }
+    
+    .section.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .nav-dots {
@@ -373,6 +388,10 @@
       .primary-btn, .secondary-btn {
         padding: 12px 24px;
         font-size: 15px;
+      }
+      
+      .section.active {
+        padding: 10px;
       }
     }
     
@@ -399,9 +418,9 @@
       40% { opacity: 1; }
     }
     
-    /* Smooth scrolling */
+    /* Remove smooth scrolling */
     html {
-      scroll-behavior: smooth;
+      scroll-behavior: auto;
     }
     
     /* Custom scrollbar */
@@ -445,7 +464,7 @@
   <!-- Main Content -->
   <main>
     <!-- Welcome Screen -->
-    <section id="welcome" class="min-h-screen flex items-center justify-center px-4 relative">
+    <section id="welcome" class="section active">
       <div class="text-center max-w-3xl w-full fade-in">
         <div class="elegant-card mx-auto">
           <!-- Logo/Title -->
@@ -500,7 +519,7 @@
             
             <p class="text-sm subtle-text">
               <i class="fas fa-info-circle mr-1"></i>
-              Follow the dots on the right to navigate
+              Follow the steps to create your love letter
             </p>
           </div>
         </div>
@@ -508,7 +527,7 @@
     </section>
     
     <!-- Greeting Section -->
-    <section id="greeting" class="min-h-screen flex items-center justify-center px-4 py-20">
+    <section id="greeting" class="section">
       <div class="max-w-2xl w-full fade-in">
         <div class="elegant-card">
           <div class="mb-8 text-center">
@@ -562,7 +581,7 @@
     </section>
     
     <!-- Letter Section -->
-    <section id="letter" class="min-h-screen flex items-center justify-center px-4 py-20">
+    <section id="letter" class="section">
       <div class="max-w-3xl w-full fade-in">
         <div class="glass-card">
           <div class="mb-8 text-center">
@@ -660,7 +679,7 @@
     </section>
     
     <!-- Memories Section -->
-    <section id="memories" class="min-h-screen flex items-center justify-center px-4 py-20">
+    <section id="memories" class="section">
       <div class="max-w-6xl w-full fade-in">
         <div class="glass-card">
           <div class="mb-10 text-center">
@@ -787,7 +806,7 @@
     </section>
     
     <!-- Final & Share Section -->
-    <section id="final" class="min-h-screen flex items-center justify-center px-4 py-20">
+    <section id="final" class="section">
       <div class="max-w-3xl w-full fade-in">
         <div class="elegant-card">
           <div class="text-center mb-10">
@@ -989,7 +1008,7 @@
       updateUIFromState();
       updateProgress();
       
-      console.log('Heart Map initialized');
+      console.log('Heart Map initialized - Step by Step Version');
     });
     
     // ========== FLOATING ELEMENTS ==========
@@ -1037,7 +1056,7 @@
       document.querySelectorAll('.nav-dot').forEach(dot => {
         dot.addEventListener('click', () => {
           const section = dot.dataset.section;
-          scrollToSection(section);
+          navigateToSection(section);
         });
       });
       
@@ -1045,60 +1064,59 @@
       document.querySelectorAll('button[data-section]').forEach(btn => {
         btn.addEventListener('click', () => {
           const section = btn.dataset.section;
-          scrollToSection(section);
+          navigateToSection(section);
         });
       });
       
       // Start button
       document.getElementById('start-btn').addEventListener('click', () => {
-        scrollToSection('greeting');
+        navigateToSection('greeting');
       });
       
-      // Scroll tracking
-      window.addEventListener('scroll', () => {
-        updateActiveSection();
-        updateProgress();
-      });
+      // Remove scroll tracking since we're not scrolling
+      // Remove keyboard navigation for scrolling
       
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') navigateNext();
-        if (e.key === 'ArrowLeft') navigatePrev();
-      });
+      // Mark current section as active initially
+      updateNavigationDots();
+      showCurrentSection();
     }
     
-    function scrollToSection(sectionId) {
+    function navigateToSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show the selected section
       const section = document.getElementById(sectionId);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.classList.add('active');
         HeartMapState.currentSection = sectionId;
-        updateNavigationDots();
         
         // Mark as completed if editing
         if (!HeartMapState.completedSections.has(sectionId)) {
           HeartMapState.completedSections.add(sectionId);
           HeartMapState.save();
-          updateNavigationDots();
         }
+        
+        updateNavigationDots();
+        updateProgress();
+        
+        // Scroll to top of page to ensure section is visible
+        window.scrollTo(0, 0);
       }
     }
     
-    function updateActiveSection() {
-      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
-      const scrollPos = window.scrollY + 100;
+    function showCurrentSection() {
+      // Show only the current section
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
       
-      for (const sectionId of sections) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          
-          if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-            HeartMapState.currentSection = sectionId;
-            updateNavigationDots();
-            break;
-          }
-        }
+      const currentSection = document.getElementById(HeartMapState.currentSection);
+      if (currentSection) {
+        currentSection.classList.add('active');
+        window.scrollTo(0, 0);
       }
     }
     
@@ -1115,22 +1133,6 @@
           dot.classList.add('completed');
         }
       });
-    }
-    
-    function navigateNext() {
-      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
-      const currentIndex = sections.indexOf(HeartMapState.currentSection);
-      if (currentIndex < sections.length - 1) {
-        scrollToSection(sections[currentIndex + 1]);
-      }
-    }
-    
-    function navigatePrev() {
-      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
-      const currentIndex = sections.indexOf(HeartMapState.currentSection);
-      if (currentIndex > 0) {
-        scrollToSection(sections[currentIndex - 1]);
-      }
     }
     
     // ========== PROGRESS INDICATOR ==========

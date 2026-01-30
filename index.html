@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HEART MAP - A Valentine's Love Letter For My One & Only</title>
+  <title>Heart Map | An Interactive Love Letter</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -18,12 +18,13 @@
       --dusty-rose: #C9A9A6;
       --soft-pink: #E8B4B8;
       --pale-pink: #F5C6D6;
+      --deep-pink: #9E4A5A;
     }
     
     body {
       background: var(--cream);
-      font-family: 'Playfair Display', serif;
-      color: var(--deep-sage);
+      font-family: 'Inter', sans-serif;
+      color: #2C3E2F;
       overflow-x: hidden;
       margin: 0;
       padding: 0;
@@ -37,10 +38,14 @@
       font-family: 'Dancing Script', cursive;
     }
     
-    /* Floating petal animation */
-    @keyframes floatPetal {
+    .elegant-font {
+      font-family: 'Playfair Display', serif;
+    }
+    
+    /* Floating animations */
+    @keyframes floatUp {
       0% {
-        transform: translateY(100vh) rotate(0deg) translateX(0);
+        transform: translateY(100vh) rotate(0deg);
         opacity: 0;
       }
       10% {
@@ -50,14 +55,14 @@
         opacity: 0.7;
       }
       100% {
-        transform: translateY(-100px) rotate(360deg) translateX(100px);
+        transform: translateY(-100px) rotate(360deg);
         opacity: 0;
       }
     }
     
-    @keyframes floatPetalPink {
+    @keyframes floatUpPink {
       0% {
-        transform: translateY(100vh) rotate(180deg) translateX(-50px);
+        transform: translateY(100vh) rotate(180deg) translateX(-30px);
         opacity: 0;
       }
       10% {
@@ -67,65 +72,70 @@
         opacity: 0.6;
       }
       100% {
-        transform: translateY(-100px) rotate(540deg) translateX(50px);
+        transform: translateY(-100px) rotate(540deg) translateX(30px);
         opacity: 0;
       }
     }
     
-    .floating-petal {
+    .floating-element {
       position: fixed;
       pointer-events: none;
-      z-index: 0;
-      animation: floatPetal linear forwards;
+      z-index: 1;
+      animation: floatUp linear forwards;
     }
     
-    .floating-petal.pink {
-      animation: floatPetalPink linear forwards;
+    .floating-element.pink {
+      animation: floatUpPink linear forwards;
     }
     
-    /* Heart animation */
-    @keyframes pulseHeart {
+    /* Heart animations */
+    @keyframes gentlePulse {
       0%, 100% {
         transform: scale(1);
+        opacity: 0.9;
       }
       50% {
-        transform: scale(1.05);
+        transform: scale(1.08);
+        opacity: 1;
       }
     }
     
-    .pulse-heart {
-      animation: pulseHeart 3s ease-in-out infinite;
-    }
-    
-    @keyframes pulseHeartPink {
-      0%, 100% {
+    @keyframes heartbeat {
+      0% {
         transform: scale(1);
-        filter: drop-shadow(0 0 5px rgba(183, 110, 121, 0.3));
       }
-      50% {
+      14% {
         transform: scale(1.1);
-        filter: drop-shadow(0 0 15px rgba(183, 110, 121, 0.5));
+      }
+      28% {
+        transform: scale(1);
+      }
+      42% {
+        transform: scale(1.1);
+      }
+      70% {
+        transform: scale(1);
       }
     }
     
-    .pulse-heart-pink {
-      animation: pulseHeartPink 3s ease-in-out infinite;
+    .gentle-pulse {
+      animation: gentlePulse 4s ease-in-out infinite;
     }
     
-    /* Fade animations */
-    @keyframes fadeInUp {
+    .heartbeat {
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    
+    /* Page transitions */
+    @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
-    }
-    
-    .fade-in-up {
-      animation: fadeInUp 1s ease-out forwards;
     }
     
     @keyframes fadeOut {
@@ -138,997 +148,944 @@
       }
     }
     
+    .fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    
     .fade-out {
-      animation: fadeOut 1s ease-out forwards;
+      animation: fadeOut 0.8s ease-out forwards;
     }
     
-    /* Editable content */
-    .editable-content {
-      min-height: 20px;
-      outline: none;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: background-color 0.2s;
-      border: 1px dashed transparent;
-      min-width: 50px;
-      line-height: 1.6;
-    }
-    
-    .editable-content:focus {
-      background-color: rgba(125, 139, 111, 0.05);
-      border: 1px dashed rgba(125, 139, 111, 0.3);
-    }
-    
-    .editable-content[data-placeholder]:empty:before {
-      content: attr(data-placeholder);
-      color: rgba(92, 107, 79, 0.5);
-      font-style: italic;
-    }
-    
-    /* Navigation dots */
-    .fixed-nav {
+    /* Progress indicator */
+    .progress-track {
       position: fixed;
-      right: 20px;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(232, 221, 212, 0.3);
+      z-index: 1000;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sage), var(--rose-gold));
+      width: 0%;
+      transition: width 0.6s ease;
+      border-radius: 0 3px 3px 0;
+    }
+    
+    /* Navigation */
+    .nav-dots {
+      position: fixed;
+      right: 24px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 16px;
     }
     
     .nav-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: rgba(125, 139, 111, 0.3);
+      background: rgba(125, 139, 111, 0.2);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
     
     .nav-dot:hover {
       background: var(--rose-gold);
-      transform: scale(1.3);
+      transform: scale(1.4);
     }
     
     .nav-dot.active {
       background: var(--rose-gold);
-      transform: scale(1.5);
+      transform: scale(1.4);
+      box-shadow: 0 0 0 2px rgba(183, 110, 121, 0.1);
     }
     
-    /* Hero content */
-    .hero-content {
-      background: rgba(253, 248, 243, 0.95);
+    .nav-dot.completed:after {
+      content: '✓';
+      position: absolute;
+      top: -2px;
+      left: 1px;
+      font-size: 8px;
+      color: white;
+    }
+    
+    /* Cards and containers */
+    .elegant-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
       border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 
+        0 10px 40px rgba(92, 107, 79, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(232, 221, 212, 0.6);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
       padding: 2rem;
-      box-shadow: 0 10px 30px rgba(92, 107, 79, 0.1);
-      border: 1px solid var(--blush);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        0 15px 35px rgba(183, 110, 121, 0.08),
+        0 5px 15px rgba(0, 0, 0, 0.03);
     }
     
-    /* Letter container */
-    .letter-container {
-      background: linear-gradient(to bottom, #fffbf6 0%, #fef9f3 100%);
-      box-shadow: 0 10px 30px rgba(92, 107, 79, 0.1);
-      border: 1px solid var(--blush);
-      max-height: 500px;
-      overflow-y: auto;
-      border-radius: 20px;
-      line-height: 1.8;
-    }
-    
-    /* Share modal */
-    .share-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .share-modal.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .share-modal-content {
-      background: var(--cream);
-      border-radius: 20px;
-      padding: 2rem;
-      max-width: 500px;
-      width: 90%;
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
-      border: 1px solid var(--blush);
-    }
-    
-    .share-modal.active .share-modal-content {
-      transform: translateY(0);
-    }
-    
-    .share-options {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    
-    .share-option {
-      padding: 1rem;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--cream);
-      border: 2px solid var(--blush);
-      transition: all 0.3s ease;
+    /* Buttons */
+    .primary-btn {
+      background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
     }
     
-    .share-option:hover {
+    .primary-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(125, 139, 111, 0.2);
-      border-color: var(--rose-gold);
+      box-shadow: 0 12px 24px rgba(183, 110, 121, 0.25);
+      background: linear-gradient(135deg, var(--deep-pink), var(--rose-gold));
     }
     
-    /* Button styles */
-    .sage-button {
-      background: var(--sage);
-      color: var(--cream);
-      border: none;
-      transition: all 0.3s ease;
+    .primary-btn:active {
+      transform: translateY(-1px);
     }
     
-    .sage-button:hover {
-      background: var(--moss);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(125, 139, 111, 0.3);
-    }
-    
-    .pink-button {
-      background: var(--rose-gold);
-      color: var(--cream);
-      border: none;
-      transition: all 0.3s ease;
-    }
-    
-    .pink-button:hover {
-      background: #A55A65;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
-    }
-    
-    .outline-button {
-      background: transparent;
-      color: var(--sage);
-      border: 2px solid var(--sage);
-      transition: all 0.3s ease;
-    }
-    
-    .outline-button:hover {
-      background: var(--sage);
-      color: var(--cream);
-    }
-    
-    .pink-outline-button {
+    .secondary-btn {
       background: transparent;
       color: var(--rose-gold);
       border: 2px solid var(--rose-gold);
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
     
-    .pink-outline-button:hover {
-      background: var(--rose-gold);
-      color: var(--cream);
+    .secondary-btn:hover {
+      background: rgba(183, 110, 121, 0.08);
+      transform: translateY(-2px);
     }
     
-    /* Gradient backgrounds */
-    .pink-gradient {
-      background: linear-gradient(135deg, rgba(232, 180, 184, 0.1) 0%, rgba(245, 198, 214, 0.1) 100%);
+    /* Form elements */
+    .elegant-input {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid rgba(183, 110, 121, 0.2);
+      padding: 12px 0;
+      font-size: 20px;
+      font-family: 'Dancing Script', cursive;
+      color: var(--deep-sage);
+      width: 100%;
+      transition: all 0.3s ease;
     }
     
-    .mixed-gradient {
-      background: linear-gradient(135deg, rgba(125, 139, 111, 0.1) 0%, rgba(183, 110, 121, 0.1) 100%);
+    .elegant-input:focus {
+      outline: none;
+      border-bottom-color: var(--rose-gold);
+      background: rgba(183, 110, 121, 0.03);
+      padding-left: 12px;
+      padding-right: 12px;
     }
     
-    /* New Navigation Elements */
-    .nav-arrow {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      background: rgba(183, 110, 121, 0.8);
+    .elegant-input::placeholder {
+      color: rgba(183, 110, 121, 0.4);
+      font-style: italic;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      color: #2C3E2F;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, var(--sage), var(--rose-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtle-text {
+      color: #5A6B5C;
+      line-height: 1.7;
+    }
+    
+    /* Completion states */
+    .completion-checkmark {
+      width: 24px;
+      height: 24px;
+      background: var(--sage);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 100;
+      font-size: 12px;
     }
     
-    .nav-arrow:hover {
-      background: var(--rose-gold);
-      transform: translateY(-50%) scale(1.1);
-      box-shadow: 0 5px 15px rgba(183, 110, 121, 0.4);
+    /* Share view styles */
+    .view-only .editable-content,
+    .view-only input,
+    .view-only textarea {
+      pointer-events: none;
+      background: transparent;
+      border: none;
     }
     
-    .nav-arrow.left {
-      left: 20px;
+    .view-only .elegant-input {
+      border-bottom: 1px solid rgba(183, 110, 121, 0.1);
     }
     
-    .nav-arrow.right {
-      right: 20px;
-    }
-    
-    /* Progress Bar */
-    .progress-container {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      max-width: 500px;
-      background: rgba(253, 248, 243, 0.9);
-      height: 6px;
-      border-radius: 3px;
-      z-index: 100;
-      border: 1px solid var(--blush);
-    }
-    
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, var(--sage), var(--rose-gold));
-      border-radius: 3px;
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    
-    /* Chapter Indicators */
-    .chapter-indicator {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 20px;
-      background: rgba(183, 110, 121, 0.1);
-      color: var(--rose-gold);
-      font-size: 0.875rem;
-      margin-bottom: 1rem;
-      font-weight: 500;
-    }
-    
-    /* Footer */
-    .site-footer {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 100;
-    }
-    
-    .footer-content {
-      display: inline-block;
-      background: rgba(253, 248, 243, 0.9);
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: 1px solid var(--blush);
-      font-size: 0.75rem;
-      color: rgba(92, 107, 79, 0.7);
-    }
-    
-    /* Hover feedback */
-    .hover-glow {
-      transition: all 0.3s ease;
-    }
-    
-    .hover-glow:hover {
-      box-shadow: 0 0 20px rgba(183, 110, 121, 0.2);
-    }
-    
-    /* Mobile responsive */
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-      .fixed-nav {
-        display: none !important;
+      .nav-dots {
+        right: 16px;
       }
       
-      .nav-arrow {
-        display: none;
-      }
-      
-      .hero-content {
+      .elegant-card {
         padding: 1.5rem;
+        margin: 0 1rem;
       }
       
-      .letter-container {
-        max-height: 400px;
+      h1 {
+        font-size: 2.5rem;
       }
       
-      .share-options {
-        grid-template-columns: 1fr;
-      }
-      
-      .progress-container {
-        width: 90%;
-        top: 10px;
-      }
-      
-      .site-footer {
-        bottom: 10px;
+      .primary-btn, .secondary-btn {
+        padding: 12px 24px;
+        font-size: 15px;
       }
     }
     
-    /* Improved readability */
-    .readable-text {
-      line-height: 1.8;
-      color: #4A5D3E;
+    /* Loading states */
+    .loading-dots {
+      display: inline-block;
     }
     
-    .section-spacing {
-      margin-bottom: 2rem;
+    .loading-dots span {
+      animation: blink 1.4s infinite both;
+      display: inline-block;
     }
     
-    .clear-call-to-action {
-      background: rgba(183, 110, 121, 0.1);
-      border: 2px dashed rgba(183, 110, 121, 0.3);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      margin: 1rem 0;
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0; }
+      40% { opacity: 1; }
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(232, 221, 212, 0.3);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(183, 110, 121, 0.4);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(183, 110, 121, 0.6);
     }
   </style>
 </head>
-<body>
-  <!-- Floating Petals -->
-  <div id="petal-container"></div>
+<body class="view-only">
+  <!-- Floating Elements -->
+  <div id="floating-container"></div>
   
-  <!-- Progress Bar -->
-  <div class="progress-container">
-    <div id="progress-bar" class="progress-bar"></div>
+  <!-- Progress Indicator -->
+  <div class="progress-track">
+    <div id="progress-fill" class="progress-fill"></div>
   </div>
   
-  <!-- Navigation Arrows -->
-  <div id="prev-arrow" class="nav-arrow left hidden">
-    <i class="fas fa-chevron-left"></i>
-  </div>
-  
-  <div id="next-arrow" class="nav-arrow right">
-    <i class="fas fa-chevron-right"></i>
-  </div>
-  
-  <!-- Welcome Screen -->
-  <div id="welcome-screen" class="fixed inset-0 z-50 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(183, 110, 121, 0.1) 0%, #FDF8F3 50%, #E8DDD4 100%);">
-    <div class="text-center px-6 max-w-4xl">
-      <div class="fade-in-up">
-        <!-- Clear Instruction -->
-        <div class="clear-call-to-action mb-8 max-w-lg mx-auto">
-          <p class="text-lg font-medium mb-2" style="color: #B76E79;">
-            <i class="fas fa-mouse-pointer mr-2"></i>
-            This is an interactive love letter, click anywhere to begin
-          </p>
-          <p class="text-sm" style="color: rgba(92, 107, 79, 0.7);">
-            Follow the arrows and dots to navigate through our love story
-          </p>
-        </div>
-        
-        <!-- Big Heart Icon -->
-        <div class="mb-8">
-          <div class="relative inline-block">
-            <svg class="w-32 h-32 mx-auto pulse-heart" fill="#7D8B6F" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-            <svg class="w-24 h-24 mx-auto absolute top-4 left-4 pulse-heart-pink" fill="#B76E79" viewBox="0 0 24 24" style="opacity: 0.8;">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-          </div>
-        </div>
-        
-        <!-- Title -->
-        <h1 class="script-font text-6xl md:text-8xl mb-6" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-          Happy Valentine's Day
-        </h1>
-        
-        <!-- Subtitle -->
-        <div class="mb-12">
-          <p class="romantic-title text-2xl md:text-3xl italic mb-4" style="color: #5C6B4F;">
-            Where every moment blooms with love
-          </p>
-        </div>
-        
-        <!-- Description -->
-        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto readable-text section-spacing" style="color: #5C6B4F;">
-          A special message has been crafted just for you.<br>
-          Let the romance unfold...
-        </p>
-        
-        <!-- Start Button -->
-        <button id="enter-btn" class="px-12 py-4 rounded-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-lg romantic-title tracking-widest pink-button hover-glow">
-          <i class="fas fa-play mr-2"></i>
-          Start Our Love Story
-        </button>
-        
-        <!-- Navigation Hint -->
-        <div class="mt-8 text-sm italic" style="color: rgba(92, 107, 79, 0.6);">
-          <i class="fas fa-arrows-alt-h mr-2"></i>
-          Use arrows or dots to navigate between sections
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Navigation Dots -->
-  <div id="navigation-dots" class="fixed-nav">
-    <div class="nav-dot active" data-section="hero"></div>
+  <div class="nav-dots">
+    <div class="nav-dot active completed" data-section="welcome"></div>
+    <div class="nav-dot" data-section="greeting"></div>
     <div class="nav-dot" data-section="letter"></div>
     <div class="nav-dot" data-section="memories"></div>
+    <div class="nav-dot" data-section="final"></div>
   </div>
-
+  
   <!-- Main Content -->
-  <div id="main-content" class="hidden">
-   
-   <!-- Hero Section -->
-   <section id="hero" class="min-h-screen flex items-center justify-center px-4 relative">
-    <div class="text-center max-w-4xl">
-      <div class="hero-content pink-gradient hover-glow">
-        <div class="chapter-indicator">CHAPTER 1: THE BEGINNING</div>
-        <h1 class="romantic-title text-4xl md:text-5xl lg:text-7xl mb-4" style="color: #5C6B4F;">
-          My Dearest
-        </h1>
-        
-        <input type="text" 
-               id="partner-name" 
-               placeholder="Type your partner's name here..." 
-               class="partner-name-input mb-6 hover-glow"
-               style="font-family: 'Dancing Script', cursive; font-size: 3rem; background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background: transparent; border: none; outline: none; text-align: center; width: 100%; max-width: 400px; margin: 0 auto; display: block;">
-        
-        <div id="name-underline" class="h-px w-0 mx-auto transition-all duration-1000" style="background: linear-gradient(to right, transparent, #7D8B6F, #B76E79, transparent);"></div>
-        
-        <p class="text-lg md:text-xl italic max-w-2xl mx-auto my-8 leading-relaxed readable-text" style="color: #5C6B4F;">
-          Every rose in this garden represents a reason why I love you.<br class="hidden md:block">
-          Every petal holds a memory of us.
-        </p>
-        
-        <!-- Next Section CTA -->
-        <div class="clear-call-to-action my-8">
-          <p class="mb-3" style="color: #B76E79;">
-            <i class="fas fa-arrow-down mr-2"></i>
-            Continue to the next chapter
+  <main>
+    <!-- Welcome Screen -->
+    <section id="welcome" class="min-h-screen flex items-center justify-center px-4 relative">
+      <div class="text-center max-w-3xl w-full fade-in">
+        <div class="elegant-card mx-auto">
+          <!-- Logo/Title -->
+          <div class="mb-8">
+            <div class="inline-flex items-center gap-3 mb-6">
+              <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                <i class="fas fa-heart text-white text-xl"></i>
+              </div>
+              <h1 class="text-4xl elegant-font">Heart Map</h1>
+            </div>
+            <p class="subtle-text mb-2">An Interactive Love Letter</p>
+          </div>
+          
+          <!-- Main Heart Visual -->
+          <div class="mb-10">
+            <div class="relative inline-block">
+              <div class="w-48 h-48 mx-auto rounded-full flex items-center justify-center gentle-pulse" style="background: linear-gradient(135deg, rgba(125, 139, 111, 0.1), rgba(183, 110, 121, 0.1));">
+                <svg class="w-32 h-32" fill="url(#heartGradient)" viewBox="0 0 24 24">
+                  <defs>
+                    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#7D8B6F;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#B76E79;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+              <div class="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg">
+                <i class="fas fa-map-marker-alt text-rose-gold"></i>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tagline -->
+          <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">
+            Map Your Heart
+          </h2>
+          
+          <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
+            Create a personalized, interactive love story for your special someone. 
+            Every click adds to your unique journey together.
           </p>
-          <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
-            <button data-section="letter" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 w-full sm:w-auto romantic-title tracking-widest pink-button hover-glow">
-              <i class="fas fa-heart mr-2"></i>
-              To My Beloved
+          
+          <!-- Start Button -->
+          <div class="space-y-4">
+            <button id="start-btn" class="primary-btn w-full max-w-sm mx-auto">
+              <span class="flex items-center justify-center gap-2">
+                <i class="fas fa-play"></i>
+                Begin Your Heart Map
+              </span>
             </button>
             
-            <button data-section="memories" class="section-btn px-6 md:px-8 py-3 md:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 w-full sm:w-auto romantic-title tracking-widest pink-outline-button hover-glow">
-              <i class="fas fa-images"></i>
-              Our Memories
-            </button>
+            <p class="text-sm subtle-text">
+              <i class="fas fa-info-circle mr-1"></i>
+              Follow the dots on the right to navigate
+            </p>
           </div>
         </div>
-        
-        <!-- Music Player -->
-        <div class="music-player-bar p-4 rounded-xl max-w-md mx-auto mixed-gradient hover-glow" style="border: 1px solid #E8DDD4;">
-          <div class="flex flex-col items-center gap-3">
-            <div class="text-center w-full">
-              <div id="now-playing" class="script-font text-xl truncate" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Select a Song</div>
-              <div id="song-info" class="text-sm italic truncate readable-text" style="color: #5C6B4F;">Upload our love song</div>
+      </div>
+    </section>
+    
+    <!-- Greeting Section -->
+    <section id="greeting" class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-2xl w-full fade-in">
+        <div class="elegant-card">
+          <div class="mb-8 text-center">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <span class="completion-checkmark">1</span>
+              <span class="text-sm font-medium text-sage">STEP 1 OF 4</span>
+            </div>
+            <h2 class="text-4xl elegant-font mb-4">To My Dearest</h2>
+            <p class="subtle-text">Start by personalizing this letter with your loved one's name</p>
+          </div>
+          
+          <div class="space-y-8">
+            <div>
+              <label class="block text-sm font-medium mb-2 subtle-text">Their Name</label>
+              <input 
+                type="text" 
+                id="partner-name" 
+                class="elegant-input text-3xl script-font text-center"
+                placeholder="Enter their name..."
+                maxlength="30"
+              >
+              <p class="text-xs subtle-text mt-2 text-center">This will appear throughout your love letter</p>
             </div>
             
-            <div class="flex items-center justify-between w-full px-2">
-              <button id="prev-btn" class="p-2 rounded-full transition-colors hover-glow" style="background: rgba(183, 110, 121, 0.1);">
-                <i class="fas fa-step-backward" style="color: #B76E79;"></i>
+            <div>
+              <label class="block text-sm font-medium mb-2 subtle-text">Your Name</label>
+              <input 
+                type="text" 
+                id="your-name" 
+                class="elegant-input text-2xl script-font text-center"
+                placeholder="Your name..."
+                maxlength="30"
+              >
+            </div>
+            
+            <div class="pt-6 border-t border-blush">
+              <div class="flex items-center justify-between">
+                <button data-section="welcome" class="secondary-btn">
+                  <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+                
+                <button data-section="letter" class="primary-btn" id="next-to-letter">
+                  Continue to Letter
+                  <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Letter Section -->
+    <section id="letter" class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-3xl w-full fade-in">
+        <div class="glass-card">
+          <div class="mb-8 text-center">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <span class="completion-checkmark">2</span>
+              <span class="text-sm font-medium text-sage">STEP 2 OF 4</span>
+            </div>
+            <h2 class="text-4xl elegant-font mb-4">Your Love Letter</h2>
+            <p class="subtle-text mb-6">Write from your heart. These words will be treasured forever.</p>
+          </div>
+          
+          <!-- Letter Content -->
+          <div class="space-y-6">
+            <!-- Date -->
+            <div class="text-right">
+              <input 
+                type="text" 
+                id="letter-date" 
+                class="elegant-input text-right max-w-xs ml-auto"
+                placeholder="Today's date..."
+                value="February 14, 2024"
+              >
+            </div>
+            
+            <!-- Salutation -->
+            <div class="text-center mb-8">
+              <h3 class="text-3xl script-font gradient-text" id="letter-salutation">My Dearest <span id="letter-partner-name">[Name]</span></h3>
+            </div>
+            
+            <!-- Letter Body -->
+            <div class="space-y-8">
+              <div>
+                <label class="block text-sm font-medium mb-3 subtle-text">Opening</label>
+                <textarea 
+                  id="letter-opening"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none"
+                  placeholder="My love, the moment I met you..."
+                  rows="3"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-3 subtle-text">What I Love About You</label>
+                <textarea 
+                  id="letter-body"
+                  class="w-full elegant-input min-h-[150px] p-4 rounded-lg border border-blush resize-none"
+                  placeholder="I love the way you... Your smile reminds me of... The thing I cherish most is..."
+                  rows="5"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-3 subtle-text">My Promise to You</label>
+                <textarea 
+                  id="letter-promise"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none"
+                  placeholder="I promise to always... Together, we will..."
+                  rows="3"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-3 subtle-text">Closing</label>
+                <textarea 
+                  id="letter-closing"
+                  class="w-full elegant-input min-h-[80px] p-4 rounded-lg border border-blush resize-none"
+                  placeholder="With all my love and admiration..."
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+            
+            <!-- Signature -->
+            <div class="text-center mt-12 pt-8 border-t border-blush">
+              <div class="mb-4">
+                <span class="text-3xl script-font gradient-text" id="letter-signature">[Your Name]</span>
+              </div>
+              <p class="text-sm subtle-text italic">Forever yours</p>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex items-center justify-between pt-8">
+              <button data-section="greeting" class="secondary-btn">
+                <i class="fas fa-arrow-left mr-2"></i>Back
               </button>
               
-              <button id="play-btn" class="p-3 rounded-full shadow-lg transition-colors pink-button hover-glow">
-                <i id="play-icon" class="fas fa-play"></i>
-                <i id="pause-icon" class="fas fa-pause hidden"></i>
-              </button>
-              
-              <button id="next-btn" class="p-2 rounded-full transition-colors hover-glow" style="background: rgba(183, 110, 121, 0.1);">
-                <i class="fas fa-step-forward" style="color: #B76E79;"></i>
-              </button>
-              
-              <button id="upload-song-btn" class="p-2 rounded-full transition-colors hover-glow" style="background: rgba(183, 110, 121, 0.1);">
-                <i class="fas fa-upload" style="color: #B76E79;"></i>
+              <button data-section="memories" class="primary-btn">
+                Add Memories
+                <i class="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Progress Hint -->
-      <div class="mt-8 text-center">
-        <div class="inline-flex items-center gap-2 text-sm" style="color: rgba(92, 107, 79, 0.6);">
-          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span>Section 1 of 3</span>
-        </div>
-      </div>
-    </div>
-   </section>
-   
-   <!-- Letter Section -->
-   <section id="letter" class="min-h-screen py-12 md:py-20 px-4 relative">
-    <div class="max-w-6xl mx-auto">
-      <div class="chapter-indicator text-center">CHAPTER 2: MY HEART IN WORDS</div>
-      <h2 class="romantic-title text-3xl md:text-4xl lg:text-5xl text-center mb-8" style="color: #5C6B4F;">
-        Sealed with Love
-      </h2>
-      <p class="text-center text-lg md:text-xl italic mb-8 readable-text" style="color: #B76E79;">
-        Click the envelope to reveal my heart
-      </p>
-      
-      <div class="flex flex-col items-center justify-center">
-        <!-- Envelope -->
-        <div class="relative w-full max-w-2xl">
-          <div id="envelope" class="relative cursor-pointer p-6 md:p-12 pt-16 md:pt-20 rounded-3xl shadow-xl pink-gradient hover-glow" style="border: 2px solid #E8DDD4;">
-            <!-- Heart Seal -->
-            <div id="wax-seal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center shadow-xl cursor-pointer pulse-heart-pink hover-glow" style="background: linear-gradient(135deg, #B76E79, #C9A9A6);">
-              <i class="fas fa-heart text-white text-2xl md:text-4xl"></i>
+    </section>
+    
+    <!-- Memories Section -->
+    <section id="memories" class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-6xl w-full fade-in">
+        <div class="glass-card">
+          <div class="mb-10 text-center">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <span class="completion-checkmark">3</span>
+              <span class="text-sm font-medium text-sage">STEP 3 OF 4</span>
             </div>
-            
-            <!-- Letter Content -->
-            <div id="letter-content" class="letter-container p-4 md:p-8 mt-6 md:mt-8 opacity-0 transition-all duration-700">
-              <div class="relative">
-                <!-- Decorative corner -->
-                <div class="absolute -top-2 -left-2 w-8 h-8 text-2xl" style="color: #B76E79;">
-                  ❦
+            <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
+            <p class="subtle-text mb-6">Add photos and memories that tell our story</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <!-- Memory 1 -->
+            <div class="group">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-1">
+                <div class="text-center">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                    <i class="fas fa-camera text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-medium mb-2">Our First Memory</h4>
+                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
-                <div class="absolute -bottom-2 -right-2 w-8 h-8 text-2xl" style="color: #B76E79;">
-                  ❦
+              </div>
+              <div class="mt-4">
+                <textarea 
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  placeholder="Describe this special moment..."
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+            
+            <!-- Memory 2 -->
+            <div class="group">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-2">
+                <div class="text-center">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
+                    <i class="fas fa-heart text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-medium mb-2">A Happy Moment</h4>
+                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
+                </div>
+              </div>
+              <div class="mt-4">
+                <textarea 
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  placeholder="What made this day special?"
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+            
+            <!-- Memory 3 -->
+            <div class="group">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-3">
+                <div class="text-center">
+                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
+                    <i class="fas fa-star text-white text-xl"></i>
+                  </div>
+                  <h4 class="font-medium mb-2">Looking Forward</h4>
+                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
+                </div>
+              </div>
+              <div class="mt-4">
+                <textarea 
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  placeholder="Our dreams for the future..."
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Music Player -->
+          <div class="mb-10">
+            <div class="max-w-md mx-auto">
+              <div class="text-center mb-6">
+                <h3 class="text-xl elegant-font mb-2">Our Song</h3>
+                <p class="subtle-text text-sm">Add a song that reminds you of them</p>
+              </div>
+              
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-blush">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <div id="song-title" class="font-medium">No song selected</div>
+                    <div id="song-status" class="text-sm subtle-text">Upload an MP3 file</div>
+                  </div>
+                  <button id="upload-song-btn" class="secondary-btn">
+                    <i class="fas fa-upload mr-2"></i>Upload
+                  </button>
                 </div>
                 
-                <!-- Letter content -->
-                <div class="mb-6">
-                  <div class="text-right text-sm romantic-title mb-2" style="color: rgba(183, 110, 121, 0.7);">
-                    <div class="editable-content" contenteditable="true" data-placeholder="Click to edit date..."></div>
-                  </div>
+                <div class="flex items-center justify-center gap-4">
+                  <button id="prev-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20">
+                    <i class="fas fa-step-backward"></i>
+                  </button>
                   
-                  <h3 class="script-font text-2xl md:text-3xl text-center mb-8" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                    To My Dearest <span id="letter-recipient" class="editable-content" contenteditable="true" data-placeholder="Your partner's name"></span>
-                  </h3>
+                  <button id="play-btn" class="w-14 h-14 rounded-full primary-btn flex items-center justify-center">
+                    <i id="play-icon" class="fas fa-play"></i>
+                    <i id="pause-icon" class="fas fa-pause hidden"></i>
+                  </button>
                   
-                  <div class="space-y-6 leading-relaxed readable-text" style="color: #4A5D3E;">
-                    <p class="indent-8">
-                      <span class="editable-content" contenteditable="true" data-placeholder="My love,"></span>
-                    </p>
-                    
-                    <p class="editable-content section-spacing" contenteditable="true" data-placeholder="Write your love letter here...">
-                    </p>
-                    
-                    <p class="editable-content section-spacing" contenteditable="true" data-placeholder="Continue writing your message...">
-                    </p>
-                    
-                    <p class="editable-content section-spacing" contenteditable="true" data-placeholder="Add more to your love letter...">
-                    </p>
-                    
-                    <p class="mt-8 editable-content" contenteditable="true" data-placeholder="With all my love,">
-                    </p>
-                  </div>
-                  
-                  <div class="mt-10 pt-6" style="border-top: 1px solid rgba(183, 110, 121, 0.2);">
-                    <div class="editable-content script-font text-2xl md:text-3xl text-center" contenteditable="true" id="signature" data-placeholder="Your name" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></div>
-                    <div class="text-center text-sm romantic-title mt-2" style="color: rgba(183, 110, 121, 0.5);">
-                      Sealed with a kiss and all my heart
-                    </div>
-                  </div>
+                  <button id="next-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20">
+                    <i class="fas fa-step-forward"></i>
+                  </button>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          <!-- Navigation -->
+          <div class="flex items-center justify-between pt-8 border-t border-blush">
+            <button data-section="letter" class="secondary-btn">
+              <i class="fas fa-arrow-left mr-2"></i>Back to Letter
+            </button>
+            
+            <button data-section="final" class="primary-btn">
+              Preview & Share
+              <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Final & Share Section -->
+    <section id="final" class="min-h-screen flex items-center justify-center px-4 py-20">
+      <div class="max-w-3xl w-full fade-in">
+        <div class="elegant-card">
+          <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <span class="completion-checkmark">4</span>
+              <span class="text-sm font-medium text-sage">STEP 4 OF 4 - COMPLETE!</span>
             </div>
             
-            <p class="text-center mt-6 italic text-sm" style="color: rgba(183, 110, 121, 0.6);">
-              <i class="fas fa-hand-point-up mr-2"></i>
-              Click the heart seal to open this letter of love
-            </p>
-          </div>
-        </div>
-        
-        <!-- Navigation Buttons -->
-        <div class="flex justify-center gap-4 mt-8">
-          <button data-section="hero" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-outline-button hover-glow">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Back to Beginning
-          </button>
-          <button data-section="memories" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-button hover-glow">
-            <i class="fas fa-images mr-2"></i>
-            View Memories
-            <i class="fas fa-arrow-right ml-2"></i>
-          </button>
-        </div>
-      </div>
-      
-      <!-- Progress Hint -->
-      <div class="mt-8 text-center">
-        <div class="inline-flex items-center gap-2 text-sm" style="color: rgba(92, 107, 79, 0.6);">
-          <div class="w-2 h-2 rounded-full bg-green-500"></div>
-          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <div class="w-2 h-2 rounded-full bg-green-500 opacity-30"></div>
-          <span>Section 2 of 3</span>
-        </div>
-      </div>
-    </div>
-   </section>
-   
-   <!-- Memories Section -->
-   <section id="memories" class="min-h-screen py-12 md:py-20 px-4 relative">
-    <div class="max-w-6xl mx-auto">
-      <div class="chapter-indicator text-center">CHAPTER 3: OUR TREASURED MOMENTS</div>
-      <h2 class="romantic-title text-3xl md:text-4xl lg:text-5xl text-center mb-4" style="color: #5C6B4F;">
-        Petals of Our Memories
-      </h2>
-      <p class="text-center text-base md:text-xl italic mb-8 md:mb-16 max-w-2xl mx-auto readable-text" style="color: #B76E79;">
-        Each photo is a pressed flower in the book of our love story
-      </p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-        <!-- Memory 1 - Rose -->
-        <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg pink-gradient hover-glow">
-            <div id="memory-1" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300 pulse-heart-pink" style="color: rgba(183, 110, 121, 0.5);">
-                <i class="fas fa-heart text-6xl"></i>
+            <div class="mb-8">
+              <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                <i class="fas fa-check text-white text-2xl"></i>
               </div>
-              <span class="romantic-title transition-colors duration-300" style="color: #B76E79;">
-                Add Our Memory
-              </span>
-              <span class="text-xs mt-2" style="color: rgba(183, 110, 121, 0.5);">Click to upload photo</span>
+              <h2 class="text-5xl elegant-font mb-4 gradient-text">Your Heart Map is Ready!</h2>
+              <p class="subtle-text text-lg">Preview your creation before sharing it with your loved one</p>
+            </div>
+          </div>
+          
+          <!-- Preview Card -->
+          <div class="mb-10">
+            <div class="bg-gradient-to-br from-blush/20 to-pale-pink/10 rounded-2xl p-8 border border-blush">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h3 class="text-2xl elegant-font">Preview</h3>
+                  <p class="subtle-text">This is what your partner will see</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-rose-gold animate-pulse"></div>
+                  <span class="text-sm font-medium">View Only Mode</span>
+                </div>
+              </div>
               
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center pulse-heart-pink hover-glow" style="background: rgba(183, 110, 121, 0.8);">
-                  <i class="fas fa-plus text-white text-2xl"></i>
+              <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                  <i class="fas fa-check-circle text-sage"></i>
+                  <span>Personalized greeting for <span id="preview-name" class="font-medium">[Name]</span></span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i class="fas fa-check-circle text-sage"></i>
+                  <span>Love letter with <span id="preview-letter-length" class="font-medium">0</span> words</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i class="fas fa-check-circle text-sage"></i>
+                  <span><span id="preview-photo-count" class="font-medium">0</span> memory photos</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i class="fas fa-check-circle text-sage"></i>
+                  <span>Personal soundtrack included</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="mt-4">
-            <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic readable-text" 
-                      placeholder="Describe this beautiful moment..." 
-                      rows="2"
-                      style="color: #B76E79; border-bottom: 2px solid rgba(183, 110, 121, 0.2);"></textarea>
-          </div>
-        </div>
-        
-        <!-- Memory 2 - Mixed -->
-        <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg mixed-gradient hover-glow">
-            <div id="memory-2" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300 pulse-heart" style="color: rgba(125, 139, 111, 0.5);">
-                <i class="fas fa-leaf text-6xl"></i>
+          
+          <!-- Important Note -->
+          <div class="mb-10 p-6 rounded-xl bg-gradient-to-r from-rose-gold/5 to-sage/5 border border-rose-gold/20">
+            <div class="flex items-start gap-3">
+              <i class="fas fa-lock mt-1 text-rose-gold"></i>
+              <div>
+                <h4 class="font-medium mb-2">Important: View-Only Mode</h4>
+                <p class="text-sm subtle-text">
+                  Once shared, your Heart Map becomes <span class="font-medium">view-only</span> for your partner. 
+                  They can experience your love story but cannot edit it. At the end, they'll have the option to create their own Heart Map for you.
+                </p>
               </div>
-              <span class="romantic-title transition-colors duration-300" style="color: #7D8B6F;">
-                Add Our Memory
-              </span>
-              <span class="text-xs mt-2" style="color: rgba(125, 139, 111, 0.5);">Click to upload photo</span>
+            </div>
+          </div>
+          
+          <!-- Share Buttons -->
+          <div class="space-y-4 mb-8">
+            <h3 class="text-xl elegant-font text-center">Share Your Heart Map</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3">
+                <i class="fab fa-whatsapp text-green-500 text-lg"></i>
+                Share via WhatsApp
+              </button>
               
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center hover-glow" style="background: rgba(125, 139, 111, 0.8);">
-                  <i class="fas fa-plus text-white text-2xl"></i>
-                </div>
-              </div>
+              <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3">
+                <i class="fas fa-link text-rose-gold text-lg"></i>
+                Copy Link
+              </button>
+            </div>
+            
+            <div class="text-center">
+              <button id="save-draft" class="text-sm subtle-text hover:text-rose-gold transition-colors">
+                <i class="fas fa-save mr-1"></i>
+                Save as draft to continue later
+              </button>
             </div>
           </div>
-          <div class="mt-4">
-            <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic readable-text" 
-                      placeholder="Describe this beautiful moment..." 
-                      rows="2"
-                      style="color: #7D8B6F; border-bottom: 2px solid rgba(125, 139, 111, 0.2);"></textarea>
-          </div>
-        </div>
-        
-        <!-- Memory 3 - Pink -->
-        <div class="group">
-          <div class="aspect-square rounded-2xl overflow-hidden shadow-lg pink-gradient hover-glow">
-            <div id="memory-3" class="w-full h-full flex flex-col items-center justify-center cursor-pointer relative">
-              <div class="mb-4 transition-colors duration-300 pulse-heart-pink" style="color: rgba(245, 198, 214, 0.7);">
-                <i class="fas fa-seedling text-6xl"></i>
-              </div>
-              <span class="romantic-title transition-colors duration-300" style="color: #B76E79;">
-                Add Our Memory
-              </span>
-              <span class="text-xs mt-2" style="color: rgba(183, 110, 121, 0.5);">Click to upload photo</span>
-              
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div class="w-16 h-16 rounded-full flex items-center justify-center pulse-heart-pink hover-glow" style="background: rgba(183, 110, 121, 0.8);">
-                  <i class="fas fa-plus text-white text-2xl"></i>
-                </div>
-              </div>
+          
+          <!-- Create Your Own Button (Visible only to partner) -->
+          <div id="create-your-own-section" class="hidden">
+            <div class="text-center pt-8 border-t border-blush">
+              <p class="subtle-text mb-4">Received this Heart Map from someone special?</p>
+              <button id="create-your-own-btn" class="primary-btn">
+                <i class="fas fa-heart mr-2"></i>
+                Create Your Own Heart Map
+              </button>
+              <p class="text-xs subtle-text mt-3">Start a new interactive love letter to return the gesture</p>
             </div>
           </div>
-          <div class="mt-4">
-            <textarea class="memory-caption w-full bg-transparent border-b focus:outline-none resize-none p-2 text-center italic readable-text" 
-                      placeholder="Describe this beautiful moment..." 
-                      rows="2"
-                      style="color: #B76E79; border-bottom: 2px solid rgba(183, 110, 121, 0.2);"></textarea>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Navigation Buttons -->
-      <div class="flex justify-center gap-4 mb-12">
-        <button data-section="letter" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-outline-button hover-glow">
-          <i class="fas fa-arrow-left mr-2"></i>
-          Back to Letter
-        </button>
-        <button id="replay-btn" class="section-btn px-4 py-2 rounded-full transition-all duration-300 pink-outline-button hover-glow">
-          <i class="fas fa-redo mr-2"></i>
-          Replay from Start
-        </button>
-      </div>
-      
-      <!-- Final Message -->
-      <div class="text-center mt-12 md:mt-20 pt-8 md:pt-12">
-        <div class="inline-block p-6 md:p-8 rounded-3xl shadow-lg max-w-2xl pink-gradient hover-glow" style="border: 1px solid #E8DDD4;">
-          <h3 class="script-font text-3xl md:text-4xl mb-4" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            To My Eternal Valentine
-          </h3>
-          <p class="text-base md:text-lg italic mb-6 readable-text" style="color: #5C6B4F;">
-            Like these flowers that never truly fade, my love for you is eternal.<br class="hidden md:block">
-            Through every season, in every bloom, my heart finds its home in you.
-          </p>
-          <div class="mt-6">
-            <div class="editable-content script-font text-xl md:text-2xl text-center" contenteditable="true" id="final-signature" data-placeholder="Forever Yours" style="background: linear-gradient(to right, #7D8B6F, #B76E79); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></div>
-            <div class="text-sm romantic-title mt-2" style="color: rgba(183, 110, 121, 0.5);">
-              and every day thereafter
-            </div>
-          </div>
-
-          <!-- Share Button -->
-          <div class="mt-8">
-            <button id="share-gift-btn" class="px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto pink-button hover-glow">
-              <i class="fas fa-share-alt"></i>
-              <span class="romantic-title text-lg">Share This Gift With Your Love</span>
-              <i class="fas fa-heart animate-pulse"></i>
+          
+          <!-- Final Navigation -->
+          <div class="flex items-center justify-between pt-8 border-t border-blush">
+            <button data-section="memories" class="secondary-btn">
+              <i class="fas fa-edit mr-2"></i>Edit
             </button>
-            <p class="text-sm mt-3 italic" style="color: rgba(183, 110, 121, 0.6);">
-              Once shared, your love story will become view-only for your partner!
-            </p>
+            
+            <div class="flex items-center gap-2 subtle-text">
+              <i class="fas fa-info-circle"></i>
+              <span class="text-sm">All data is saved locally in your browser</span>
+            </div>
           </div>
         </div>
       </div>
-      
-      <!-- Progress Hint -->
-      <div class="mt-8 text-center">
-        <div class="inline-flex items-center gap-2 text-sm" style="color: rgba(92, 107, 79, 0.6);">
-          <div class="w-2 h-2 rounded-full bg-green-500"></div>
-          <div class="w-2 h-2 rounded-full bg-green-500"></div>
-          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span>Section 3 of 3 - Complete!</span>
-        </div>
-      </div>
-    </div>
-   </section>
-  </div>
-
-  <!-- Footer -->
-  <div class="site-footer">
-    <div class="footer-content hover-glow">
-      <i class="fas fa-heart mr-1" style="color: #B76E79;"></i>
-      <span>HEART MAP - An Interactive Love Letter</span>
-      <i class="fas fa-heart ml-1" style="color: #7D8B6F;"></i>
-      <span class="mx-2">•</span>
-      <span>Click, scroll, and explore our story</span>
-    </div>
-  </div>
-
-  <!-- Share Modal -->
-  <div id="share-modal" class="share-modal">
-    <div class="share-modal-content pink-gradient">
-      <h3 class="text-2xl font-bold text-center mb-2" style="color: #5C6B4F;">Share Your Love Gift</h3>
-      <p class="text-center mb-6 readable-text" style="color: #B76E79;">Choose how to share this special gift</p>
-      
-      <div class="share-options">
-        <div class="share-option hover-glow" id="whatsapp-share">
-          <div class="share-icon rounded-full w-10 h-10 flex items-center justify-center hover-glow" style="background: #25D366; color: white;">
-            <i class="fab fa-whatsapp"></i>
-          </div>
-          <span class="font-medium" style="color: #5C6B4F;">WhatsApp</span>
-        </div>
-        
-        <div class="share-option hover-glow" id="copy-link">
-          <div class="share-icon rounded-full w-10 h-10 flex items-center justify-center hover-glow" style="background: #B76E79; color: white;">
-            <i class="fas fa-link"></i>
-          </div>
-          <span class="font-medium" style="color: #5C6B4F;">Copy Link</span>
-        </div>
-      </div>
-      
-      <div class="mt-6 text-center">
-        <button id="close-share-modal" class="px-6 py-2 rounded-full transition-all duration-300 pink-outline-button hover-glow">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- File Inputs -->
-  <input type="file" id="memory-upload" class="hidden" accept="image/*">
-  <input type="file" id="song-upload" class="hidden" accept="audio/*">
-  <audio id="audio-player"></audio>
-
+    </section>
+  </main>
+  
+  <!-- Hidden File Inputs -->
+  <input type="file" id="image-upload" class="hidden" accept="image/*">
+  <input type="file" id="audio-upload" class="hidden" accept="audio/*">
+  <audio id="audio-player" class="hidden"></audio>
+  
   <script>
+    // ========== STATE MANAGEMENT ==========
+    const HeartMapState = {
+      isCreator: true,
+      isViewOnly: false,
+      currentSection: 'welcome',
+      completedSections: new Set(['welcome']),
+      data: {
+        partnerName: '',
+        yourName: '',
+        letter: {
+          date: 'February 14, 2024',
+          opening: '',
+          body: '',
+          promise: '',
+          closing: ''
+        },
+        memories: [{}, {}, {}],
+        song: null
+      },
+      save() {
+        localStorage.setItem('heartMapData', JSON.stringify(this.data));
+        localStorage.setItem('heartMapCompleted', JSON.stringify([...this.completedSections]));
+      },
+      load() {
+        const saved = localStorage.getItem('heartMapData');
+        const completed = localStorage.getItem('heartMapCompleted');
+        if (saved) this.data = JSON.parse(saved);
+        if (completed) this.completedSections = new Set(JSON.parse(completed));
+        return this;
+      },
+      reset() {
+        this.data = {
+          partnerName: '',
+          yourName: '',
+          letter: {
+            date: 'February 14, 2024',
+            opening: '',
+            body: '',
+            promise: '',
+            closing: ''
+          },
+          memories: [{}, {}, {}],
+          song: null
+        };
+        this.completedSections = new Set(['welcome']);
+        this.isCreator = true;
+        this.save();
+      }
+    };
+    
     // ========== INITIALIZATION ==========
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Page loaded - Initializing...');
+      // Load saved state
+      HeartMapState.load();
       
-      // Initialize all components
-      initWelcomeScreen();
+      // Initialize components
+      initFloatingElements();
       initNavigation();
-      initLetter();
-      initMemories();
+      initFormBindings();
+      initMediaUpload();
       initMusicPlayer();
-      initShareModal();
-      initFloatingPetals();
-      initProgressBar();
+      initShareFunctions();
+      initPreviewUpdates();
       
-      console.log('Initialization complete!');
+      // Check if viewing as partner
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('view')) {
+        HeartMapState.isCreator = false;
+        HeartMapState.isViewOnly = true;
+        document.body.classList.add('view-only');
+        document.getElementById('create-your-own-section').classList.remove('hidden');
+      }
+      
+      // Update UI based on state
+      updateUIFromState();
+      updateProgress();
+      
+      console.log('Heart Map initialized');
     });
     
-    // ========== WELCOME SCREEN ==========
-    function initWelcomeScreen() {
-      const enterBtn = document.getElementById('enter-btn');
-      const welcomeScreen = document.getElementById('welcome-screen');
-      const mainContent = document.getElementById('main-content');
+    // ========== FLOATING ELEMENTS ==========
+    function initFloatingElements() {
+      createFloatingElements();
+      setInterval(createFloatingElements, 5000);
+    }
+    
+    function createFloatingElements() {
+      const container = document.getElementById('floating-container');
+      const elements = ['💖', '💗', '💓', '💕', '💞', '🌸', '🌺', '🌷', '🍃', '🌿'];
       
-      // Make entire welcome screen clickable
-      welcomeScreen.addEventListener('click', function(e) {
-        if (e.target === welcomeScreen || e.target.closest('#enter-btn')) {
-          console.log('Welcome screen clicked');
-          welcomeScreen.classList.add('fade-out');
-          
-          setTimeout(() => {
-            welcomeScreen.style.display = 'none';
-            mainContent.classList.remove('hidden');
-            console.log('Main content shown');
-            updateProgressBar();
-          }, 1000);
-        }
-      });
-      
-      // Also listen for Enter key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && welcomeScreen.style.display !== 'none') {
-          enterBtn.click();
-        }
-      });
+      for (let i = 0; i < 5; i++) {
+        const element = document.createElement('div');
+        const isPink = Math.random() > 0.3;
+        const elem = elements[Math.floor(Math.random() * elements.length)];
+        
+        element.textContent = elem;
+        element.className = `floating-element ${isPink ? 'pink' : ''}`;
+        
+        element.style.left = `${Math.random() * 100}vw`;
+        element.style.fontSize = `${Math.random() * 20 + 16}px`;
+        element.style.opacity = Math.random() * 0.4 + 0.1;
+        element.style.color = isPink ? getRandomPink() : getRandomGreen();
+        element.style.animationDuration = `${Math.random() * 15 + 15}s`;
+        
+        container.appendChild(element);
+        setTimeout(() => element.remove(), 30000);
+      }
+    }
+    
+    function getRandomPink() {
+      const pinks = ['#B76E79', '#C9A9A6', '#E8B4B8', '#F5C6D6'];
+      return pinks[Math.floor(Math.random() * pinks.length)];
+    }
+    
+    function getRandomGreen() {
+      const greens = ['#7D8B6F', '#5C6B4F', '#6B7B5E', '#8A9B7C'];
+      return greens[Math.floor(Math.random() * greens.length)];
     }
     
     // ========== NAVIGATION ==========
     function initNavigation() {
       // Navigation dots
-      const navDots = document.querySelectorAll('.nav-dot');
-      navDots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          const sectionId = this.getAttribute('data-section');
-          scrollToSection(sectionId);
+      document.querySelectorAll('.nav-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          const section = dot.dataset.section;
+          scrollToSection(section);
         });
       });
       
-      // Section buttons
-      const sectionBtns = document.querySelectorAll('.section-btn');
-      sectionBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const sectionId = this.getAttribute('data-section');
-          scrollToSection(sectionId);
+      // Section navigation buttons
+      document.querySelectorAll('button[data-section]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const section = btn.dataset.section;
+          scrollToSection(section);
         });
       });
       
-      // Navigation arrows
-      const prevArrow = document.getElementById('prev-arrow');
-      const nextArrow = document.getElementById('next-arrow');
-      
-      prevArrow.addEventListener('click', function() {
-        navigateToPrevSection();
+      // Start button
+      document.getElementById('start-btn').addEventListener('click', () => {
+        scrollToSection('greeting');
       });
       
-      nextArrow.addEventListener('click', function() {
-        navigateToNextSection();
+      // Scroll tracking
+      window.addEventListener('scroll', () => {
+        updateActiveSection();
+        updateProgress();
       });
       
       // Keyboard navigation
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowLeft') navigateToPrevSection();
-        if (e.key === 'ArrowRight') navigateToNextSection();
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') navigateNext();
+        if (e.key === 'ArrowLeft') navigatePrev();
       });
-      
-      // Replay button
-      const replayBtn = document.getElementById('replay-btn');
-      if (replayBtn) {
-        replayBtn.addEventListener('click', function() {
-          scrollToSection('hero');
-        });
-      }
-      
-      // Scroll tracking
-      window.addEventListener('scroll', function() {
-        updateActiveNavDot();
-        updateProgressBar();
-        updateNavigationArrows();
-      });
-    }
-    
-    function getCurrentSection() {
-      const sections = ['hero', 'letter', 'memories'];
-      const scrollPosition = window.scrollY + 100;
-      
-      for (const sectionId of sections) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            return sectionId;
-          }
-        }
-      }
-      return 'hero';
-    }
-    
-    function navigateToNextSection() {
-      const sections = ['hero', 'letter', 'memories'];
-      const current = getCurrentSection();
-      const currentIndex = sections.indexOf(current);
-      
-      if (currentIndex < sections.length - 1) {
-        scrollToSection(sections[currentIndex + 1]);
-      }
-    }
-    
-    function navigateToPrevSection() {
-      const sections = ['hero', 'letter', 'memories'];
-      const current = getCurrentSection();
-      const currentIndex = sections.indexOf(current);
-      
-      if (currentIndex > 0) {
-        scrollToSection(sections[currentIndex - 1]);
-      }
     }
     
     function scrollToSection(sectionId) {
-      console.log(`Scrolling to section: ${sectionId}`);
       const section = document.getElementById(sectionId);
-      
       if (section) {
-        // Update active dot
-        updateNavDot(sectionId);
-        
-        // Scroll to section
         section.scrollIntoView({ behavior: 'smooth' });
+        HeartMapState.currentSection = sectionId;
+        updateNavigationDots();
         
-        // Show interaction feedback
-        showFeedbackAnimation();
-      } else {
-        console.error(`Section ${sectionId} not found`);
+        // Mark as completed if editing
+        if (!HeartMapState.completedSections.has(sectionId)) {
+          HeartMapState.completedSections.add(sectionId);
+          HeartMapState.save();
+          updateNavigationDots();
+        }
       }
     }
     
-    function updateNavDot(sectionId) {
-      const dots = document.querySelectorAll('.nav-dot');
-      dots.forEach(dot => {
-        dot.classList.remove('active');
-        if (dot.getAttribute('data-section') === sectionId) {
-          dot.classList.add('active');
-          // Add pulse animation to active dot
-          dot.style.animation = 'pulseHeart 2s ease-in-out';
-          setTimeout(() => {
-            dot.style.animation = '';
-          }, 2000);
-        }
-      });
-    }
-    
-    function updateActiveNavDot() {
-      const sections = ['hero', 'letter', 'memories'];
-      const scrollPosition = window.scrollY + 100;
+    function updateActiveSection() {
+      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
+      const scrollPos = window.scrollY + 100;
       
       for (const sectionId of sections) {
         const section = document.getElementById(sectionId);
@@ -1136,172 +1093,170 @@
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
           
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            updateNavDot(sectionId);
+          if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+            HeartMapState.currentSection = sectionId;
+            updateNavigationDots();
             break;
           }
         }
       }
     }
     
-    function updateNavigationArrows() {
-      const prevArrow = document.getElementById('prev-arrow');
-      const nextArrow = document.getElementById('next-arrow');
-      const sections = ['hero', 'letter', 'memories'];
-      const current = getCurrentSection();
-      const currentIndex = sections.indexOf(current);
-      
-      if (currentIndex === 0) {
-        prevArrow.classList.add('hidden');
-      } else {
-        prevArrow.classList.remove('hidden');
-      }
-      
-      if (currentIndex === sections.length - 1) {
-        nextArrow.classList.add('hidden');
-      } else {
-        nextArrow.classList.remove('hidden');
-      }
+    function updateNavigationDots() {
+      document.querySelectorAll('.nav-dot').forEach(dot => {
+        const section = dot.dataset.section;
+        dot.classList.remove('active');
+        
+        if (section === HeartMapState.currentSection) {
+          dot.classList.add('active');
+        }
+        
+        if (HeartMapState.completedSections.has(section)) {
+          dot.classList.add('completed');
+        }
+      });
     }
     
-    // ========== PROGRESS BAR ==========
-    function initProgressBar() {
-      updateProgressBar();
-      updateNavigationArrows();
-    }
-    
-    function updateProgressBar() {
-      const sections = ['hero', 'letter', 'memories'];
-      const current = getCurrentSection();
-      const currentIndex = sections.indexOf(current);
-      const progress = ((currentIndex + 1) / sections.length) * 100;
-      
-      const progressBar = document.getElementById('progress-bar');
-      if (progressBar) {
-        progressBar.style.width = `${progress}%`;
+    function navigateNext() {
+      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
+      const currentIndex = sections.indexOf(HeartMapState.currentSection);
+      if (currentIndex < sections.length - 1) {
+        scrollToSection(sections[currentIndex + 1]);
       }
     }
     
-    // ========== FEEDBACK ANIMATION ==========
-    function showFeedbackAnimation() {
-      const feedback = document.createElement('div');
-      feedback.className = 'fixed inset-0 pointer-events-none z-40';
-      feedback.style.background = 'radial-gradient(circle, transparent 70%, rgba(183, 110, 121, 0.1) 100%)';
-      feedback.style.animation = 'fadeOut 0.5s ease-out forwards';
-      
-      document.body.appendChild(feedback);
-      setTimeout(() => feedback.remove(), 500);
+    function navigatePrev() {
+      const sections = ['welcome', 'greeting', 'letter', 'memories', 'final'];
+      const currentIndex = sections.indexOf(HeartMapState.currentSection);
+      if (currentIndex > 0) {
+        scrollToSection(sections[currentIndex - 1]);
+      }
     }
     
-    // ========== LETTER SECTION ==========
-    function initLetter() {
-      const envelope = document.getElementById('envelope');
-      const waxSeal = document.getElementById('wax-seal');
-      const letterContent = document.getElementById('letter-content');
+    // ========== PROGRESS INDICATOR ==========
+    function updateProgress() {
+      const totalSections = 5;
+      const completed = HeartMapState.completedSections.size;
+      const progress = (completed / totalSections) * 100;
+      
+      document.getElementById('progress-fill').style.width = `${progress}%`;
+    }
+    
+    // ========== FORM BINDINGS ==========
+    function initFormBindings() {
+      // Partner name
       const partnerNameInput = document.getElementById('partner-name');
-      const letterRecipient = document.getElementById('letter-recipient');
-      const nameUnderline = document.getElementById('name-underline');
-      
-      // Open envelope
-      envelope.addEventListener('click', function() {
-        console.log('Envelope clicked');
-        waxSeal.style.opacity = '0';
-        waxSeal.style.transform = 'translate(-50%, -50%) scale(0)';
-        
-        setTimeout(() => {
-          letterContent.style.opacity = '1';
-          createHearts();
-          showFeedbackAnimation();
-        }, 300);
+      partnerNameInput.addEventListener('input', (e) => {
+        HeartMapState.data.partnerName = e.target.value;
+        HeartMapState.save();
+        updatePreview();
       });
       
-      // Partner name input
-      if (partnerNameInput) {
-        partnerNameInput.addEventListener('focus', function() {
-          nameUnderline.style.width = '80%';
-          this.style.transform = 'scale(1.02)';
-        });
-        
-        partnerNameInput.addEventListener('blur', function() {
-          if (!this.value) {
-            nameUnderline.style.width = '0%';
-          }
-          this.style.transform = 'scale(1)';
-        });
-        
-        partnerNameInput.addEventListener('input', function() {
-          const name = this.value || '';
-          letterRecipient.textContent = name;
-          localStorage.setItem('partnerName', name);
-          
-          // Show typing feedback
-          this.style.transform = 'scale(1.01)';
-          setTimeout(() => {
-            this.style.transform = 'scale(1)';
-          }, 100);
-        });
-        
-        // Load saved name
-        const savedName = localStorage.getItem('partnerName');
-        if (savedName) {
-          partnerNameInput.value = savedName;
-          letterRecipient.textContent = savedName;
-          nameUnderline.style.width = '80%';
+      // Your name
+      const yourNameInput = document.getElementById('your-name');
+      yourNameInput.addEventListener('input', (e) => {
+        HeartMapState.data.yourName = e.target.value;
+        HeartMapState.save();
+        updatePreview();
+      });
+      
+      // Letter sections
+      ['opening', 'body', 'promise', 'closing'].forEach(section => {
+        const element = document.getElementById(`letter-${section}`);
+        if (element) {
+          element.addEventListener('input', (e) => {
+            HeartMapState.data.letter[section] = e.target.value;
+            HeartMapState.save();
+            updatePreview();
+          });
         }
-      }
+      });
+      
+      // Letter date
+      document.getElementById('letter-date').addEventListener('input', (e) => {
+        HeartMapState.data.letter.date = e.target.value;
+        HeartMapState.save();
+      });
     }
     
-    // ========== MEMORIES SECTION ==========
-    function initMemories() {
-      const memoryUpload = document.getElementById('memory-upload');
-      const memories = ['memory-1', 'memory-2', 'memory-3'];
-      let currentMemory = null;
+    function updateUIFromState() {
+      // Partner name
+      document.getElementById('partner-name').value = HeartMapState.data.partnerName;
+      document.getElementById('letter-partner-name').textContent = HeartMapState.data.partnerName || '[Name]';
+      document.getElementById('preview-name').textContent = HeartMapState.data.partnerName || '[Name]';
       
-      memories.forEach((memoryId, index) => {
-        const memoryElement = document.getElementById(memoryId);
+      // Your name
+      document.getElementById('your-name').value = HeartMapState.data.yourName;
+      document.getElementById('letter-signature').textContent = HeartMapState.data.yourName || '[Your Name]';
+      
+      // Letter sections
+      Object.keys(HeartMapState.data.letter).forEach(section => {
+        const element = document.getElementById(`letter-${section}`);
+        if (element) element.value = HeartMapState.data.letter[section];
+      });
+      
+      updatePreview();
+    }
+    
+    // ========== MEDIA UPLOAD ==========
+    function initMediaUpload() {
+      const imageUpload = document.getElementById('image-upload');
+      const memoryElements = ['memory-1', 'memory-2', 'memory-3'];
+      
+      memoryElements.forEach((id, index) => {
+        const element = document.getElementById(id);
+        element.addEventListener('click', () => {
+          currentMemoryIndex = index;
+          imageUpload.click();
+        });
+      });
+      
+      imageUpload.addEventListener('change', handleImageUpload);
+    }
+    
+    let currentMemoryIndex = 0;
+    
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const memoryElement = document.getElementById(`memory-${currentMemoryIndex + 1}`);
         if (memoryElement) {
-          memoryElement.addEventListener('click', function() {
-            currentMemory = memoryId;
-            memoryUpload.click();
-          });
+          memoryElement.innerHTML = `
+            <img src="${event.target.result}" 
+                 class="w-full h-full object-cover rounded-2xl"
+                 alt="Memory ${currentMemoryIndex + 1}">
+            <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-2xl flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center">
+                <i class="fas fa-edit text-rose-gold"></i>
+              </div>
+            </div>
+          `;
           
-          // Add hover feedback
-          memoryElement.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.02)';
-          });
+          // Save to state
+          HeartMapState.data.memories[currentMemoryIndex] = {
+            image: event.target.result,
+            caption: memoryElement.nextElementSibling?.querySelector('textarea')?.value || ''
+          };
+          HeartMapState.save();
+          updatePreview();
           
-          memoryElement.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-          });
+          // Success animation
+          memoryElement.style.animation = 'gentlePulse 1s';
+          setTimeout(() => memoryElement.style.animation = '', 1000);
         }
-      });
+      };
+      reader.readAsDataURL(file);
       
-      memoryUpload.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file || !currentMemory) return;
-        
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const memoryElement = document.getElementById(currentMemory);
-          if (memoryElement) {
-            memoryElement.innerHTML = `
-              <img src="${event.target.result}" 
-                   class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                   alt="Our memory">
-            `;
-            
-            // Show success feedback
-            memoryElement.style.animation = 'pulseHeart 1s ease-in-out';
-            setTimeout(() => {
-              memoryElement.style.animation = '';
-            }, 1000);
-          }
-        };
-        reader.readAsDataURL(file);
-        
-        // Reset file input
-        memoryUpload.value = '';
-      });
+      // Reset input
+      e.target.value = '';
     }
     
     // ========== MUSIC PLAYER ==========
@@ -1310,52 +1265,52 @@
       const playBtn = document.getElementById('play-btn');
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
-      const prevBtn = document.getElementById('prev-btn');
-      const nextBtn = document.getElementById('next-btn');
-      const uploadSongBtn = document.getElementById('upload-song-btn');
-      const songUpload = document.getElementById('song-upload');
-      const nowPlaying = document.getElementById('now-playing');
+      const uploadBtn = document.getElementById('upload-song-btn');
+      const audioUpload = document.getElementById('audio-upload');
+      const songTitle = document.getElementById('song-title');
       
       let isPlaying = false;
-      let currentSong = null;
+      let currentSong = HeartMapState.data.song;
       
-      // Play/Pause
-      playBtn.addEventListener('click', function() {
-        if (!currentSong) {
-          alert('Please upload a song first!');
-          songUpload.click();
+      // Load saved song
+      if (currentSong) {
+        audio.src = currentSong.url;
+        songTitle.textContent = currentSong.name;
+      }
+      
+      playBtn.addEventListener('click', () => {
+        if (!audio.src) {
+          alert('Please upload a song first');
+          uploadBtn.click();
           return;
         }
         
         if (isPlaying) {
           audio.pause();
-          playIcon.classList.remove('hidden');
-          pauseIcon.classList.add('hidden');
         } else {
           audio.play().catch(e => {
-            console.log('Playback error:', e);
-            alert('Could not play the song. Please try another file.');
+            console.error('Playback error:', e);
+            alert('Unable to play the audio file. Please try another.');
           });
-          playIcon.classList.add('hidden');
-          pauseIcon.classList.remove('hidden');
         }
-        isPlaying = !isPlaying;
         
-        // Show feedback
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          this.style.transform = 'scale(1)';
-        }, 150);
+        isPlaying = !isPlaying;
+        playIcon.classList.toggle('hidden', isPlaying);
+        pauseIcon.classList.toggle('hidden', !isPlaying);
       });
       
-      // Upload song
-      uploadSongBtn.addEventListener('click', function() {
-        songUpload.click();
+      uploadBtn.addEventListener('click', () => {
+        audioUpload.click();
       });
       
-      songUpload.addEventListener('change', function(e) {
+      audioUpload.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
+        
+        if (!file.type.startsWith('audio/')) {
+          alert('Please select an audio file');
+          return;
+        }
         
         const url = URL.createObjectURL(file);
         currentSong = {
@@ -1364,7 +1319,11 @@
         };
         
         audio.src = url;
-        nowPlaying.textContent = currentSong.name;
+        songTitle.textContent = currentSong.name;
+        
+        // Save to state
+        HeartMapState.data.song = currentSong;
+        HeartMapState.save();
         
         // Auto-play
         setTimeout(() => {
@@ -1372,157 +1331,114 @@
           isPlaying = true;
           playIcon.classList.add('hidden');
           pauseIcon.classList.remove('hidden');
-        }, 500);
+        }, 300);
       });
       
-      // Audio events
-      audio.addEventListener('ended', function() {
+      audio.addEventListener('ended', () => {
         isPlaying = false;
         playIcon.classList.remove('hidden');
         pauseIcon.classList.add('hidden');
       });
     }
     
-    // ========== SHARE MODAL ==========
-    function initShareModal() {
-      const shareBtn = document.getElementById('share-gift-btn');
-      const shareModal = document.getElementById('share-modal');
-      const closeBtn = document.getElementById('close-share-modal');
-      const whatsappShare = document.getElementById('whatsapp-share');
-      const copyLinkBtn = document.getElementById('copy-link');
-      
-      // Open modal
-      shareBtn.addEventListener('click', function() {
-        shareModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-      
-      // Close modal
-      closeBtn.addEventListener('click', function() {
-        shareModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      });
-      
-      // Close on background click
-      shareModal.addEventListener('click', function(e) {
-        if (e.target === shareModal) {
-          shareModal.classList.remove('active');
-          document.body.style.overflow = 'auto';
-        }
-      });
-      
+    // ========== SHARE FUNCTIONS ==========
+    function initShareFunctions() {
       // WhatsApp share
-      whatsappShare.addEventListener('click', function() {
-        const text = `🌸💚 A special Valentine's gift just for you! 💚🌸\n\nI created a beautiful love letter just for you. Open it to see my heart:\n${window.location.href}`;
+      document.getElementById('whatsapp-share').addEventListener('click', () => {
+        // First, ensure all data is saved
+        HeartMapState.save();
+        
+        const text = `💖 I created a Heart Map love letter just for you! 💖\n\nClick the link to view my heartfelt message:\n${getShareableLink()}`;
         const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
         window.open(url, '_blank');
       });
       
       // Copy link
-      copyLinkBtn.addEventListener('click', function() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url).then(() => {
-          alert('Link copied to clipboard! Send this to your partner.');
-          this.innerHTML = '<i class="fas fa-check mr-2"></i>Link Copied!';
-          setTimeout(() => {
-            this.innerHTML = '<i class="fas fa-link mr-2"></i>Copy Link';
-          }, 2000);
-        }).catch(() => {
+      document.getElementById('copy-link').addEventListener('click', async () => {
+        // First, ensure all data is saved
+        HeartMapState.save();
+        
+        const link = getShareableLink();
+        try {
+          await navigator.clipboard.writeText(link);
+          showNotification('Link copied to clipboard! Send this to your partner.');
+          
+          // Change button text temporarily
+          const btn = document.getElementById('copy-link');
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(() => btn.innerHTML = originalHTML, 2000);
+        } catch (err) {
           // Fallback
-          const temp = document.createElement('textarea');
-          temp.value = url;
-          document.body.appendChild(temp);
-          temp.select();
+          const textArea = document.createElement('textarea');
+          textArea.value = link;
+          document.body.appendChild(textArea);
+          textArea.select();
           document.execCommand('copy');
-          document.body.removeChild(temp);
-          alert('Link copied to clipboard! Send this to your partner.');
-        });
+          document.body.removeChild(textArea);
+          showNotification('Link copied to clipboard! Send this to your partner.');
+        }
+      });
+      
+      // Save draft
+      document.getElementById('save-draft').addEventListener('click', () => {
+        HeartMapState.save();
+        showNotification('Draft saved! You can continue anytime.');
+      });
+      
+      // Create your own (for partner)
+      document.getElementById('create-your-own-btn').addEventListener('click', () => {
+        HeartMapState.reset();
+        window.location.href = window.location.origin + window.location.pathname;
       });
     }
     
-    // ========== FLOATING PETALS ==========
-    function initFloatingPetals() {
-      createFloatingPetals();
-      setInterval(createFloatingPetals, 8000);
+    function getShareableLink() {
+      // Generate a unique view link
+      const baseUrl = window.location.origin + window.location.pathname;
+      const viewUrl = `${baseUrl}?view=true&id=${Date.now()}`;
+      return viewUrl;
     }
     
-    function createFloatingPetals() {
-      const container = document.getElementById('petal-container');
+    function showNotification(message) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-6 right-6 bg-white rounded-lg shadow-lg p-4 border-l-4 border-rose-gold z-50 max-w-sm';
+      notification.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-rose-gold/10 flex items-center justify-center">
+            <i class="fas fa-check text-rose-gold"></i>
+          </div>
+          <div>
+            <p class="font-medium">${message}</p>
+          </div>
+        </div>
+      `;
       
-      // Mix of green and pink elements
-      const greenElements = ['🍃', '🌿', '☘️', '🍀', '🌱', '🌾'];
-      const pinkElements = ['🌸', '💮', '🏵️', '🌺', '🌷', '🌼', '💐', '🌹', '🌻', '💖', '💗', '💓', '💕', '💞'];
+      document.body.appendChild(notification);
       
-      // Create more petals (10 instead of 8)
-      for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-          const element = document.createElement('div');
-          
-          // Randomly choose between green or pink
-          const isPink = Math.random() > 0.4; // 60% chance of pink
-          const elements = isPink ? pinkElements : greenElements;
-          const elementType = elements[Math.floor(Math.random() * elements.length)];
-          
-          element.textContent = elementType;
-          element.className = 'floating-petal' + (isPink ? ' pink' : '');
-          
-          element.style.left = Math.random() * 100 + 'vw';
-          element.style.fontSize = (Math.random() * 20 + 14) + 'px';
-          element.style.opacity = Math.random() * 0.6 + 0.2;
-          
-          // Set color based on element type
-          if (isPink) {
-            // Pink colors
-            const pinkColors = ['#B76E79', '#C9A9A6', '#E8B4B8', '#F5C6D6', '#F8A5C2', '#FFB6C1', '#FFC0CB'];
-            element.style.color = pinkColors[Math.floor(Math.random() * pinkColors.length)];
-          } else {
-            // Green colors
-            const greenColors = ['#7D8B6F', '#5C6B4F', '#4A5D3E', '#6B7B5E', '#8A9B7C'];
-            element.style.color = greenColors[Math.floor(Math.random() * greenColors.length)];
-          }
-          
-          element.style.animationDuration = (Math.random() * 12 + 15) + 's';
-          element.style.zIndex = '0';
-          
-          container.appendChild(element);
-          setTimeout(() => element.remove(), 30000);
-        }, i * 300);
-      }
+      // Remove after 3 seconds
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(20px)';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
     }
     
-    // ========== HEARTS ANIMATION ==========
-    function createHearts() {
-      const container = document.getElementById('petal-container');
+    // ========== PREVIEW UPDATES ==========
+    function initPreviewUpdates() {
+      updatePreview();
+    }
+    
+    function updatePreview() {
+      // Update letter word count
+      const letterText = Object.values(HeartMapState.data.letter).join(' ');
+      const wordCount = letterText.trim() ? letterText.trim().split(/\s+/).length : 0;
+      document.getElementById('preview-letter-length').textContent = wordCount;
       
-      const heartTypes = ['💚', '💖', '💗', '💓', '💕', '💞', '💘', '💝']; // More heart variations
-      
-      for (let i = 0; i < 15; i++) { // Increased count
-        setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.className = 'floating-petal pink';
-          
-          const heartType = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-          heart.textContent = heartType;
-          
-          heart.style.left = Math.random() * 100 + 'vw';
-          heart.style.fontSize = (Math.random() * 25 + 18) + 'px';
-          
-          // Color based on heart type
-          if (heartType === '💚') {
-            heart.style.color = '#7D8B6F'; // Green
-          } else {
-            // Random pink colors
-            const pinkColors = ['#B76E79', '#E8B4B8', '#F5C6D6', '#FFB6C1', '#FFC0CB', '#FF69B4', '#FF1493'];
-            heart.style.color = pinkColors[Math.floor(Math.random() * pinkColors.length)];
-          }
-          
-          heart.style.animationDuration = (Math.random() * 7 + 8) + 's';
-          heart.style.opacity = Math.random() * 0.7 + 0.3;
-          
-          container.appendChild(heart);
-          setTimeout(() => heart.remove(), 20000);
-        }, i * 100);
-      }
+      // Update photo count
+      const photoCount = HeartMapState.data.memories.filter(m => m && m.image).length;
+      document.getElementById('preview-photo-count').textContent = photoCount;
     }
   </script>
 </body>

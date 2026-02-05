@@ -498,6 +498,23 @@
       display: block !important;
     }
     
+    /* Share link success animation */
+    @keyframes successPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(125, 139, 111, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(125, 139, 111, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(125, 139, 111, 0);
+      }
+    }
+    
+    .success-pulse {
+      animation: successPulse 1.5s ease-out;
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .nav-dots {
@@ -1178,6 +1195,7 @@
         localStorage.setItem('heartMapData', JSON.stringify(this.data));
         localStorage.setItem('heartMapCompleted', JSON.stringify([...this.completedSections]));
         localStorage.setItem('heartMapCreator', this.isCreator.toString());
+        return this.generateShareId();
       },
       load() {
         const saved = localStorage.getItem('heartMapData');
@@ -1205,6 +1223,69 @@
         this.completedSections = new Set(['welcome']);
         this.isCreator = true;
         this.save();
+      },
+      generateShareId() {
+        // Generate a unique ID for sharing
+        const shareId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        localStorage.setItem('heartMapShareId', shareId);
+        
+        // Save the current data with this ID
+        const shareData = {
+          id: shareId,
+          data: JSON.stringify(this.data),
+          completed: JSON.stringify([...this.completedSections]),
+          timestamp: Date.now()
+        };
+        
+        localStorage.setItem(`heartMap_${shareId}`, JSON.stringify(shareData));
+        
+        // Clean up old shares
+        this.cleanupOldShares();
+        
+        return shareId;
+      },
+      loadFromShareId(shareId) {
+        const shareKey = `heartMap_${shareId}`;
+        const shareData = localStorage.getItem(shareKey);
+        
+        if (shareData) {
+          try {
+            const parsed = JSON.parse(shareData);
+            
+            if (parsed.data) {
+              this.data = JSON.parse(parsed.data);
+            }
+            if (parsed.completed) {
+              this.completedSections = new Set(JSON.parse(parsed.completed));
+            }
+            
+            this.isCreator = false;
+            this.isViewOnly = true;
+            return true;
+          } catch (e) {
+            console.error('Error loading shared data:', e);
+            return false;
+          }
+        }
+        return false;
+      },
+      cleanupOldShares() {
+        const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000); // 24 hours
+        
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith('heartMap_') && key !== 'heartMapData' && 
+              key !== 'heartMapCompleted' && key !== 'heartMapCreator' && key !== 'heartMapShareId') {
+            try {
+              const data = JSON.parse(localStorage.getItem(key));
+              if (data.timestamp && data.timestamp < oneDayAgo) {
+                localStorage.removeItem(key);
+              }
+            } catch (e) {
+              // Ignore errors
+            }
+          }
+        }
       }
     };
     
@@ -1213,32 +1294,41 @@
       // Load saved state
       HeartMapState.load();
       
-      // Check if viewing as partner
+      // Check if viewing as partner via share ID
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('view')) {
-        HeartMapState.isCreator = false;
-        HeartMapState.isViewOnly = true;
-        document.body.classList.add('view-only');
+      const shareId = urlParams.get('id');
+      const isViewMode = urlParams.has('view');
+      
+      if (isViewMode && shareId) {
+        // Try to load shared data
+        const success = HeartMapState.loadFromShareId(shareId);
         
-        // Load creator's data if available in URL
-        const sharedData = urlParams.get('data');
-        if (sharedData) {
-          try {
-            const parsedData = JSON.parse(atob(sharedData));
-            HeartMapState.data = parsedData;
-          } catch (e) {
-            console.log('No shared data in URL, using local storage');
-          }
+        if (success) {
+          document.body.classList.add('view-only');
+          
+          // Show partner view section
+          document.getElementById('partner-view-section').classList.remove('hidden');
+          document.getElementById('create-your-own-section').classList.add('hidden');
+          
+          // Update partner view with creator's data
+          updatePartnerView();
+          
+          // Start with Valentine question screen
+          initValentineScreen();
+        } else {
+          // If no shared data found, show error and redirect to creator mode
+          alert('This Heart Map link has expired or is invalid. Creating a new one...');
+          HeartMapState.reset();
+          document.body.classList.add('creator-mode');
         }
-        
-        // Show partner view section instead of create your own
-        document.getElementById('partner-view-section').classList.remove('hidden');
-        document.getElementById('create-your-own-section').classList.add('hidden');
-        
-        // Update partner view with creator's data
-        updatePartnerView();
       } else {
+        // Creator mode
         document.body.classList.add('creator-mode');
+        
+        // Generate share ID if none exists
+        if (!localStorage.getItem('heartMapShareId')) {
+          HeartMapState.generateShareId();
+        }
       }
       
       // Initialize components
@@ -1250,14 +1340,11 @@
       initShareFunctions();
       initPreviewUpdates();
       
-      // Initialize Valentine screen if viewing as partner
-      initValentineScreen();
-      
       // Update UI based on state
       updateUIFromState();
       updateProgress();
       
-      console.log('Heart Map initialized - With flying NO button and editable mode');
+      console.log('Heart Map initialized - Working share links');
     });
     
     // ========== VALENTINE QUESTION SCREEN ==========
@@ -1283,8 +1370,6 @@
         const yesBtn = document.getElementById('yes-valentine-btn');
         const secretMessage = document.getElementById('secret-message');
         
-        let noClickCount = 0;
-        
         // Yes button - takes them to the actual content
         yesBtn.addEventListener('click', () => {
           // Create celebration effect
@@ -1303,13 +1388,17 @@
         });
         
         // Update secret message based on clicks on flying buttons
-        setInterval(() => {
-          if (noClickCount >= 3 && !secretMessage.classList.contains('show')) {
-            secretMessage.classList.remove('hidden');
-            secretMessage.classList.add('show');
-            secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+        let noClickCount = 0;
+        document.addEventListener('click', function(e) {
+          if (e.target.closest('.flying-no-btn')) {
+            noClickCount++;
+            if (noClickCount >= 3 && !secretMessage.classList.contains('show')) {
+              secretMessage.classList.remove('hidden');
+              secretMessage.classList.add('show');
+              secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+            }
           }
-        }, 1000);
+        });
       }
     }
     
@@ -1324,6 +1413,7 @@
         
         noBtn.className = 'flying-no-btn';
         noBtn.innerHTML = `<i class="fas fa-times"></i><span>${randomText}</span>`;
+        noBtn.title = "Click me to say no!";
         
         // Random starting position
         const startX = Math.random() * 80 + 10;
@@ -1340,6 +1430,7 @@
         // Add click event
         noBtn.addEventListener('click', function(e) {
           e.preventDefault();
+          e.stopPropagation();
           
           // Change text
           const newText = noTexts[Math.floor(Math.random() * noTexts.length)];
@@ -1355,13 +1446,6 @@
           this.style.left = `${newX}%`;
           this.style.top = `${newY}%`;
           
-          // Show secret message after 3 clicks
-          window.noClickCount = (window.noClickCount || 0) + 1;
-          if (window.noClickCount >= 3) {
-            document.getElementById('secret-message').classList.remove('hidden');
-            document.getElementById('secret-message').classList.add('show');
-          }
-          
           // Vibrate on mobile
           if (navigator.vibrate) {
             navigator.vibrate(100);
@@ -1369,9 +1453,6 @@
         });
         
         container.appendChild(noBtn);
-        
-        // Make button draggable for extra fun
-        makeButtonDraggable(noBtn);
       }
     }
     
@@ -1425,62 +1506,6 @@
       }
     }
     
-    function makeButtonDraggable(button) {
-      let isDragging = false;
-      let startX, startY, initialX, initialY;
-      
-      button.addEventListener('mousedown', startDrag);
-      button.addEventListener('touchstart', startDragTouch);
-      
-      function startDrag(e) {
-        isDragging = true;
-        startX = e.clientX || e.touches[0].clientX;
-        startY = e.clientY || e.touches[0].clientY;
-        
-        const rect = button.getBoundingClientRect();
-        initialX = rect.left;
-        initialY = rect.top;
-        
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-        
-        button.style.cursor = 'grabbing';
-        button.style.transition = 'none';
-        button.style.animationPlayState = 'paused';
-        e.preventDefault();
-      }
-      
-      function drag(e) {
-        if (!isDragging) return;
-        
-        const clientX = e.clientX || e.touches[0].clientX;
-        const clientY = e.clientY || e.touches[0].clientY;
-        
-        const dx = clientX - startX;
-        const dy = clientY - startY;
-        
-        const newX = initialX + dx;
-        const newY = initialY + dy;
-        
-        button.style.left = `${newX}px`;
-        button.style.top = `${newY}px`;
-      }
-      
-      function stopDrag() {
-        isDragging = false;
-        document.removeEventListener('mousemove', drag);
-        document.removeEventListener('touchmove', drag);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchend', stopDrag);
-        
-        button.style.cursor = '';
-        button.style.transition = 'all 0.3s ease';
-        button.style.animationPlayState = 'running';
-      }
-    }
-    
     // ========== UPDATE PARTNER VIEW ==========
     function updatePartnerView() {
       // Update sender name
@@ -1511,9 +1536,161 @@
         document.body.classList.remove('view-only');
         document.body.classList.add('creator-mode');
         
+        // Hide partner view section
+        document.getElementById('partner-view-section').classList.add('hidden');
+        
         // Navigate to greeting section
         navigateToSection('greeting');
+        
+        // Show notification
+        showNotification('💌 Creating a response Heart Map for your Valentine!');
       });
+    }
+    
+    // ========== SHARE FUNCTIONS ==========
+    function initShareFunctions() {
+      // WhatsApp share
+      document.getElementById('whatsapp-share').addEventListener('click', () => {
+        // First, ensure all data is saved and get share ID
+        HeartMapState.save();
+        const shareId = localStorage.getItem('heartMapShareId');
+        
+        if (!shareId) {
+          showNotification('❌ Please save your Heart Map first!');
+          return;
+        }
+        
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+        
+        const text = `💖 I created a Heart Map love letter just for you! 💖\n\nClick the link to view my heartfelt message:\n${shareUrl}`;
+        const encodedText = encodeURIComponent(text);
+        const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+        
+        // Open in new window
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        
+        showNotification('📱 Opening WhatsApp to share your Heart Map!');
+      });
+      
+      // Copy link
+      document.getElementById('copy-link').addEventListener('click', async () => {
+        // First, ensure all data is saved and get share ID
+        HeartMapState.save();
+        const shareId = localStorage.getItem('heartMapShareId');
+        
+        if (!shareId) {
+          showNotification('❌ Please save your Heart Map first!');
+          return;
+        }
+        
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+        
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          
+          // Visual feedback
+          const btn = document.getElementById('copy-link');
+          const originalHTML = btn.innerHTML;
+          const originalBg = btn.style.background;
+          
+          btn.innerHTML = '<i class="fas fa-check"></i> Link Copied!';
+          btn.style.background = 'linear-gradient(135deg, var(--sage), var(--deep-sage))';
+          btn.classList.add('success-pulse');
+          
+          showNotification('✅ Link copied to clipboard! Send this to your partner.');
+          
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.background = originalBg;
+            btn.classList.remove('success-pulse');
+          }, 2000);
+          
+        } catch (err) {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = shareUrl;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            document.execCommand('copy');
+            showNotification('✅ Link copied to clipboard! Send this to your partner.');
+          } catch (e) {
+            showNotification('❌ Failed to copy link. Please try again.');
+          }
+          
+          document.body.removeChild(textArea);
+        }
+      });
+      
+      // Save draft
+      document.getElementById('save-draft').addEventListener('click', () => {
+        HeartMapState.save();
+        showNotification('💾 Draft saved! You can continue anytime.');
+      });
+      
+      // Add hover preview for share buttons
+      initSharePreview();
+    }
+    
+    function initSharePreview() {
+      const copyBtn = document.getElementById('copy-link');
+      const whatsappBtn = document.getElementById('whatsapp-share');
+      
+      copyBtn.addEventListener('mouseenter', () => {
+        const shareId = localStorage.getItem('heartMapShareId');
+        if (shareId) {
+          const baseUrl = window.location.origin + window.location.pathname;
+          const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+          copyBtn.title = `Click to copy:\n${shareUrl}`;
+        }
+      });
+      
+      whatsappBtn.addEventListener('mouseenter', () => {
+        const shareId = localStorage.getItem('heartMapShareId');
+        if (shareId) {
+          const baseUrl = window.location.origin + window.location.pathname;
+          const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+          whatsappBtn.title = `Share via WhatsApp:\n${shareUrl}`;
+        }
+      });
+    }
+    
+    function showNotification(message) {
+      // Remove existing notifications
+      document.querySelectorAll('.heartmap-notification').forEach(el => el.remove());
+      
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = 'heartmap-notification fixed top-6 right-6 bg-white rounded-lg shadow-lg p-4 border-l-4 border-rose-gold z-50 max-w-sm';
+      notification.style.animation = 'fadeIn 0.3s ease-out';
+      notification.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-rose-gold/10 flex items-center justify-center">
+            <i class="fas fa-info-circle text-rose-gold"></i>
+          </div>
+          <div>
+            <p class="font-medium">${message}</p>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Remove after 4 seconds
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(20px)';
+        notification.style.transition = 'all 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }, 4000);
     }
     
     // ========== FLOATING ELEMENTS ==========
@@ -1709,12 +1886,10 @@
       
       memoryElements.forEach((id, index) => {
         const element = document.getElementById(id);
-        if (element) {
+        if (element && HeartMapState.isCreator) {
           element.addEventListener('click', () => {
-            if (!HeartMapState.isViewOnly) {
-              currentMemoryIndex = index;
-              imageUpload.click();
-            }
+            currentMemoryIndex = index;
+            imageUpload.click();
           });
         }
       });
@@ -1789,7 +1964,7 @@
       playBtn.addEventListener('click', () => {
         if (!audio.src) {
           alert('Please upload a song first');
-          if (!HeartMapState.isViewOnly) {
+          if (HeartMapState.isCreator) {
             uploadBtn.click();
           }
           return;
@@ -1809,131 +1984,48 @@
         pauseIcon.classList.toggle('hidden', !isPlaying);
       });
       
-      uploadBtn.addEventListener('click', () => {
-        if (!HeartMapState.isViewOnly) {
+      if (HeartMapState.isCreator) {
+        uploadBtn.addEventListener('click', () => {
           audioUpload.click();
-        }
-      });
-      
-      audioUpload.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+        });
         
-        if (!file.type.startsWith('audio/')) {
-          alert('Please select an audio file');
-          return;
-        }
-        
-        const url = URL.createObjectURL(file);
-        currentSong = {
-          name: file.name.replace(/\.[^/.]+$/, ""),
-          url: url
-        };
-        
-        audio.src = url;
-        songTitle.textContent = currentSong.name;
-        
-        // Save to state
-        HeartMapState.data.song = currentSong;
-        HeartMapState.save();
-        
-        // Auto-play
-        setTimeout(() => {
-          audio.play();
-          isPlaying = true;
-          playIcon.classList.add('hidden');
-          pauseIcon.classList.remove('hidden');
-        }, 300);
-      });
+        audioUpload.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          
+          if (!file.type.startsWith('audio/')) {
+            alert('Please select an audio file');
+            return;
+          }
+          
+          const url = URL.createObjectURL(file);
+          currentSong = {
+            name: file.name.replace(/\.[^/.]+$/, ""),
+            url: url
+          };
+          
+          audio.src = url;
+          songTitle.textContent = currentSong.name;
+          
+          // Save to state
+          HeartMapState.data.song = currentSong;
+          HeartMapState.save();
+          
+          // Auto-play
+          setTimeout(() => {
+            audio.play();
+            isPlaying = true;
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+          }, 300);
+        });
+      }
       
       audio.addEventListener('ended', () => {
         isPlaying = false;
         playIcon.classList.remove('hidden');
         pauseIcon.classList.add('hidden');
       });
-    }
-    
-    // ========== SHARE FUNCTIONS ==========
-    function initShareFunctions() {
-      // WhatsApp share
-      document.getElementById('whatsapp-share').addEventListener('click', () => {
-        // First, ensure all data is saved
-        HeartMapState.save();
-        
-        const text = `💖 I created a Heart Map love letter just for you! 💖\n\nClick the link to view my heartfelt message:\n${getShareableLink()}`;
-        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-        window.open(url, '_blank');
-      });
-      
-      // Copy link
-      document.getElementById('copy-link').addEventListener('click', async () => {
-        // First, ensure all data is saved
-        HeartMapState.save();
-        
-        const link = getShareableLink();
-        try {
-          await navigator.clipboard.writeText(link);
-          showNotification('Link copied to clipboard! Send this to your partner.');
-          
-          // Change button text temporarily
-          const btn = document.getElementById('copy-link');
-          const originalHTML = btn.innerHTML;
-          btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          setTimeout(() => btn.innerHTML = originalHTML, 2000);
-        } catch (err) {
-          // Fallback
-          const textArea = document.createElement('textarea');
-          textArea.value = link;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          showNotification('Link copied to clipboard! Send this to your partner.');
-        }
-      });
-      
-      // Save draft
-      document.getElementById('save-draft').addEventListener('click', () => {
-        HeartMapState.save();
-        showNotification('Draft saved! You can continue anytime.');
-      });
-    }
-    
-    function getShareableLink() {
-      // Generate a unique view link with embedded data
-      const baseUrl = window.location.origin + window.location.pathname;
-      
-      // Encode the data in base64 for sharing
-      const dataString = JSON.stringify(HeartMapState.data);
-      const encodedData = btoa(dataString);
-      
-      const viewUrl = `${baseUrl}?view=true&data=${encodedData}`;
-      return viewUrl;
-    }
-    
-    function showNotification(message) {
-      // Create notification element
-      const notification = document.createElement('div');
-      notification.className = 'fixed top-6 right-6 bg-white rounded-lg shadow-lg p-4 border-l-4 border-rose-gold z-50 max-w-sm';
-      notification.innerHTML = `
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-rose-gold/10 flex items-center justify-center">
-            <i class="fas fa-check text-rose-gold"></i>
-          </div>
-          <div>
-            <p class="font-medium">${message}</p>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(notification);
-      
-      // Remove after 3 seconds
-      setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(20px)';
-        setTimeout(() => notification.remove(), 300);
-      }, 3000);
     }
     
     // ========== PREVIEW UPDATES ==========

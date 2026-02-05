@@ -43,6 +43,87 @@
       font-family: 'Playfair Display', serif;
     }
     
+    /* Flying NO button animation */
+    @keyframes flyAround {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        left: 10%;
+        top: 20%;
+      }
+      25% {
+        transform: translate(100px, 50px) rotate(90deg);
+        left: 50%;
+        top: 30%;
+      }
+      50% {
+        transform: translate(-80px, 80px) rotate(180deg);
+        left: 30%;
+        top: 60%;
+      }
+      75% {
+        transform: translate(120px, -40px) rotate(270deg);
+        left: 70%;
+        top: 40%;
+      }
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+        left: 10%;
+        top: 20%;
+      }
+    }
+    
+    @keyframes floatRandom {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(100px, -50px) scale(0.9);
+      }
+      50% {
+        transform: translate(-80px, 80px) scale(1.1);
+      }
+      75% {
+        transform: translate(120px, 40px) scale(0.95);
+      }
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+    }
+    
+    .flying-no-btn {
+      position: fixed !important;
+      width: 60px !important;
+      height: 60px !important;
+      border-radius: 50% !important;
+      padding: 0 !important;
+      font-size: 14px !important;
+      z-index: 9999;
+      animation: flyAround 8s linear infinite;
+      background: linear-gradient(135deg, #ff6b6b, #ff4757) !important;
+      color: white !important;
+      border: 2px solid white !important;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .flying-no-btn:hover {
+      transform: scale(1.2) !important;
+      animation-play-state: paused;
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6) !important;
+    }
+    
+    .flying-no-btn i {
+      font-size: 18px;
+    }
+    
+    .flying-no-btn span {
+      display: none;
+    }
+    
     /* Floating animations */
     @keyframes floatUp {
       0% {
@@ -343,17 +424,35 @@
       font-size: 12px;
     }
     
-    /* Share view styles */
+    /* View-only mode */
     .view-only .editable-content,
     .view-only input,
     .view-only textarea {
       pointer-events: none;
       background: transparent;
       border: none;
+      user-select: text;
+      -webkit-user-select: text;
     }
     
     .view-only .elegant-input {
       border-bottom: 1px solid rgba(183, 110, 121, 0.1);
+    }
+    
+    .view-only .primary-btn,
+    .view-only .secondary-btn {
+      cursor: default;
+    }
+    
+    .view-only .primary-btn:hover,
+    .view-only .secondary-btn:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .creator-mode .primary-btn,
+    .creator-mode .secondary-btn {
+      pointer-events: auto;
     }
     
     /* Section visibility control */
@@ -368,6 +467,35 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+    }
+    
+    /* Valentine screen specific styles */
+    #valentine-question .elegant-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #valentine-hearts-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    
+    /* Celebration animation */
+    @keyframes celebrate {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+      }
+    }
+    
+    /* Show/hide animation for secret message */
+    .show {
+      display: block !important;
     }
     
     /* Mobile optimizations */
@@ -392,6 +520,12 @@
       
       .section.active {
         padding: 10px;
+      }
+      
+      .flying-no-btn {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 12px !important;
       }
     }
     
@@ -443,7 +577,10 @@
     }
   </style>
 </head>
-<body class="view-only">
+<body>
+  <!-- Flying NO Button (Will be created dynamically) -->
+  <div id="flying-no-container"></div>
+  
   <!-- Floating Elements -->
   <div id="floating-container"></div>
   
@@ -463,6 +600,89 @@
   
   <!-- Main Content -->
   <main>
+    <!-- Valentine Question Screen (Shown to partner only) -->
+    <section id="valentine-question" class="section">
+      <div class="text-center max-w-3xl w-full fade-in">
+        <div class="elegant-card mx-auto">
+          <!-- Animated Hearts Background -->
+          <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div id="valentine-hearts-container"></div>
+          </div>
+          
+          <div class="relative z-10">
+            <!-- Header -->
+            <div class="mb-8">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                  <i class="fas fa-heart text-white text-xl"></i>
+                </div>
+                <h1 class="text-4xl elegant-font">Heart Map</h1>
+              </div>
+              <p class="subtle-text mb-2">A Special Question For You</p>
+            </div>
+            
+            <!-- Main Question -->
+            <div class="mb-12">
+              <div class="w-48 h-48 mx-auto mb-8 relative">
+                <div class="absolute inset-0 rounded-full animate-pulse" style="background: linear-gradient(135deg, rgba(183, 110, 121, 0.1), rgba(158, 74, 90, 0.1));"></div>
+                <div class="absolute inset-4 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                  <i class="fas fa-heart text-white text-6xl heartbeat"></i>
+                </div>
+              </div>
+              
+              <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">
+                Will You Be My Valentine?
+              </h2>
+              
+              <p class="text-xl subtle-text mb-6 max-w-2xl mx-auto">
+                My heart has mapped its course, and it leads straight to you. 
+                Will you join me on this journey of love?
+              </p>
+              
+              <!-- Partner's Name Display -->
+              <div class="inline-block px-6 py-3 rounded-full bg-blush/30 mb-8">
+                <span class="text-2xl script-font gradient-text" id="valentine-partner-name">My Dearest</span>
+              </div>
+            </div>
+            
+            <!-- Yes Button -->
+            <div class="space-y-6 max-w-md mx-auto">
+              <!-- Yes Button -->
+              <button id="yes-valentine-btn" class="primary-btn w-full transform hover:scale-105 transition-transform duration-300">
+                <span class="flex items-center justify-center gap-3 text-xl">
+                  <i class="fas fa-heart"></i>
+                  Yes, With All My Heart!
+                  <i class="fas fa-heart"></i>
+                </span>
+              </button>
+              
+              <!-- Secret Message (appears after clicking No a few times) -->
+              <div id="secret-message" class="hidden mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
+                <p class="subtle-text">
+                  <i class="fas fa-grin-wink mr-2"></i>
+                  I know you're just being shy! The "Yes" button is waiting patiently...
+                </p>
+              </div>
+              
+              <p class="text-sm subtle-text mt-6">
+                <i class="fas fa-info-circle mr-1"></i>
+                Look for the flying ❌ button around the screen if you want to say no
+              </p>
+            </div>
+            
+            <!-- Decorative Elements -->
+            <div class="mt-12 flex items-center justify-center gap-6">
+              <div class="w-6 h-6 rounded-full bg-rose-gold/30"></div>
+              <div class="w-4 h-4 rounded-full bg-sage/30"></div>
+              <div class="w-8 h-8 rounded-full bg-pale-pink/40"></div>
+              <div class="w-4 h-4 rounded-full bg-sage/30"></div>
+              <div class="w-6 h-6 rounded-full bg-rose-gold/30"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
     <!-- Welcome Screen -->
     <section id="welcome" class="section active">
       <div class="text-center max-w-3xl w-full fade-in">
@@ -545,7 +765,7 @@
               <input 
                 type="text" 
                 id="partner-name" 
-                class="elegant-input text-3xl script-font text-center"
+                class="elegant-input text-3xl script-font text-center editable-field"
                 placeholder="Enter their name..."
                 maxlength="30"
               >
@@ -557,7 +777,7 @@
               <input 
                 type="text" 
                 id="your-name" 
-                class="elegant-input text-2xl script-font text-center"
+                class="elegant-input text-2xl script-font text-center editable-field"
                 placeholder="Your name..."
                 maxlength="30"
               >
@@ -600,7 +820,7 @@
               <input 
                 type="text" 
                 id="letter-date" 
-                class="elegant-input text-right max-w-xs ml-auto"
+                class="elegant-input text-right max-w-xs ml-auto editable-field"
                 placeholder="Today's date..."
                 value="February 14, 2024"
               >
@@ -617,7 +837,7 @@
                 <label class="block text-sm font-medium mb-3 subtle-text">Opening</label>
                 <textarea 
                   id="letter-opening"
-                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field"
                   placeholder="My love, the moment I met you..."
                   rows="3"
                 ></textarea>
@@ -627,7 +847,7 @@
                 <label class="block text-sm font-medium mb-3 subtle-text">What I Love About You</label>
                 <textarea 
                   id="letter-body"
-                  class="w-full elegant-input min-h-[150px] p-4 rounded-lg border border-blush resize-none"
+                  class="w-full elegant-input min-h-[150px] p-4 rounded-lg border border-blush resize-none editable-field"
                   placeholder="I love the way you... Your smile reminds me of... The thing I cherish most is..."
                   rows="5"
                 ></textarea>
@@ -637,7 +857,7 @@
                 <label class="block text-sm font-medium mb-3 subtle-text">My Promise to You</label>
                 <textarea 
                   id="letter-promise"
-                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field"
                   placeholder="I promise to always... Together, we will..."
                   rows="3"
                 ></textarea>
@@ -647,7 +867,7 @@
                 <label class="block text-sm font-medium mb-3 subtle-text">Closing</label>
                 <textarea 
                   id="letter-closing"
-                  class="w-full elegant-input min-h-[80px] p-4 rounded-lg border border-blush resize-none"
+                  class="w-full elegant-input min-h-[80px] p-4 rounded-lg border border-blush resize-none editable-field"
                   placeholder="With all my love and admiration..."
                   rows="2"
                 ></textarea>
@@ -694,7 +914,7 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <!-- Memory 1 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-1">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-1">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
                     <i class="fas fa-camera text-white text-xl"></i>
@@ -705,7 +925,7 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
                   placeholder="Describe this special moment..."
                   rows="2"
                 ></textarea>
@@ -714,7 +934,7 @@
             
             <!-- Memory 2 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-2">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-2">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
                     <i class="fas fa-heart text-white text-xl"></i>
@@ -725,7 +945,7 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
                   placeholder="What made this day special?"
                   rows="2"
                 ></textarea>
@@ -734,7 +954,7 @@
             
             <!-- Memory 3 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02]" id="memory-3">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-3">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
                     <i class="fas fa-star text-white text-xl"></i>
@@ -745,7 +965,7 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
                   placeholder="Our dreams for the future..."
                   rows="2"
                 ></textarea>
@@ -767,22 +987,22 @@
                     <div id="song-title" class="font-medium">No song selected</div>
                     <div id="song-status" class="text-sm subtle-text">Upload an MP3 file</div>
                   </div>
-                  <button id="upload-song-btn" class="secondary-btn">
+                  <button id="upload-song-btn" class="secondary-btn editable-field">
                     <i class="fas fa-upload mr-2"></i>Upload
                   </button>
                 </div>
                 
                 <div class="flex items-center justify-center gap-4">
-                  <button id="prev-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20">
+                  <button id="prev-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field">
                     <i class="fas fa-step-backward"></i>
                   </button>
                   
-                  <button id="play-btn" class="w-14 h-14 rounded-full primary-btn flex items-center justify-center">
+                  <button id="play-btn" class="w-14 h-14 rounded-full primary-btn flex items-center justify-center editable-field">
                     <i id="play-icon" class="fas fa-play"></i>
                     <i id="pause-icon" class="fas fa-pause hidden"></i>
                   </button>
                   
-                  <button id="next-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20">
+                  <button id="next-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field">
                     <i class="fas fa-step-forward"></i>
                   </button>
                 </div>
@@ -878,34 +1098,38 @@
             <h3 class="text-xl elegant-font text-center">Share Your Heart Map</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3">
+              <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3 editable-field">
                 <i class="fab fa-whatsapp text-green-500 text-lg"></i>
                 Share via WhatsApp
               </button>
               
-              <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3">
+              <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3 editable-field">
                 <i class="fas fa-link text-rose-gold text-lg"></i>
                 Copy Link
               </button>
             </div>
             
             <div class="text-center">
-              <button id="save-draft" class="text-sm subtle-text hover:text-rose-gold transition-colors">
+              <button id="save-draft" class="text-sm subtle-text hover:text-rose-gold transition-colors editable-field">
                 <i class="fas fa-save mr-1"></i>
                 Save as draft to continue later
               </button>
             </div>
           </div>
           
-          <!-- Create Your Own Button (Visible only to partner) -->
-          <div id="create-your-own-section" class="hidden">
+          <!-- Partner's View Section (Shown to partner with creator's data) -->
+          <div id="partner-view-section" class="hidden">
             <div class="text-center pt-8 border-t border-blush">
-              <p class="subtle-text mb-4">Received this Heart Map from someone special?</p>
-              <button id="create-your-own-btn" class="primary-btn">
+              <p class="subtle-text mb-4">You've received this beautiful Heart Map from <span id="partner-sender-name" class="font-medium">[Sender]</span></p>
+              <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
+                <h3 class="text-xl elegant-font mb-4">💖 A Message From Your Valentine 💖</h3>
+                <p id="partner-preview-text" class="subtle-text italic"></p>
+              </div>
+              <button id="create-response-btn" class="primary-btn">
                 <i class="fas fa-heart mr-2"></i>
-                Create Your Own Heart Map
+                Create Your Response Heart Map
               </button>
-              <p class="text-xs subtle-text mt-3">Start a new interactive love letter to return the gesture</p>
+              <p class="text-xs subtle-text mt-3">Send a heartfelt response to complete the circle of love</p>
             </div>
           </div>
           
@@ -953,12 +1177,15 @@
       save() {
         localStorage.setItem('heartMapData', JSON.stringify(this.data));
         localStorage.setItem('heartMapCompleted', JSON.stringify([...this.completedSections]));
+        localStorage.setItem('heartMapCreator', this.isCreator.toString());
       },
       load() {
         const saved = localStorage.getItem('heartMapData');
         const completed = localStorage.getItem('heartMapCompleted');
+        const creator = localStorage.getItem('heartMapCreator');
         if (saved) this.data = JSON.parse(saved);
         if (completed) this.completedSections = new Set(JSON.parse(completed));
+        if (creator) this.isCreator = creator === 'true';
         return this;
       },
       reset() {
@@ -986,6 +1213,34 @@
       // Load saved state
       HeartMapState.load();
       
+      // Check if viewing as partner
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('view')) {
+        HeartMapState.isCreator = false;
+        HeartMapState.isViewOnly = true;
+        document.body.classList.add('view-only');
+        
+        // Load creator's data if available in URL
+        const sharedData = urlParams.get('data');
+        if (sharedData) {
+          try {
+            const parsedData = JSON.parse(atob(sharedData));
+            HeartMapState.data = parsedData;
+          } catch (e) {
+            console.log('No shared data in URL, using local storage');
+          }
+        }
+        
+        // Show partner view section instead of create your own
+        document.getElementById('partner-view-section').classList.remove('hidden');
+        document.getElementById('create-your-own-section').classList.add('hidden');
+        
+        // Update partner view with creator's data
+        updatePartnerView();
+      } else {
+        document.body.classList.add('creator-mode');
+      }
+      
       // Initialize components
       initFloatingElements();
       initNavigation();
@@ -995,21 +1250,271 @@
       initShareFunctions();
       initPreviewUpdates();
       
-      // Check if viewing as partner
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('view')) {
-        HeartMapState.isCreator = false;
-        HeartMapState.isViewOnly = true;
-        document.body.classList.add('view-only');
-        document.getElementById('create-your-own-section').classList.remove('hidden');
-      }
+      // Initialize Valentine screen if viewing as partner
+      initValentineScreen();
       
       // Update UI based on state
       updateUIFromState();
       updateProgress();
       
-      console.log('Heart Map initialized - Step by Step Version');
+      console.log('Heart Map initialized - With flying NO button and editable mode');
     });
+    
+    // ========== VALENTINE QUESTION SCREEN ==========
+    function initValentineScreen() {
+      // Only show if viewing as partner
+      if (HeartMapState.isViewOnly && !HeartMapState.isCreator) {
+        // Show valentine question screen first
+        navigateToSection('valentine-question');
+        
+        // Update partner name if available
+        if (HeartMapState.data.partnerName) {
+          document.getElementById('valentine-partner-name').textContent = HeartMapState.data.partnerName;
+        }
+        
+        // Create floating hearts for background
+        createValentineHearts();
+        setInterval(createValentineHearts, 2000);
+        
+        // Create flying NO buttons
+        createFlyingNoButtons();
+        
+        // Set up the YES button
+        const yesBtn = document.getElementById('yes-valentine-btn');
+        const secretMessage = document.getElementById('secret-message');
+        
+        let noClickCount = 0;
+        
+        // Yes button - takes them to the actual content
+        yesBtn.addEventListener('click', () => {
+          // Create celebration effect
+          createCelebration();
+          
+          // Show success message
+          showNotification('💖 Yes! You\'ve made my heart complete! 💖');
+          
+          // Remove flying NO buttons
+          document.querySelectorAll('.flying-no-btn').forEach(btn => btn.remove());
+          
+          // Navigate to welcome screen after a delay
+          setTimeout(() => {
+            navigateToSection('welcome');
+          }, 1500);
+        });
+        
+        // Update secret message based on clicks on flying buttons
+        setInterval(() => {
+          if (noClickCount >= 3 && !secretMessage.classList.contains('show')) {
+            secretMessage.classList.remove('hidden');
+            secretMessage.classList.add('show');
+            secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+          }
+        }, 1000);
+      }
+    }
+    
+    function createFlyingNoButtons() {
+      const container = document.getElementById('flying-no-container');
+      const noTexts = ["No", "Nope", "Nah", "Maybe", "Later", "😊", "😉", "💭"];
+      
+      // Create 3 flying NO buttons
+      for (let i = 0; i < 3; i++) {
+        const noBtn = document.createElement('button');
+        const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+        
+        noBtn.className = 'flying-no-btn';
+        noBtn.innerHTML = `<i class="fas fa-times"></i><span>${randomText}</span>`;
+        
+        // Random starting position
+        const startX = Math.random() * 80 + 10;
+        const startY = Math.random() * 80 + 10;
+        
+        noBtn.style.left = `${startX}%`;
+        noBtn.style.top = `${startY}%`;
+        
+        // Random animation
+        const duration = Math.random() * 10 + 15;
+        const delay = Math.random() * 5;
+        noBtn.style.animation = `flyAround ${duration}s linear infinite ${delay}s`;
+        
+        // Add click event
+        noBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Change text
+          const newText = noTexts[Math.floor(Math.random() * noTexts.length)];
+          this.innerHTML = `<i class="fas fa-times"></i><span>${newText}</span>`;
+          
+          // Speed up animation
+          const currentDuration = parseFloat(this.style.animationDuration || '15s');
+          this.style.animationDuration = `${Math.max(3, currentDuration * 0.8)}s`;
+          
+          // Move to new random position
+          const newX = Math.random() * 80 + 10;
+          const newY = Math.random() * 80 + 10;
+          this.style.left = `${newX}%`;
+          this.style.top = `${newY}%`;
+          
+          // Show secret message after 3 clicks
+          window.noClickCount = (window.noClickCount || 0) + 1;
+          if (window.noClickCount >= 3) {
+            document.getElementById('secret-message').classList.remove('hidden');
+            document.getElementById('secret-message').classList.add('show');
+          }
+          
+          // Vibrate on mobile
+          if (navigator.vibrate) {
+            navigator.vibrate(100);
+          }
+        });
+        
+        container.appendChild(noBtn);
+        
+        // Make button draggable for extra fun
+        makeButtonDraggable(noBtn);
+      }
+    }
+    
+    function createValentineHearts() {
+      const container = document.getElementById('valentine-hearts-container');
+      const heartTypes = ['💖', '💗', '💓', '💕', '💞', '💘', '💝', '🧡'];
+      
+      for (let i = 0; i < 8; i++) {
+        const heart = document.createElement('div');
+        const type = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+        
+        heart.textContent = type;
+        heart.className = 'absolute pointer-events-none';
+        heart.style.fontSize = `${Math.random() * 20 + 16}px`;
+        heart.style.opacity = Math.random() * 0.3 + 0.1;
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.top = `${Math.random() * 100}%`;
+        heart.style.color = getRandomPink();
+        heart.style.animation = `floatUp ${Math.random() * 20 + 10}s linear infinite`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(heart);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          if (heart.parentElement === container) {
+            container.removeChild(heart);
+          }
+        }, 30000);
+      }
+    }
+    
+    function createCelebration() {
+      const container = document.getElementById('floating-container');
+      const celebrations = ['🎉', '✨', '🌟', '💫', '🥳', '🎊', '💖', '💝'];
+      
+      for (let i = 0; i < 20; i++) {
+        const celeb = document.createElement('div');
+        const type = celebrations[Math.floor(Math.random() * celebrations.length)];
+        
+        celeb.textContent = type;
+        celeb.className = 'fixed pointer-events-none z-50';
+        celeb.style.fontSize = `${Math.random() * 24 + 20}px`;
+        celeb.style.opacity = '1';
+        celeb.style.left = `${Math.random() * 100}vw`;
+        celeb.style.top = `${Math.random() * 100}vh`;
+        celeb.style.animation = `floatUp ${Math.random() * 2 + 1}s ease-out forwards`;
+        
+        container.appendChild(celeb);
+        setTimeout(() => celeb.remove(), 2000);
+      }
+    }
+    
+    function makeButtonDraggable(button) {
+      let isDragging = false;
+      let startX, startY, initialX, initialY;
+      
+      button.addEventListener('mousedown', startDrag);
+      button.addEventListener('touchstart', startDragTouch);
+      
+      function startDrag(e) {
+        isDragging = true;
+        startX = e.clientX || e.touches[0].clientX;
+        startY = e.clientY || e.touches[0].clientY;
+        
+        const rect = button.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
+        
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+        
+        button.style.cursor = 'grabbing';
+        button.style.transition = 'none';
+        button.style.animationPlayState = 'paused';
+        e.preventDefault();
+      }
+      
+      function drag(e) {
+        if (!isDragging) return;
+        
+        const clientX = e.clientX || e.touches[0].clientX;
+        const clientY = e.clientY || e.touches[0].clientY;
+        
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+        
+        const newX = initialX + dx;
+        const newY = initialY + dy;
+        
+        button.style.left = `${newX}px`;
+        button.style.top = `${newY}px`;
+      }
+      
+      function stopDrag() {
+        isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
+        
+        button.style.cursor = '';
+        button.style.transition = 'all 0.3s ease';
+        button.style.animationPlayState = 'running';
+      }
+    }
+    
+    // ========== UPDATE PARTNER VIEW ==========
+    function updatePartnerView() {
+      // Update sender name
+      document.getElementById('partner-sender-name').textContent = HeartMapState.data.yourName || 'Your Valentine';
+      
+      // Create preview text from letter
+      const letter = HeartMapState.data.letter;
+      let previewText = '';
+      
+      if (letter.opening) {
+        previewText = letter.opening.substring(0, 150) + '...';
+      } else if (letter.body) {
+        previewText = letter.body.substring(0, 150) + '...';
+      } else {
+        previewText = 'A heartfelt message awaits you...';
+      }
+      
+      document.getElementById('partner-preview-text').textContent = previewText;
+      
+      // Update create response button
+      document.getElementById('create-response-btn').addEventListener('click', function() {
+        // Reset state for response
+        HeartMapState.reset();
+        HeartMapState.data.partnerName = HeartMapState.data.yourName; // Set partner to original sender
+        HeartMapState.save();
+        
+        // Remove view-only mode
+        document.body.classList.remove('view-only');
+        document.body.classList.add('creator-mode');
+        
+        // Navigate to greeting section
+        navigateToSection('greeting');
+      });
+    }
     
     // ========== FLOATING ELEMENTS ==========
     function initFloatingElements() {
@@ -1072,9 +1577,6 @@
       document.getElementById('start-btn').addEventListener('click', () => {
         navigateToSection('greeting');
       });
-      
-      // Remove scroll tracking since we're not scrolling
-      // Remove keyboard navigation for scrolling
       
       // Mark current section as active initially
       updateNavigationDots();
@@ -1207,10 +1709,14 @@
       
       memoryElements.forEach((id, index) => {
         const element = document.getElementById(id);
-        element.addEventListener('click', () => {
-          currentMemoryIndex = index;
-          imageUpload.click();
-        });
+        if (element) {
+          element.addEventListener('click', () => {
+            if (!HeartMapState.isViewOnly) {
+              currentMemoryIndex = index;
+              imageUpload.click();
+            }
+          });
+        }
       });
       
       imageUpload.addEventListener('change', handleImageUpload);
@@ -1283,7 +1789,9 @@
       playBtn.addEventListener('click', () => {
         if (!audio.src) {
           alert('Please upload a song first');
-          uploadBtn.click();
+          if (!HeartMapState.isViewOnly) {
+            uploadBtn.click();
+          }
           return;
         }
         
@@ -1302,7 +1810,9 @@
       });
       
       uploadBtn.addEventListener('click', () => {
-        audioUpload.click();
+        if (!HeartMapState.isViewOnly) {
+          audioUpload.click();
+        }
       });
       
       audioUpload.addEventListener('change', (e) => {
@@ -1387,18 +1897,17 @@
         HeartMapState.save();
         showNotification('Draft saved! You can continue anytime.');
       });
-      
-      // Create your own (for partner)
-      document.getElementById('create-your-own-btn').addEventListener('click', () => {
-        HeartMapState.reset();
-        window.location.href = window.location.origin + window.location.pathname;
-      });
     }
     
     function getShareableLink() {
-      // Generate a unique view link
+      // Generate a unique view link with embedded data
       const baseUrl = window.location.origin + window.location.pathname;
-      const viewUrl = `${baseUrl}?view=true&id=${Date.now()}`;
+      
+      // Encode the data in base64 for sharing
+      const dataString = JSON.stringify(HeartMapState.data);
+      const encodedData = btoa(dataString);
+      
+      const viewUrl = `${baseUrl}?view=true&data=${encodedData}`;
       return viewUrl;
     }
     

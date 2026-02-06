@@ -569,6 +569,47 @@
       align-items: center;
     }
     
+    /* Fix memory text display in partner view */
+    .memory-display {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .memory-container textarea {
+      pointer-events: auto !important;
+    }
+    
+    /* Partner view fix */
+    .view-only .memory-description {
+      display: none !important;
+    }
+    
+    .view-only .partner-only .text-center.subtle-text.p-3 {
+      display: block !important;
+      min-height: 60px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      border: 1px solid rgba(183, 110, 121, 0.1);
+      margin-top: 1rem;
+    }
+    
+    /* Notification styles */
+    .heartmap-notification {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      border-left: 4px solid var(--rose-gold);
+      z-index: 9999;
+      max-width: 320px;
+      animation: fadeIn 0.3s ease-out;
+      font-family: 'Inter', sans-serif;
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .nav-dots {
@@ -597,6 +638,13 @@
         padding: 10px 20px !important;
         font-size: 14px !important;
         max-width: 160px;
+      }
+      
+      .heartmap-notification {
+        top: 16px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
       }
     }
     
@@ -1459,16 +1507,48 @@
         song: null
       },
       save() {
-        localStorage.setItem('heartMapData', JSON.stringify(this.data));
-        localStorage.setItem('heartMapCompleted', JSON.stringify([...this.completedSections]));
-        localStorage.setItem('heartMapCreator', this.isCreator.toString());
-        return this.generateShareId();
+        // Compress large data before saving
+        const dataToSave = {
+          partnerName: this.data.partnerName,
+          yourName: this.data.yourName,
+          letter: this.data.letter,
+          memories: this.data.memories.map(mem => {
+            // Don't save image data to localStorage if it's too big
+            if (mem && mem.image && mem.image.length > 50000) { // 50KB threshold
+              return { caption: mem.caption || '', hasImage: true };
+            }
+            return mem || {};
+          }),
+          song: this.data.song ? { name: this.data.song.name } : null
+        };
+        
+        try {
+          localStorage.setItem('heartMapData', JSON.stringify(dataToSave));
+          localStorage.setItem('heartMapCompleted', JSON.stringify([...this.completedSections]));
+          localStorage.setItem('heartMapCreator', this.isCreator.toString());
+          return this.generateShareId();
+        } catch (e) {
+          console.warn('Could not save to localStorage:', e.message);
+          // Try saving without images
+          const dataWithoutImages = {
+            ...dataToSave,
+            memories: dataToSave.memories.map(mem => ({ caption: mem.caption || '' }))
+          };
+          localStorage.setItem('heartMapData', JSON.stringify(dataWithoutImages));
+          return this.generateShareId();
+        }
       },
       load() {
         const saved = localStorage.getItem('heartMapData');
         const completed = localStorage.getItem('heartMapCompleted');
         const creator = localStorage.getItem('heartMapCreator');
-        if (saved) this.data = JSON.parse(saved);
+        if (saved) {
+          try {
+            this.data = JSON.parse(saved);
+          } catch (e) {
+            console.error('Error parsing saved data:', e);
+          }
+        }
         if (completed) this.completedSections = new Set(JSON.parse(completed));
         if (creator) this.isCreator = creator === 'true';
         return this;
@@ -1575,9 +1655,13 @@
     let noButtonClickCount = 0;
     let isNoButtonFloating = false;
     let currentNoButton = null;
+    let currentMemoryIndex = 0;
     
     // ========== INITIALIZATION ==========
     document.addEventListener('DOMContentLoaded', function() {
+      // Cleanup old data first
+      cleanupLocalStorage();
+      
       // Load saved state
       HeartMapState.load();
       
@@ -1608,7 +1692,7 @@
           initValentineScreen();
         } else {
           // If no shared data found, show error and redirect to creator mode
-          alert('This Heart Map link has expired or is invalid. Creating a new one...');
+          showNotification('This Heart Map link has expired or is invalid. Creating a new one...');
           HeartMapState.reset();
           document.body.classList.add('creator-mode');
         }
@@ -1641,8 +1725,30 @@
       // Show the current section
       showCurrentSection();
       
-      console.log('Heart Map initialized');
+      console.log('Heart Map initialized with fixes');
     });
+    
+    // ========== CLEANUP LOCALSTORAGE ==========
+    function cleanupLocalStorage() {
+      const keysToKeep = ['heartMapData', 'heartMapCompleted', 'heartMapCreator', 'heartMapShareId'];
+      
+      // Remove all image blobs that might be clogging storage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('blob:') || 
+            (key.startsWith('heartMap_') && !keysToKeep.includes(key)))) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key));
+            // Keep only recent shares (last 24 hours)
+            if (data && data.timestamp && Date.now() - data.timestamp > 24 * 60 * 60 * 1000) {
+              localStorage.removeItem(key);
+            }
+          } catch (e) {
+            localStorage.removeItem(key);
+          }
+        }
+      }
+    }
     
     // ========== PREVIEW FUNCTIONS ==========
     function initPreviewFunctions() {
@@ -1655,228 +1761,46 @@
     
     function showLivePreview() {
       // Save current state
-      HeartMapState.save();
+      try {
+        HeartMapState.save();
+      } catch (e) {
+        console.warn('Could not save for preview:', e);
+      }
       
-      // Create preview container
+      // Switch to preview mode
+      document.body.classList.remove('creator-mode');
+      document.body.classList.add('preview-mode');
+      
+      // Show preview container
       const previewContainer = document.getElementById('preview-container');
       const previewContent = document.getElementById('preview-content');
       
-      // Generate HTML for partner view
-      let previewHTML = '';
+      // Clone current sections for preview
+      previewContent.innerHTML = '';
       
-      // Valentine screen
-      if (HeartMapState.data.partnerName) {
-        previewHTML += `
-          <div class="text-center max-w-3xl w-full mx-auto mb-8">
-            <div class="elegant-card">
-              <div class="mb-8">
-                <div class="inline-flex items-center gap-3 mb-6">
-                  <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
-                    <i class="fas fa-heart text-white text-xl"></i>
-                  </div>
-                  <h1 class="text-4xl elegant-font">Heart Map</h1>
-                </div>
-                <p class="subtle-text mb-2">A Special Question For You</p>
-              </div>
-              
-              <div class="mb-12">
-                <div class="w-48 h-48 mx-auto mb-8 relative">
-                  <div class="absolute inset-4 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
-                    <i class="fas fa-heart text-white text-6xl heartbeat"></i>
-                  </div>
-                </div>
-                
-                <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Will You Be My Valentine?</h2>
-                
-                <p class="text-xl subtle-text mb-6 max-w-2xl mx-auto">
-                  My heart has mapped its course, and it leads straight to you. 
-                  Will you be mine on this journey of love?
-                </p>
-                
-                <div class="inline-block px-6 py-3 rounded-full bg-blush/30 mb-8">
-                  <span class="text-2xl script-font gradient-text">${HeartMapState.data.partnerName || 'My Dearest'}</span>
-                </div>
-              </div>
-              
-              <div class="space-y-6 max-w-md mx-auto">
-                <button class="primary-btn w-full">
-                  <span class="flex items-center justify-center gap-3 text-xl">
-                    <i class="fas fa-heart"></i>
-                    Yes, With All My Heart!
-                    <i class="fas fa-heart"></i>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }
+      // Show all sections in preview mode
+      ['welcome', 'greeting', 'letter', 'memories', 'final'].forEach(sectionId => {
+        const originalSection = document.getElementById(sectionId);
+        if (originalSection) {
+          const clonedSection = originalSection.cloneNode(true);
+          clonedSection.classList.add('active', 'fade-in');
+          clonedSection.style.display = 'flex';
+          previewContent.appendChild(clonedSection);
+        }
+      });
       
-      // Welcome screen
-      previewHTML += `
-        <div class="text-center max-w-3xl w-full mx-auto mb-8">
-          <div class="elegant-card">
-            <div class="mb-8">
-              <div class="inline-flex items-center gap-3 mb-6">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
-                  <i class="fas fa-heart text-white text-xl"></i>
-                </div>
-                <h1 class="text-4xl elegant-font">Heart Map</h1>
-              </div>
-              <p class="subtle-text mb-2">An Interactive Love Letter</p>
-            </div>
-            
-            <div class="mb-10">
-              <div class="relative inline-block">
-                <div class="w-48 h-48 mx-auto rounded-full flex items-center justify-center gentle-pulse" style="background: linear-gradient(135deg, rgba(125, 139, 111, 0.1), rgba(183, 110, 121, 0.1));">
-                  <svg class="w-32 h-32" fill="url(#heartGradient)" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            
-            <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Welcome to My Heart Map</h2>
-            
-            <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
-              You've received a special love letter! Created just for you by your devotee.
-              Every click reveals more of my heartfelt confession.
-            </p>
-            
-            <div class="space-y-4">
-              <button class="primary-btn w-full max-w-sm mx-auto">
-                <span class="flex items-center justify-center gap-2">
-                  <i class="fas fa-heart"></i>
-                  Open Your Love Letter
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Letter preview
-      previewHTML += `
-        <div class="max-w-3xl w-full mx-auto mb-8">
-          <div class="glass-card">
-            <div class="mb-8 text-center">
-              <h2 class="text-4xl elegant-font mb-4">Your Love Letter</h2>
-              <p class="subtle-text mb-6">A message from the heart</p>
-            </div>
-            
-            <div class="space-y-6">
-              <div class="text-right">
-                <p class="subtle-text text-lg">${HeartMapState.data.letter.date || 'February 14, 2026'}</p>
-              </div>
-              
-              <div class="text-center mb-8">
-                <h3 class="text-3xl script-font gradient-text">My Dearest ${HeartMapState.data.partnerName || '[Name]'}</h3>
-              </div>
-              
-              <div class="space-y-8">
-                <div>
-                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.opening || 'My love, the moment I met you...'}</p>
-                </div>
-                
-                <div>
-                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.body || 'I love everything about you...'}</p>
-                </div>
-                
-                <div>
-                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.promise || 'I promise to always love you...'}</p>
-                </div>
-                
-                <div>
-                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.closing || 'With all my love...'}</p>
-                </div>
-              </div>
-              
-              <div class="text-center mt-12 pt-8 border-t border-blush">
-                <div class="mb-4">
-                  <span class="text-3xl script-font gradient-text">${HeartMapState.data.yourName || 'Your Valentine'}</span>
-                </div>
-                <p class="text-sm subtle-text italic">Forever yours</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Memories preview
-      previewHTML += `
-        <div class="max-w-6xl w-full mx-auto mb-8">
-          <div class="glass-card">
-            <div class="mb-10 text-center">
-              <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
-              <p class="subtle-text mb-6">Special memories we've shared together</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-      `;
-      
-      // Add memory previews
-      for (let i = 0; i < 3; i++) {
-        const memory = HeartMapState.data.memories[i] || {};
-        previewHTML += `
-          <div class="group">
-            <div class="aspect-square rounded-2xl overflow-hidden">
-              ${memory.image ? 
-                `<img src="${memory.image}" class="w-full h-full object-cover rounded-2xl" alt="Memory ${i+1}">` : 
-                `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
-                  <div class="text-center p-6">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, ${i === 0 ? 'var(--rose-gold), var(--deep-pink)' : i === 1 ? 'var(--sage), var(--moss)' : 'var(--rose-gold), var(--soft-pink)'});">
-                      <i class="fas fa-${i === 0 ? 'camera' : i === 1 ? 'heart' : 'star'} text-white text-xl"></i>
-                    </div>
-                    <h4 class="font-medium mb-2">${i === 0 ? 'Our First Memory' : i === 1 ? 'A Happy Moment' : 'Looking Forward'}</h4>
-                  </div>
-                </div>`
-              }
-            </div>
-            <div class="mt-4">
-              <div class="text-center subtle-text p-3">${memory.caption || ''}</div>
-            </div>
-          </div>
-        `;
-      }
-      
-      previewHTML += `
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Final screen preview
-      previewHTML += `
-        <div class="max-w-3xl w-full mx-auto">
-          <div class="elegant-card">
-            <div class="text-center">
-              <div class="mb-8">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
-                  <i class="fas fa-heart text-white text-2xl"></i>
-                </div>
-                <h2 class="text-5xl elegant-font mb-4 gradient-text">Thank You</h2>
-                <p class="subtle-text text-lg mb-6">For exploring this Heart Map made just for you</p>
-                
-                <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
-                  <h3 class="text-xl elegant-font mb-4">💖 Create Your Own Response 💖</h3>
-                  <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
-                  <button class="primary-btn">
-                    <i class="fas fa-heart mr-2"></i>
-                    Create Your Heart Map
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      previewContent.innerHTML = previewHTML;
       previewContainer.classList.add('active');
+      
+      // Add event listener to close button
+      document.getElementById('close-preview').onclick = function() {
+        closePreview();
+      };
     }
     
     function closePreview() {
       document.getElementById('preview-container').classList.remove('active');
+      document.body.classList.remove('preview-mode');
+      document.body.classList.add('creator-mode');
     }
     
     // ========== VALENTINE QUESTION SCREEN ==========
@@ -2125,84 +2049,55 @@
     
     // ========== SHARE FUNCTIONS ==========
     function initShareFunctions() {
-      // WhatsApp share - FIXED: Proper share URL generation
+      // WhatsApp share
       document.getElementById('whatsapp-share').addEventListener('click', () => {
-        // First, ensure all data is saved and get share ID
-        const shareId = HeartMapState.save(); // This saves and returns the share ID
-        
-        if (!shareId) {
-          showNotification('❌ Please save your Heart Map first!');
-          return;
-        }
-        
-        // Generate the share URL - FIXED: Use the correct format
-        const baseUrl = window.location.origin + window.location.pathname;
+        const shareId = HeartMapState.generateShareId();
+        const baseUrl = window.location.href.split('?')[0];
         const shareUrl = `${baseUrl}?id=${shareId}`;
         
-        const text = `💖 I created a Heart Map love letter just for you! 💖\n\nClick the link to view my heartfelt message:\n${shareUrl}`;
-        const encodedText = encodeURIComponent(text);
-        const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+        // Check if mobile
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const whatsappUrl = isMobile ? 
+          `whatsapp://send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}` :
+          `https://web.whatsapp.com/send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}`;
         
-        // Open in new window
-        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-        
-        showNotification('📱 Opening WhatsApp to share your Heart Map!');
+        window.open(whatsappUrl, '_blank');
       });
       
-      // Copy link - FIXED: Proper share URL generation
+      // Copy link
       document.getElementById('copy-link').addEventListener('click', async () => {
-        // First, ensure all data is saved and get share ID
-        const shareId = HeartMapState.save(); // This saves and returns the share ID
-        
-        if (!shareId) {
-          showNotification('❌ Please save your Heart Map first!');
-          return;
-        }
-        
-        // Generate the share URL - FIXED: Use the correct format
-        const baseUrl = window.location.origin + window.location.pathname;
+        const shareId = HeartMapState.generateShareId();
+        const baseUrl = window.location.href.split('?')[0];
         const shareUrl = `${baseUrl}?id=${shareId}`;
         
         try {
           await navigator.clipboard.writeText(shareUrl);
           
-          // Visual feedback
-          const btn = document.getElementById('copy-link');
-          const originalHTML = btn.innerHTML;
-          const originalBg = btn.style.background;
-          
-          btn.innerHTML = '<i class="fas fa-check"></i> Link Copied!';
-          btn.style.background = 'linear-gradient(135deg, var(--sage), var(--deep-sage))';
-          btn.classList.add('success-pulse');
+          // Show success message
+          const originalText = document.getElementById('copy-link').innerHTML;
+          document.getElementById('copy-link').innerHTML = 
+            '<i class="fas fa-check-circle"></i> Copied!';
+          document.getElementById('copy-link').style.backgroundColor = 'var(--sage)';
+          document.getElementById('copy-link').style.color = 'white';
           
           showNotification('✅ Link copied to clipboard! Send this to your partner.');
           
-          // Reset button after 2 seconds
           setTimeout(() => {
-            btn.innerHTML = originalHTML;
-            btn.style.background = originalBg;
-            btn.classList.remove('success-pulse');
+            document.getElementById('copy-link').innerHTML = originalText;
+            document.getElementById('copy-link').style.backgroundColor = '';
+            document.getElementById('copy-link').style.color = '';
           }, 2000);
           
         } catch (err) {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea');
-          textArea.value = shareUrl;
-          textArea.style.position = 'fixed';
-          textArea.style.left = '-999999px';
-          textArea.style.top = '-999999px';
-          document.body.appendChild(textArea);
-          textArea.focus();
-          textArea.select();
+          // Fallback
+          const tempInput = document.createElement('input');
+          tempInput.value = shareUrl;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
           
-          try {
-            document.execCommand('copy');
-            showNotification('✅ Link copied to clipboard! Send this to your partner.');
-          } catch (e) {
-            showNotification('❌ Failed to copy link. Please try again.');
-          }
-          
-          document.body.removeChild(textArea);
+          alert('Link copied to clipboard!');
         }
       });
       
@@ -2245,8 +2140,7 @@
       
       // Create notification element
       const notification = document.createElement('div');
-      notification.className = 'heartmap-notification fixed top-6 right-6 bg-white rounded-lg shadow-lg p-4 border-l-4 border-rose-gold z-50 max-w-sm';
-      notification.style.animation = 'fadeIn 0.3s ease-out';
+      notification.className = 'heartmap-notification';
       notification.innerHTML = `
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-full bg-rose-gold/10 flex items-center justify-center">
@@ -2503,22 +2397,39 @@
     // ========== MEDIA UPLOAD ==========
     function initMediaUpload() {
       const imageUpload = document.getElementById('image-upload');
-      const memoryElements = ['memory-1', 'memory-2', 'memory-3'];
       
-      memoryElements.forEach((id, index) => {
+      // Remove existing event listeners first
+      ['memory-1', 'memory-2', 'memory-3'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          // Clone and replace to remove old listeners
+          const newElement = element.cloneNode(true);
+          element.parentNode.replaceChild(newElement, element);
+        }
+      });
+      
+      // Add proper click handlers
+      ['memory-1', 'memory-2', 'memory-3'].forEach((id, index) => {
         const element = document.getElementById(id);
         if (element && HeartMapState.isCreator) {
-          element.addEventListener('click', () => {
+          element.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            e.preventDefault();
             currentMemoryIndex = index;
             imageUpload.click();
-          });
+          }, true); // Use capturing phase
         }
       });
       
       imageUpload.addEventListener('change', handleImageUpload);
+      
+      // Prevent click events from bubbling up
+      document.querySelectorAll('.memory-container').forEach(container => {
+        container.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      });
     }
-    
-    let currentMemoryIndex = 0;
     
     function handleImageUpload(e) {
       const file = e.target.files[0];

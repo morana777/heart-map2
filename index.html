@@ -4,7 +4,216 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Heart Map | An Interactive Love Letter</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Replace CDN Tailwind with direct CSS to avoid production warning -->
+  <style>
+    /* Tailwind-like utility classes */
+    .hidden { display: none !important; }
+    .block { display: block !important; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .grid { display: grid; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-end { justify-content: flex-end; }
+    .flex-col { flex-direction: column; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .gap-8 { gap: 2rem; }
+    .gap-16 { gap: 4rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    .space-y-8 > * + * { margin-top: 2rem; }
+    .space-x-2 > * + * { margin-left: 0.5rem; }
+    .space-x-3 > * + * { margin-left: 0.75rem; }
+    .space-x-4 > * + * { margin-left: 1rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mb-10 { margin-bottom: 2.5rem; }
+    .mb-12 { margin-bottom: 3rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .mt-12 { margin-top: 3rem; }
+    .mr-1 { margin-right: 0.25rem; }
+    .mr-2 { margin-right: 0.5rem; }
+    .mr-3 { margin-right: 0.75rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .ml-3 { margin-left: 0.75rem; }
+    .ml-auto { margin-left: auto; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .p-2 { padding: 0.5rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .p-8 { padding: 2rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .pt-6 { padding-top: 1.5rem; }
+    .pt-8 { padding-top: 2rem; }
+    .pb-4 { padding-bottom: 1rem; }
+    .pb-8 { padding-bottom: 2rem; }
+    .pl-4 { padding-left: 1rem; }
+    .pr-4 { padding-right: 1rem; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .text-left { text-align: left; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .text-5xl { font-size: 3rem; line-height: 1; }
+    .text-6xl { font-size: 3.75rem; line-height: 1; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .italic { font-style: italic; }
+    .leading-relaxed { line-height: 1.625; }
+    .max-w-xs { max-width: 20rem; }
+    .max-w-sm { max-width: 24rem; }
+    .max-w-md { max-width: 28rem; }
+    .max-w-lg { max-width: 32rem; }
+    .max-w-xl { max-width: 36rem; }
+    .max-w-2xl { max-width: 42rem; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-4xl { max-width: 56rem; }
+    .max-w-5xl { max-width: 64rem; }
+    .max-w-6xl { max-width: 72rem; }
+    .max-w-full { max-width: 100%; }
+    .w-full { width: 100%; }
+    .w-3 { width: 0.75rem; }
+    .w-4 { width: 1rem; }
+    .w-6 { width: 1.5rem; }
+    .w-8 { width: 2rem; }
+    .w-10 { width: 2.5rem; }
+    .w-12 { width: 3rem; }
+    .w-14 { width: 3.5rem; }
+    .w-16 { width: 4rem; }
+    .w-20 { width: 5rem; }
+    .w-24 { width: 6rem; }
+    .w-32 { width: 8rem; }
+    .w-48 { width: 12rem; }
+    .h-3 { height: 0.75rem; }
+    .h-4 { height: 1rem; }
+    .h-6 { height: 1.5rem; }
+    .h-8 { height: 2rem; }
+    .h-10 { height: 2.5rem; }
+    .h-12 { height: 3rem; }
+    .h-14 { height: 3.5rem; }
+    .h-16 { height: 4rem; }
+    .h-20 { height: 5rem; }
+    .h-24 { height: 6rem; }
+    .h-32 { height: 8rem; }
+    .h-48 { height: 12rem; }
+    .aspect-square { aspect-ratio: 1 / 1; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-3xl { border-radius: 1.5rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-t { border-top-width: 1px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-dashed { border-style: dashed; }
+    .border-blush { border-color: var(--blush); }
+    .border-rose-gold { border-color: var(--rose-gold); }
+    .border-rose-gold\/30 { border-color: rgba(183, 110, 121, 0.3); }
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    .bg-white { background-color: white; }
+    .bg-blush { background-color: var(--blush); }
+    .bg-blush\/20 { background-color: rgba(232, 221, 212, 0.2); }
+    .bg-rose-gold\/10 { background-color: rgba(183, 110, 121, 0.1); }
+    .bg-rose-gold\/5 { background-color: rgba(183, 110, 121, 0.05); }
+    .bg-sage\/10 { background-color: rgba(125, 139, 111, 0.1); }
+    .bg-sage\/30 { background-color: rgba(125, 139, 111, 0.3); }
+    .bg-pale-pink\/40 { background-color: rgba(245, 198, 214, 0.4); }
+    .from-blush\/20 { --tw-gradient-from: rgba(232, 221, 212, 0.2); }
+    .to-pale-pink\/20 { --tw-gradient-to: rgba(245, 198, 214, 0.2); }
+    .hover\:bg-blush\/20:hover { background-color: rgba(232, 221, 212, 0.2); }
+    .hover\:scale-\[1\.02\]:hover { transform: scale(1.02); }
+    .hover\:scale-105:hover { transform: scale(1.05); }
+    .hover\:border-rose-gold\/60:hover { border-color: rgba(183, 110, 121, 0.6); }
+    .hover\:text-rose-gold:hover { color: var(--rose-gold); }
+    .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+    .transition-all { transition-property: all; }
+    .transition-colors { transition-property: background-color, border-color, color, fill, stroke; }
+    .transition-transform { transition-property: transform; }
+    .transition-opacity { transition-property: opacity; }
+    .duration-300 { transition-duration: 300ms; }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .sticky { position: sticky; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .inset-4 { top: 1rem; right: 1rem; bottom: 1rem; left: 1rem; }
+    .inset-y-0 { top: 0; bottom: 0; }
+    .top-0 { top: 0; }
+    .top-6 { top: 1.5rem; }
+    .top-24 { top: 6rem; }
+    .right-0 { right: 0; }
+    .right-6 { right: 1.5rem; }
+    .bottom-0 { bottom: 0; }
+    .left-0 { left: 0; }
+    .z-10 { z-index: 10; }
+    .z-50 { z-index: 50; }
+    .z-100 { z-index: 100; }
+    .z-1000 { z-index: 1000; }
+    .z-2000 { z-index: 2000; }
+    .z-2001 { z-index: 2001; }
+    .z-9999 { z-index: 9999; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-x-hidden { overflow-x: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .pointer-events-none { pointer-events: none; }
+    .pointer-events-auto { pointer-events: auto; }
+    .cursor-pointer { cursor: pointer; }
+    .cursor-default { cursor: default; }
+    .resize-none { resize: none; }
+    .resize-vertical { resize: vertical; }
+    .object-cover { object-fit: cover; }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .5; }
+    }
+    
+    @media (max-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
+    }
+    
+    @media (max-width: 640px) {
+      .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    }
+  </style>
+  
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -43,7 +252,429 @@
       font-family: 'Playfair Display', serif;
     }
     
-    /* NO button styles - NOT flying, not red */
+    /* ========== ENHANCED ANIMATIONS ========== */
+    
+    /* 1. Subtle background pulse */
+    @keyframes backgroundPulse {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, 
+        rgba(253, 248, 243, 0.8) 0%, 
+        rgba(232, 221, 212, 0.3) 25%, 
+        rgba(245, 198, 214, 0.2) 50%,
+        rgba(232, 221, 212, 0.3) 75%,
+        rgba(253, 248, 243, 0.8) 100%);
+      background-size: 400% 400%;
+      animation: backgroundPulse 20s ease infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    /* 2. Twinkling stars effect */
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0.1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(1.1);
+      }
+    }
+    
+    .twinkle {
+      position: fixed;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      animation: twinkle 3s infinite;
+    }
+    
+    /* 3. Floating leaves animation */
+    @keyframes floatLeaf {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100px) rotate(720deg) translateX(50px);
+        opacity: 0;
+      }
+    }
+    
+    .floating-leaf {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      font-size: 24px;
+      opacity: 0.3;
+      animation: floatLeaf linear forwards;
+    }
+    
+    /* 4. Gentle sway animation for cards */
+    @keyframes gentleSway {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-3px) rotate(0.5deg);
+      }
+      75% {
+        transform: translateY(2px) rotate(-0.5deg);
+      }
+    }
+    
+    .gentle-sway {
+      animation: gentleSway 8s ease-in-out infinite;
+    }
+    
+    /* 5. Typewriter effect for text */
+    @keyframes typewriter {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+    
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typewriter 3s steps(40, end);
+    }
+    
+    /* 6. Button shimmer effect */
+    @keyframes shimmer {
+      0% {
+        background-position: -200px 0;
+      }
+      100% {
+        background-position: calc(200px + 100%) 0;
+      }
+    }
+    
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+      );
+      transform: rotate(30deg);
+      animation: shimmer 3s infinite;
+    }
+    
+    /* 7. Glow effect for active elements */
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow: 0 0 5px rgba(183, 110, 121, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(183, 110, 121, 0.5);
+      }
+    }
+    
+    .glow-pulse {
+      animation: glowPulse 2s infinite;
+    }
+    
+    /* 8. Page transition animations */
+    @keyframes slideInRight {
+      from {
+        transform: translateX(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .slide-in-right {
+      animation: slideInRight 0.6s ease-out forwards;
+    }
+    
+    .slide-in-left {
+      animation: slideInLeft 0.6s ease-out forwards;
+    }
+    
+    .slide-in-up {
+      animation: slideInUp 0.6s ease-out forwards;
+    }
+    
+    /* 9. Bounce on hover */
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .bounce-on-hover:hover {
+      animation: bounce 0.5s;
+    }
+    
+    /* ========== ANIMATED EMOJIS ========== */
+    
+    /* Smirking emoji animation */
+    @keyframes smirk {
+      0%, 100% {
+        transform: rotate(0deg) scale(1);
+      }
+      25% {
+        transform: rotate(-5deg) scale(1.1);
+      }
+      50% {
+        transform: rotate(5deg) scale(1.05);
+      }
+      75% {
+        transform: rotate(-3deg) scale(1.08);
+      }
+    }
+    
+    .animated-smirk {
+      display: inline-block;
+      animation: smirk 3s infinite;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    
+    /* Winking emoji animation */
+    @keyframes wink {
+      0%, 100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(0.1);
+      }
+    }
+    
+    .animated-wink {
+      display: inline-block;
+      position: relative;
+      animation: wink 2s infinite;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    
+    /* Blushing emoji animation */
+    @keyframes blush {
+      0%, 100% {
+        filter: brightness(1);
+      }
+      50% {
+        filter: brightness(1.2) hue-rotate(10deg);
+      }
+    }
+    
+    .animated-blush {
+      display: inline-block;
+      animation: blush 4s infinite;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    
+    /* Heart eyes animation */
+    @keyframes heartEyes {
+      0%, 100% {
+        transform: scale(1);
+      }
+      25% {
+        transform: scale(1.2);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      75% {
+        transform: scale(1.15);
+      }
+    }
+    
+    .animated-heart-eyes {
+      display: inline-block;
+      animation: heartEyes 2s infinite;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    
+    /* Floating emoji particles */
+    @keyframes floatEmoji {
+      0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg) scale(1);
+        opacity: 0;
+      }
+    }
+    
+    .emoji-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 5;
+      font-size: 24px;
+      animation: floatEmoji linear forwards;
+      user-select: none;
+    }
+    
+    /* Emoji rain effect */
+    @keyframes emojiRain {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .emoji-rain {
+      position: fixed;
+      pointer-events: none;
+      z-index: 2;
+      animation: emojiRain linear forwards;
+    }
+    
+    /* Emoji pulse effect */
+    @keyframes emojiPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
+    }
+    
+    .emoji-pulse {
+      animation: emojiPulse 1.5s infinite;
+      display: inline-block;
+    }
+    
+    /* ========== COMPACT MEMORY LAYOUT ========== */
+    
+    /* Memory grid - more compact layout */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-height: 60vh;
+      overflow: hidden;
+      padding: 1rem;
+    }
+    
+    .memory-item {
+      aspect-ratio: 1;
+      max-height: 250px;
+      position: relative;
+    }
+    
+    .memory-image-container {
+      height: 100%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    /* Make sure textareas don't cause overflow */
+    .memory-textarea-container {
+      margin-top: 0.75rem;
+      max-height: 100px;
+    }
+    
+    /* Media queries for smaller screens */
+    @media (max-width: 768px) {
+      .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-height: 70vh;
+        gap: 1rem;
+      }
+      
+      .memory-item {
+        max-height: 200px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .memory-grid {
+        grid-template-columns: 1fr;
+        max-height: 80vh;
+      }
+      
+      .memory-item {
+        max-height: 180px;
+      }
+    }
+    
+    /* NO button styles */
     .no-btn {
       padding: 12px 24px !important;
       border-radius: 50px !important;
@@ -365,6 +996,31 @@
       line-height: 1.7;
     }
     
+    /* Memory textarea styles */
+    .memory-description {
+      display: block !important;
+      width: 100%;
+      min-height: 60px;
+      max-height: 80px;
+      padding: 10px;
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--deep-sage);
+      background: rgba(255, 255, 255, 0.9);
+      resize: vertical;
+      transition: all 0.3s ease;
+    }
+    
+    .memory-description:focus {
+      outline: none;
+      border-color: var(--rose-gold);
+      box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+    }
+    
+    /* ========== REST OF YOUR EXISTING STYLES ========== */
+    
     /* Completion states */
     .completion-checkmark {
       width: 24px;
@@ -517,29 +1173,6 @@
       animation: successPulse 1.5s ease-out;
     }
     
-    /* Memory textarea styles */
-    .memory-description {
-      display: block !important;
-      width: 100%;
-      min-height: 80px;
-      padding: 12px;
-      border: 1px solid rgba(183, 110, 121, 0.3);
-      border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: var(--deep-sage);
-      background: rgba(255, 255, 255, 0.9);
-      resize: vertical;
-      transition: all 0.3s ease;
-      margin-top: 1rem !important;
-    }
-    
-    .memory-description:focus {
-      outline: none;
-      border-color: var(--rose-gold);
-      box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
-    }
-    
     /* Preview container */
     .preview-container {
       position: fixed;
@@ -575,10 +1208,6 @@
       z-index: 1;
     }
     
-    .memory-container textarea {
-      pointer-events: auto !important;
-    }
-    
     /* Partner view fix */
     .view-only .memory-description {
       display: none !important;
@@ -608,6 +1237,58 @@
       max-width: 320px;
       animation: fadeIn 0.3s ease-out;
       font-family: 'Inter', sans-serif;
+    }
+    
+    /* Memory container fix - textarea should not be part of clickable area */
+    .memory-image-container:hover {
+      transform: scale(1.02);
+      border-color: rgba(183, 110, 121, 0.6) !important;
+    }
+    
+    .memory-textarea-container {
+      margin-top: 1rem;
+      pointer-events: auto !important;
+    }
+    
+    /* Settings panel for NO button phrases */
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+      z-index: 10000;
+      transition: right 0.3s ease;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .settings-panel.active {
+      right: 0;
+    }
+    
+    .settings-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      display: none;
+    }
+    
+    .settings-overlay.active {
+      display: block;
+    }
+    
+    /* Image compression indicator */
+    .compression-info {
+      font-size: 12px;
+      color: var(--sage);
+      margin-top: 0.5rem;
     }
     
     /* Mobile optimizations */
@@ -645,6 +1326,11 @@
         right: 16px;
         left: 16px;
         max-width: none;
+      }
+      
+      .settings-panel {
+        width: 100%;
+        right: -100%;
       }
     }
     
@@ -707,6 +1393,9 @@
   </style>
 </head>
 <body>
+  <!-- Animated Emoji Container -->
+  <div id="emoji-container"></div>
+  
   <!-- NO Button Container (Will be created dynamically) -->
   <div id="no-button-container"></div>
   
@@ -716,6 +1405,37 @@
   <!-- Progress Indicator -->
   <div class="progress-track">
     <div id="progress-fill" class="progress-fill"></div>
+  </div>
+  
+  <!-- Settings Panel for NO button phrases -->
+  <div id="settings-overlay" class="settings-overlay"></div>
+  <div id="settings-panel" class="settings-panel">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl elegant-font">NO Button Settings</h3>
+      <button id="close-settings" class="secondary-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <p class="subtle-text mb-4">Edit what appears when your partner clicks "NO" on the Valentine question:</p>
+    
+    <div id="no-phrases-list" class="space-y-3 mb-6"></div>
+    
+    <div class="flex gap-3">
+      <button id="add-phrase" class="secondary-btn flex-1">
+        <i class="fas fa-plus mr-2"></i>Add New
+      </button>
+      <button id="reset-phrases" class="secondary-btn flex-1">
+        <i class="fas fa-redo mr-2"></i>Reset to Default
+      </button>
+    </div>
+    
+    <div class="mt-6 p-4 rounded-lg bg-rose-gold/10">
+      <p class="text-sm subtle-text">
+        <i class="fas fa-lightbulb mr-2"></i>
+        These phrases will appear randomly when your partner clicks "NO" on the Valentine question screen.
+      </p>
+    </div>
   </div>
   
   <!-- Navigation Dots -->
@@ -796,7 +1516,7 @@
               <!-- Buttons Container -->
               <div class="flex flex-col gap-4" id="buttons-container">
                 <!-- Yes Button -->
-                <button id="yes-valentine-btn" class="primary-btn w-full transform hover:scale-105 transition-transform duration-300">
+                <button id="yes-valentine-btn" class="primary-btn w-full transform hover:scale-105 transition-transform duration-300 shimmer-btn bounce-on-hover">
                   <span class="flex items-center justify-center gap-3 text-xl">
                     <i class="fas fa-heart"></i>
                     Yes, With All My Heart!
@@ -815,8 +1535,8 @@
               <!-- Secret Message (appears after clicking No a few times) -->
               <div id="secret-message" class="hidden mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
                 <p class="subtle-text">
-                  <i class="fas fa-grin-wink mr-2"></i>
-                  I know you're just being shy! The "Yes" button is waiting patiently...
+                  <span class="animated-smirk">😏</span>
+                  <span class="ml-2">I know you're just being shy! The "Yes" button is waiting patiently...</span>
                 </p>
               </div>
               
@@ -828,11 +1548,11 @@
             
             <!-- Decorative Elements -->
             <div class="mt-12 flex items-center justify-center gap-6">
-              <div class="w-6 h-6 rounded-full bg-rose-gold/30"></div>
-              <div class="w-4 h-4 rounded-full bg-sage/30"></div>
-              <div class="w-8 h-8 rounded-full bg-pale-pink/40"></div>
-              <div class="w-4 h-4 rounded-full bg-sage/30"></div>
-              <div class="w-6 h-6 rounded-full bg-rose-gold/30"></div>
+              <div class="w-6 h-6 rounded-full bg-rose-gold/30 animated-smirk">😏</div>
+              <div class="w-4 h-4 rounded-full bg-sage/30 animated-wink">😉</div>
+              <div class="w-8 h-8 rounded-full bg-pale-pink/40 animated-blush">😊</div>
+              <div class="w-4 h-4 rounded-full bg-sage/30 animated-heart-eyes">😍</div>
+              <div class="w-6 h-6 rounded-full bg-rose-gold/30 emoji-pulse">💖</div>
             </div>
           </div>
         </div>
@@ -840,7 +1560,7 @@
     </section>
     
     <!-- Welcome Screen -->
-    <section id="welcome" class="section active">
+    <section id="welcome" class="section active gentle-sway">
       <div class="text-center max-w-3xl w-full fade-in">
         <div class="elegant-card mx-auto">
           <!-- Logo/Title -->
@@ -887,7 +1607,7 @@
             
             <!-- Start Button -->
             <div class="space-y-4">
-              <button id="start-btn" class="primary-btn w-full max-w-sm mx-auto">
+              <button id="start-btn" class="primary-btn w-full max-w-sm mx-auto shimmer-btn bounce-on-hover">
                 <span class="flex items-center justify-center gap-2">
                   <i class="fas fa-play"></i>
                   Begin Your Heart Map
@@ -897,6 +1617,17 @@
               <p class="text-sm subtle-text">
                 <i class="fas fa-info-circle mr-1"></i>
                 Follow the steps to create your love letter
+              </p>
+            </div>
+            
+            <!-- Settings Button (for NO button phrases) -->
+            <div class="mt-8 pt-6 border-t border-blush">
+              <button id="open-settings" class="secondary-btn bounce-on-hover">
+                <i class="fas fa-cog mr-2"></i>
+                Edit Valentine NO Button Phrases
+              </button>
+              <p class="text-xs subtle-text mt-2">
+                Customize what appears when your partner clicks "NO" on the Valentine question
               </p>
             </div>
           </div>
@@ -914,7 +1645,7 @@
             </p>
             
             <div class="space-y-4">
-              <button id="view-letter-btn" class="primary-btn w-full max-w-sm mx-auto">
+              <button id="view-letter-btn" class="primary-btn w-full max-w-sm mx-auto shimmer-btn bounce-on-hover">
                 <span class="flex items-center justify-center gap-2">
                   <i class="fas fa-heart"></i>
                   Open Your Love Letter
@@ -932,7 +1663,7 @@
     </section>
     
     <!-- Greeting Section -->
-    <section id="greeting" class="section">
+    <section id="greeting" class="section gentle-sway">
       <div class="max-w-2xl w-full fade-in">
         <div class="elegant-card">
           <!-- Partner View Header -->
@@ -978,11 +1709,11 @@
               
               <div class="pt-6 border-t border-blush">
                 <div class="flex items-center justify-between">
-                  <button data-section="welcome" class="secondary-btn">
+                  <button data-section="welcome" class="secondary-btn bounce-on-hover">
                     <i class="fas fa-arrow-left mr-2"></i>Back
                   </button>
                   
-                  <button data-section="letter" class="primary-btn" id="next-to-letter">
+                  <button data-section="letter" class="primary-btn shimmer-btn bounce-on-hover" id="next-to-letter">
                     Continue to Letter
                     <i class="fas fa-arrow-right ml-2"></i>
                   </button>
@@ -997,7 +1728,7 @@
               <h3 class="text-3xl script-font gradient-text" id="letter-salutation-display">My Dearest <span id="partner-name-display-text">[Name]</span></h3>
             </div>
             <div class="text-center mt-12">
-              <button data-section="letter" class="primary-btn">
+              <button data-section="letter" class="primary-btn shimmer-btn bounce-on-hover">
                 Read Your Love Letter
                 <i class="fas fa-arrow-right ml-2"></i>
               </button>
@@ -1008,7 +1739,7 @@
     </section>
     
     <!-- Letter Section -->
-    <section id="letter" class="section">
+    <section id="letter" class="section gentle-sway">
       <div class="max-w-3xl w-full fade-in">
         <div class="glass-card">
           <!-- Partner View Header -->
@@ -1117,21 +1848,21 @@
             <!-- Navigation -->
             <div class="flex items-center justify-between pt-8">
               <!-- Creator Navigation -->
-              <button data-section="greeting" class="secondary-btn creator-only">
+              <button data-section="greeting" class="secondary-btn creator-only bounce-on-hover">
                 <i class="fas fa-arrow-left mr-2"></i>Back
               </button>
               
-              <button data-section="memories" class="primary-btn creator-only">
+              <button data-section="memories" class="primary-btn creator-only shimmer-btn bounce-on-hover">
                 Add Memories
                 <i class="fas fa-arrow-right ml-2"></i>
               </button>
               
               <!-- Partner Navigation -->
-              <button data-section="greeting" class="secondary-btn partner-only">
+              <button data-section="greeting" class="secondary-btn partner-only bounce-on-hover">
                 <i class="fas fa-arrow-left mr-2"></i>Previous
               </button>
               
-              <button data-section="memories" class="primary-btn partner-only">
+              <button data-section="memories" class="primary-btn partner-only shimmer-btn bounce-on-hover">
                 View Memories
                 <i class="fas fa-arrow-right ml-2"></i>
               </button>
@@ -1141,122 +1872,102 @@
       </div>
     </section>
     
-    <!-- Memories Section -->
+    <!-- Memories Section - COMPACT FIXED STRUCTURE -->
     <section id="memories" class="section">
       <div class="max-w-6xl w-full fade-in">
         <div class="glass-card">
           <!-- Partner View Header -->
-          <div class="mb-10 text-center partner-only">
-            <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
-            <p class="subtle-text mb-6">Special memories we've shared together</p>
+          <div class="mb-6 text-center partner-only">
+            <h2 class="text-3xl elegant-font mb-3">Our Treasured Moments</h2>
+            <p class="subtle-text mb-4">Special memories we've shared together</p>
           </div>
           
           <!-- Creator View Header -->
           <div class="creator-only">
-            <div class="mb-10 text-center">
-              <div class="inline-flex items-center gap-2 mb-4">
+            <div class="mb-6 text-center">
+              <div class="inline-flex items-center gap-2 mb-3">
                 <span class="completion-checkmark">3</span>
                 <span class="text-sm font-medium text-sage">STEP 3 OF 4</span>
               </div>
-              <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
-              <p class="subtle-text mb-6">Add photos and memories that tell our story</p>
+              <h2 class="text-3xl elegant-font mb-3">Our Treasured Moments</h2>
+              <p class="subtle-text mb-4">Add photos and memories that tell our story</p>
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <!-- COMPACT Memory Grid -->
+          <div class="memory-grid mb-8">
             <!-- Memory 1 -->
-            <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-1">
-                <div class="text-center">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
-                    <i class="fas fa-camera text-white text-xl"></i>
+            <div class="memory-item">
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-1">
+                <div class="text-center p-4">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                    <i class="fas fa-camera text-white text-lg"></i>
                   </div>
-                  <h4 class="font-medium mb-2">Our First Memory</h4>
-                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
+                  <h4 class="font-medium mb-1">Our First Memory</h4>
+                  <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-1-display">
-                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
-                  <div class="text-center p-6">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
-                      <i class="fas fa-heart text-white text-xl"></i>
-                    </div>
-                    <h4 class="font-medium mb-2">Our First Memory</h4>
-                  </div>
-                </div>
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-1-display">
+                <!-- Content will be added dynamically -->
               </div>
-              <div class="mt-4">
+              <div class="memory-textarea-container">
                 <textarea 
                   id="memory-1-text"
                   class="memory-description creator-only"
                   placeholder="Describe this special moment..."
                   rows="2"
                 ></textarea>
-                <div id="memory-1-text-display" class="partner-only text-center subtle-text p-3"></div>
+                <div id="memory-1-text-display" class="partner-only text-center subtle-text p-2 text-sm"></div>
               </div>
             </div>
             
             <!-- Memory 2 -->
-            <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-2">
-                <div class="text-center">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
-                    <i class="fas fa-heart text-white text-xl"></i>
+            <div class="memory-item">
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-2">
+                <div class="text-center p-4">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
+                    <i class="fas fa-heart text-white text-lg"></i>
                   </div>
-                  <h4 class="font-medium mb-2">A Happy Moment</h4>
-                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
+                  <h4 class="font-medium mb-1">A Happy Moment</h4>
+                  <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-2-display">
-                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
-                  <div class="text-center p-6">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
-                      <i class="fas fa-heart text-white text-xl"></i>
-                    </div>
-                    <h4 class="font-medium mb-2">A Happy Moment</h4>
-                  </div>
-                </div>
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-2-display">
+                <!-- Content will be added dynamically -->
               </div>
-              <div class="mt-4">
+              <div class="memory-textarea-container">
                 <textarea 
                   id="memory-2-text"
                   class="memory-description creator-only"
                   placeholder="What made this day special?"
                   rows="2"
                 ></textarea>
-                <div id="memory-2-text-display" class="partner-only text-center subtle-text p-3"></div>
+                <div id="memory-2-text-display" class="partner-only text-center subtle-text p-2 text-sm"></div>
               </div>
             </div>
             
             <!-- Memory 3 -->
-            <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-3">
-                <div class="text-center">
-                  <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
-                    <i class="fas fa-star text-white text-xl"></i>
+            <div class="memory-item">
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-3">
+                <div class="text-center p-4">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
+                    <i class="fas fa-star text-white text-lg"></i>
                   </div>
-                  <h4 class="font-medium mb-2">Looking Forward</h4>
-                  <p class="text-sm subtle-text mb-4">Click to add a photo</p>
+                  <h4 class="font-medium mb-1">Looking Forward</h4>
+                  <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-3-display">
-                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
-                  <div class="text-center p-6">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
-                      <i class="fas fa-star text-white text-xl"></i>
-                    </div>
-                    <h4 class="font-medium mb-2">Looking Forward</h4>
-                  </div>
-                </div>
+              <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-3-display">
+                <!-- Content will be added dynamically -->
               </div>
-              <div class="mt-4">
+              <div class="memory-textarea-container">
                 <textarea 
                   id="memory-3-text"
                   class="memory-description creator-only"
                   placeholder="Our dreams for the future..."
                   rows="2"
                 ></textarea>
-                <div id="memory-3-text-display" class="partner-only text-center subtle-text p-3"></div>
+                <div id="memory-3-text-display" class="partner-only text-center subtle-text p-2 text-sm"></div>
               </div>
             </div>
           </div>
@@ -1276,22 +1987,22 @@
                     <div id="song-title" class="font-medium">No song selected</div>
                     <div id="song-status" class="text-sm subtle-text">Upload an MP3 file</div>
                   </div>
-                  <button id="upload-song-btn" class="secondary-btn editable-field creator-only">
+                  <button id="upload-song-btn" class="secondary-btn editable-field creator-only bounce-on-hover">
                     <i class="fas fa-upload mr-2"></i>Upload
                   </button>
                 </div>
                 
                 <div class="flex items-center justify-center gap-4">
-                  <button id="prev-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field">
+                  <button id="prev-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field bounce-on-hover">
                     <i class="fas fa-step-backward"></i>
                   </button>
                   
-                  <button id="play-btn" class="w-14 h-14 rounded-full primary-btn flex items-center justify-center editable-field">
+                  <button id="play-btn" class="w-14 h-14 rounded-full primary-btn flex items-center justify-center editable-field shimmer-btn bounce-on-hover">
                     <i id="play-icon" class="fas fa-play"></i>
                     <i id="pause-icon" class="fas fa-pause hidden"></i>
                   </button>
                   
-                  <button id="next-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field">
+                  <button id="next-btn" class="w-10 h-10 rounded-full border border-blush flex items-center justify-center hover:bg-blush/20 editable-field bounce-on-hover">
                     <i class="fas fa-step-forward"></i>
                   </button>
                 </div>
@@ -1302,21 +2013,21 @@
           <!-- Navigation -->
           <div class="flex items-center justify-between pt-8 border-t border-blush">
             <!-- Creator Navigation -->
-            <button data-section="letter" class="secondary-btn creator-only">
+            <button data-section="letter" class="secondary-btn creator-only bounce-on-hover">
               <i class="fas fa-arrow-left mr-2"></i>Back to Letter
             </button>
             
-            <button data-section="final" class="primary-btn creator-only">
+            <button data-section="final" class="primary-btn creator-only shimmer-btn bounce-on-hover">
               Preview & Share
               <i class="fas fa-arrow-right ml-2"></i>
             </button>
             
             <!-- Partner Navigation -->
-            <button data-section="letter" class="secondary-btn partner-only">
+            <button data-section="letter" class="secondary-btn partner-only bounce-on-hover">
               <i class="fas fa-arrow-left mr-2"></i>Back
             </button>
             
-            <button data-section="final" class="primary-btn partner-only">
+            <button data-section="final" class="primary-btn partner-only shimmer-btn bounce-on-hover">
               Continue
               <i class="fas fa-arrow-right ml-2"></i>
             </button>
@@ -1326,7 +2037,7 @@
     </section>
     
     <!-- Final & Share Section -->
-    <section id="final" class="section">
+    <section id="final" class="section gentle-sway">
       <div class="max-w-3xl w-full fade-in">
         <div class="elegant-card">
           <!-- Partner View -->
@@ -1339,9 +2050,13 @@
               <p class="subtle-text text-lg mb-6">For exploring this Heart Map made just for you</p>
               
               <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
-                <h3 class="text-xl elegant-font mb-4">💖 Create Your Own Response 💖</h3>
+                <h3 class="text-xl elegant-font mb-4">
+                  <span class="animated-smirk">😏</span> 
+                  Create Your Own Response 
+                  <span class="animated-blush">😊</span>
+                </h3>
                 <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
-                <button id="create-your-own-btn" class="primary-btn">
+                <button id="create-your-own-btn" class="primary-btn shimmer-btn bounce-on-hover">
                   <i class="fas fa-heart mr-2"></i>
                   Create Your Heart Map
                 </button>
@@ -1397,11 +2112,15 @@
                     <i class="fas fa-check-circle text-sage"></i>
                     <span>Personal soundtrack included</span>
                   </div>
+                  <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-sage"></i>
+                    <span>Interactive Valentine question with NO button fun</span>
+                  </div>
                 </div>
                 
                 <!-- Live Preview Button -->
                 <div class="mt-8 pt-6 border-t border-blush">
-                  <button id="live-preview-btn" class="primary-btn w-full">
+                  <button id="live-preview-btn" class="primary-btn w-full shimmer-btn bounce-on-hover">
                     <i class="fas fa-eye mr-2"></i>
                     View Live Preview
                   </button>
@@ -1429,12 +2148,12 @@
               <h3 class="text-xl elegant-font text-center">Share Your Heart Map</h3>
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3 editable-field">
+                <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3 editable-field bounce-on-hover">
                   <i class="fab fa-whatsapp text-green-500 text-lg"></i>
                   Share via WhatsApp
                 </button>
                 
-                <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3 editable-field">
+                <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3 editable-field bounce-on-hover">
                   <i class="fas fa-link text-rose-gold text-lg"></i>
                   Copy Link
                 </button>
@@ -1448,31 +2167,26 @@
               </div>
             </div>
             
-            <!-- Partner's View Section -->
-            <div id="partner-view-section" class="hidden">
-              <div class="text-center pt-8 border-t border-blush">
-                <p class="subtle-text mb-4">You've received this beautiful Heart Map from <span id="partner-sender-name" class="font-medium">[Sender]</span></p>
-                <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
-                  <h3 class="text-xl elegant-font mb-4">💖 A Message From Your Valentine 💖</h3>
-                  <p id="partner-preview-text" class="subtle-text italic"></p>
-                </div>
-                <button id="create-response-btn" class="primary-btn">
-                  <i class="fas fa-heart mr-2"></i>
-                  Create Your Response Heart Map
-                </button>
-                <p class="text-xs subtle-text mt-3">Send a heartfelt response to complete the circle of love</p>
-              </div>
+            <!-- Settings Button -->
+            <div class="mt-6 text-center">
+              <button id="edit-no-phrases" class="secondary-btn bounce-on-hover">
+                <i class="fas fa-cog mr-2"></i>
+                Edit Valentine NO Button Phrases
+              </button>
+              <p class="text-xs subtle-text mt-2">
+                Customize what appears when your partner clicks "NO" on the Valentine question
+              </p>
             </div>
             
             <!-- Final Navigation -->
             <div class="flex items-center justify-between pt-8 border-t border-blush">
-              <button data-section="memories" class="secondary-btn">
+              <button data-section="memories" class="secondary-btn bounce-on-hover">
                 <i class="fas fa-edit mr-2"></i>Edit
               </button>
               
               <div class="flex items-center gap-2 subtle-text">
                 <i class="fas fa-info-circle"></i>
-                <span class="text-sm">All data is saved locally in your browser</span>
+                <span class="text-sm">Data is automatically saved</span>
               </div>
             </div>
           </div>
@@ -1504,22 +2218,42 @@
           closing: ''
         },
         memories: [{}, {}, {}],
-        song: null
+        song: null,
+        noButtonPhrases: [
+          "No Pushing Me Away 😏",
+          "Maybe later 🤪",
+          "Try Again 😛",
+          "Are You Sure? 🥺",
+          "Can we talk first? 😭",
+          "Please Think Again 😭",
+          "Are You Perhaps Shy? 🤭",
+          "Nah, Not This Easily 😏",
+          "Let's think thoroughly 🥺 ",
+          "Come on, baby 🥺",
+          "You Are Tired Of Saying No 😹"
+        ]
       },
       save() {
-        // Compress large data before saving
+        // Compress images before saving
         const dataToSave = {
           partnerName: this.data.partnerName,
           yourName: this.data.yourName,
           letter: this.data.letter,
           memories: this.data.memories.map(mem => {
-            // Don't save image data to localStorage if it's too big
-            if (mem && mem.image && mem.image.length > 50000) { // 50KB threshold
-              return { caption: mem.caption || '', hasImage: true };
+            if (mem && mem.image) {
+              // Compress image if it's too large
+              const compressed = this.compressImageData(mem.image);
+              return {
+                caption: mem.caption || '',
+                image: compressed,
+                originalSize: mem.image.length,
+                compressedSize: compressed.length
+              };
             }
-            return mem || {};
+            return { caption: mem.caption || '' };
           }),
-          song: this.data.song ? { name: this.data.song.name } : null
+          song: this.data.song ? { name: this.data.song.name } : null,
+          noButtonPhrases: this.data.noButtonPhrases
         };
         
         try {
@@ -1534,21 +2268,51 @@
             ...dataToSave,
             memories: dataToSave.memories.map(mem => ({ caption: mem.caption || '' }))
           };
-          localStorage.setItem('heartMapData', JSON.stringify(dataWithoutImages));
-          return this.generateShareId();
+          try {
+            localStorage.setItem('heartMapData', JSON.stringify(dataWithoutImages));
+            return this.generateShareId();
+          } catch (e2) {
+            // Last resort: save only essential data
+            const essentialData = {
+              partnerName: dataToSave.partnerName,
+              yourName: dataToSave.yourName,
+              letter: dataToSave.letter,
+              noButtonPhrases: dataToSave.noButtonPhrases
+            };
+            localStorage.setItem('heartMapData', JSON.stringify(essentialData));
+            return null;
+          }
         }
+      },
+      compressImageData(imageData) {
+        // Simple image compression by reducing quality
+        if (imageData.length > 100000) { // If larger than 100KB
+          // For base64 images, we can't easily compress them in browser
+          // So we'll just store a placeholder for large images
+          return imageData.substring(0, 50000) + "...[COMPRESSED]";
+        }
+        return imageData;
       },
       load() {
         const saved = localStorage.getItem('heartMapData');
         const completed = localStorage.getItem('heartMapCompleted');
         const creator = localStorage.getItem('heartMapCreator');
+        
         if (saved) {
           try {
-            this.data = JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+            this.data = {
+              ...this.data, // Keep defaults
+              ...parsed,    // Override with saved data
+              // Ensure all arrays exist
+              memories: parsed.memories || [{}, {}, {}],
+              noButtonPhrases: parsed.noButtonPhrases || this.data.noButtonPhrases
+            };
           } catch (e) {
             console.error('Error parsing saved data:', e);
           }
         }
+        
         if (completed) this.completedSections = new Set(JSON.parse(completed));
         if (creator) this.isCreator = creator === 'true';
         return this;
@@ -1565,31 +2329,55 @@
             closing: ''
           },
           memories: [{}, {}, {}],
-          song: null
+          song: null,
+          noButtonPhrases: [
+            "No Pushing Me Away 😏",
+            "Maybe later 🤪",
+            "Try Again 😛",
+            "Are You Sure? 🥺",
+            "Can we talk first? 😭",
+            "Please Think Again 😭",
+            "Are You Perhaps Shy? 🤭",
+            "Nah, Not This Easily 😏",
+            "Let's think thoroughly 🥺 ",
+            "Come on, baby 🥺",
+            "You Are Tired Of Saying No 😹"
+          ]
         };
         this.completedSections = new Set(['welcome']);
         this.isCreator = true;
         this.save();
       },
       generateShareId() {
-        // Generate a unique ID for sharing
-        const shareId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-        localStorage.setItem('heartMapShareId', shareId);
-        
-        // Save the current data with this ID
-        const shareData = {
-          id: shareId,
-          data: JSON.stringify(this.data),
-          completed: JSON.stringify([...this.completedSections]),
-          timestamp: Date.now()
-        };
-        
-        localStorage.setItem(`heartMap_${shareId}`, JSON.stringify(shareData));
-        
-        // Clean up old shares
-        this.cleanupOldShares();
-        
-        return shareId;
+        try {
+          // Clean up old shares first
+          this.cleanupOldShares();
+          
+          // Generate a unique ID for sharing
+          const shareId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+          localStorage.setItem('heartMapShareId', shareId);
+          
+          // Save minimal data for sharing (no images)
+          const shareData = {
+            id: shareId,
+            data: JSON.stringify({
+              partnerName: this.data.partnerName,
+              yourName: this.data.yourName,
+              letter: this.data.letter,
+              memories: this.data.memories.map(mem => ({ caption: mem.caption || '' })),
+              noButtonPhrases: this.data.noButtonPhrases
+            }),
+            completed: JSON.stringify([...this.completedSections]),
+            timestamp: Date.now()
+          };
+          
+          localStorage.setItem(`heartMap_${shareId}`, JSON.stringify(shareData));
+          
+          return shareId;
+        } catch (e) {
+          console.error('Error generating share ID:', e);
+          return null;
+        }
       },
       loadFromShareId(shareId) {
         const shareKey = `heartMap_${shareId}`;
@@ -1600,7 +2388,12 @@
             const parsed = JSON.parse(shareData);
             
             if (parsed.data) {
-              this.data = JSON.parse(parsed.data);
+              const loadedData = JSON.parse(parsed.data);
+              this.data = {
+                ...this.data,
+                ...loadedData,
+                memories: loadedData.memories || [{}, {}, {}]
+              };
             }
             if (parsed.completed) {
               this.completedSections = new Set(JSON.parse(parsed.completed));
@@ -1621,45 +2414,258 @@
         
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key && key.startsWith('heartMap_') && key !== 'heartMapData' && 
-              key !== 'heartMapCompleted' && key !== 'heartMapCreator' && key !== 'heartMapShareId') {
+          if (key && key.startsWith('heartMap_')) {
             try {
               const data = JSON.parse(localStorage.getItem(key));
               if (data.timestamp && data.timestamp < oneDayAgo) {
                 localStorage.removeItem(key);
               }
             } catch (e) {
-              // Ignore errors
+              // Remove corrupted entries
+              localStorage.removeItem(key);
             }
           }
         }
       }
     };
 
-    // List of NO button phrases
-    const noButtonPhrases = [
-      "No Pushing Me Away 😏",
-      "Maybe later 🤪",
-      "Try Again 😛",
-      "Are You Sure? 🥺",
-      "Can we talk first? 😭",
-      "Please Think Again 😭",
-      "Are You Perhaps Shy? 🤭",
-      "Nah, Not This Easily 😏",
-      "Let's think thoroughly 🥺 ",
-      "Come on, baby 🥺",
-      "You Are Tired Of Saying No 😹"
-    ];
-    
     // Track NO button state
     let noButtonClickCount = 0;
     let isNoButtonFloating = false;
     let currentNoButton = null;
     let currentMemoryIndex = 0;
     
+    // ========== ENHANCED ANIMATIONS FUNCTIONS ==========
+    
+    function initEnhancedAnimations() {
+      // Create twinkling stars
+      createTwinklingStars();
+      setInterval(createTwinklingStars, 3000);
+      
+      // Create floating leaves
+      createFloatingLeaves();
+      setInterval(createFloatingLeaves, 4000);
+      
+      // Create animated emojis
+      createAnimatedEmojis();
+      setInterval(createAnimatedEmojis, 5000);
+      
+      // Add gentle sway to cards
+      document.querySelectorAll('.elegant-card, .glass-card').forEach((card, index) => {
+        card.classList.add('gentle-sway');
+        card.style.animationDelay = `${index * 0.2}s`;
+      });
+      
+      // Add glow pulse to active navigation dots
+      document.querySelectorAll('.nav-dot.active').forEach(dot => {
+        dot.classList.add('glow-pulse');
+      });
+      
+      // Add hover animations to buttons
+      document.querySelectorAll('.primary-btn, .secondary-btn').forEach(btn => {
+        btn.classList.add('bounce-on-hover');
+        if (btn.classList.contains('primary-btn')) {
+          btn.classList.add('shimmer-btn');
+        }
+      });
+    }
+    
+    function createTwinklingStars() {
+      const container = document.getElementById('floating-container');
+      
+      for (let i = 0; i < 3; i++) {
+        const star = document.createElement('div');
+        star.className = 'twinkle';
+        
+        const size = Math.random() * 3 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.opacity = Math.random() * 0.3 + 0.1;
+        star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        
+        container.appendChild(star);
+        setTimeout(() => star.remove(), 6000);
+      }
+    }
+    
+    function createFloatingLeaves() {
+      const container = document.getElementById('floating-container');
+      const leaves = ['🍁', '🌿', '🦋', '🌸'];
+      
+      for (let i = 0; i < 2; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'floating-leaf';
+        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        
+        leaf.style.left = `${Math.random() * 100}vw`;
+        leaf.style.fontSize = `${Math.random() * 20 + 16}px`;
+        leaf.style.color = getRandomGreen();
+        leaf.style.animationDuration = `${Math.random() * 15 + 20}s`;
+        
+        container.appendChild(leaf);
+        setTimeout(() => leaf.remove(), 30000);
+      }
+    }
+    
+    function createAnimatedEmojis() {
+      const container = document.getElementById('emoji-container');
+      const emojis = ['🌹', '🦋', '🌸', '🌿', '🍁', '🍀'];
+      
+      for (let i = 0; i < 4; i++) {
+        const emoji = document.createElement('div');
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.className = 'emoji-particle';
+        emoji.textContent = randomEmoji;
+        
+        // Add specific animation class based on emoji
+        if (randomEmoji === '😏') emoji.classList.add('animated-smirk');
+        if (randomEmoji === '😉') emoji.classList.add('animated-wink');
+        if (randomEmoji === '😊') emoji.classList.add('animated-blush');
+        if (randomEmoji === '😍') emoji.classList.add('animated-heart-eyes');
+        if (randomEmoji.includes('💖') || randomEmoji.includes('💕') || randomEmoji.includes('💘') || randomEmoji.includes('💝')) {
+          emoji.classList.add('emoji-pulse');
+        }
+        
+        emoji.style.left = `${Math.random() * 100}vw`;
+        emoji.style.fontSize = `${Math.random() * 24 + 20}px`;
+        emoji.style.color = getRandomPink();
+        emoji.style.animationDuration = `${Math.random() * 15 + 10}s`;
+        
+        // Make some emojis interactive
+        if (Math.random() > 0.5) {
+          emoji.style.cursor = 'pointer';
+          emoji.style.pointerEvents = 'auto';
+          emoji.addEventListener('click', () => {
+            // Create a burst effect when clicked
+            createEmojiBurst(emoji.textContent, emoji.getBoundingClientRect().left, emoji.getBoundingClientRect().top);
+            emoji.remove();
+          });
+        }
+        
+        container.appendChild(emoji);
+        setTimeout(() => {
+          if (emoji.parentElement === container) {
+            container.removeChild(emoji);
+          }
+        }, 30000);
+      }
+    }
+    
+    function createEmojiBurst(emoji, x, y) {
+      const container = document.getElementById('emoji-container');
+      
+      for (let i = 0; i < 8; i++) {
+        const burstEmoji = document.createElement('div');
+        burstEmoji.className = 'emoji-particle';
+        burstEmoji.textContent = emoji;
+        burstEmoji.style.left = `${x}px`;
+        burstEmoji.style.top = `${y}px`;
+        burstEmoji.style.fontSize = '20px';
+        burstEmoji.style.animationDuration = '1.5s';
+        burstEmoji.style.animationTimingFunction = 'ease-out';
+        
+        // Random direction
+        const angle = (i / 8) * Math.PI * 2;
+        const distance = 100;
+        burstEmoji.style.setProperty('--end-x', `${Math.cos(angle) * distance}px`);
+        burstEmoji.style.setProperty('--end-y', `${Math.sin(angle) * distance}px`);
+        
+        // Custom animation for burst
+        burstEmoji.style.animation = `burst 1.5s ease-out forwards`;
+        
+        // Define burst animation
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes burst {
+            0% {
+              transform: translate(0, 0) scale(1);
+              opacity: 1;
+            }
+            100% {
+              transform: translate(var(--end-x), var(--end-y)) scale(0);
+              opacity: 0;
+            }
+          }
+        `;
+        document.head.appendChild(style);
+        
+        container.appendChild(burstEmoji);
+        setTimeout(() => burstEmoji.remove(), 1500);
+      }
+    }
+    
+    function getRandomPink() {
+      const pinks = ['#B76E79', '#C9A9A6', '#E8B4B8', '#F5C6D6'];
+      return pinks[Math.floor(Math.random() * pinks.length)];
+    }
+    
+    function getRandomGreen() {
+      const greens = ['#7D8B6F', '#5C6B4F', '#6B7B5E', '#8A9B7C', '#4A5D3E'];
+      return greens[Math.floor(Math.random() * greens.length)];
+    }
+    
+    function navigateToSectionWithAnimation(sectionId) {
+      const currentSection = document.getElementById(HeartMapState.currentSection);
+      const newSection = document.getElementById(sectionId);
+      
+      if (!currentSection || !newSection) return;
+      
+      // Add exit animation
+      currentSection.classList.add('fade-out');
+      
+      // After fade out, hide current and show new with entrance animation
+      setTimeout(() => {
+        // Hide all sections
+        document.querySelectorAll('.section').forEach(section => {
+          section.classList.remove('active');
+          section.classList.remove('fade-in');
+          section.classList.remove('fade-out');
+          section.classList.remove('slide-in-right', 'slide-in-left', 'slide-in-up');
+        });
+        
+        // Show new section with entrance animation
+        newSection.classList.add('active');
+        
+        // Determine direction for slide animation
+        const sections = ['valentine-question', 'welcome', 'greeting', 'letter', 'memories', 'final'];
+        const currentIndex = sections.indexOf(HeartMapState.currentSection);
+        const newIndex = sections.indexOf(sectionId);
+        
+        if (newIndex > currentIndex) {
+          newSection.classList.add('slide-in-right');
+        } else if (newIndex < currentIndex) {
+          newSection.classList.add('slide-in-left');
+        } else {
+          newSection.classList.add('slide-in-up');
+        }
+        
+        HeartMapState.currentSection = sectionId;
+        
+        // Mark as completed
+        if (sectionId !== 'valentine-question' && !HeartMapState.completedSections.has(sectionId)) {
+          HeartMapState.completedSections.add(sectionId);
+          HeartMapState.save();
+        }
+        
+        updateNavigationDots();
+        updateProgress();
+        
+        // Update glow pulse on active nav dot
+        document.querySelectorAll('.nav-dot').forEach(dot => {
+          dot.classList.remove('glow-pulse');
+        });
+        const activeDot = document.querySelector(`.nav-dot[data-section="${sectionId}"]`);
+        if (activeDot) activeDot.classList.add('glow-pulse');
+        
+      }, 500); // Match the fade-out animation duration
+    }
+    
     // ========== INITIALIZATION ==========
     document.addEventListener('DOMContentLoaded', function() {
-      // Cleanup old data first
+      // Clean up localStorage first
       cleanupLocalStorage();
       
       // Load saved state
@@ -1681,9 +2687,12 @@
           updatePartnerView();
           
           // Set up partner mode navigation
-          document.getElementById('view-letter-btn').addEventListener('click', () => {
-            navigateToSection('greeting');
-          });
+          const viewLetterBtn = document.getElementById('view-letter-btn');
+          if (viewLetterBtn) {
+            viewLetterBtn.addEventListener('click', () => {
+              navigateToSectionWithAnimation('greeting');
+            });
+          }
           
           // Set current section to valentine question
           HeartMapState.currentSection = 'valentine-question';
@@ -1708,7 +2717,7 @@
       }
       
       // Initialize components
-      initFloatingElements();
+      initEnhancedAnimations();
       initNavigation();
       initFormBindings();
       initMediaUpload();
@@ -1717,6 +2726,7 @@
       initShareFunctions();
       initPreviewFunctions();
       initPreviewUpdates();
+      initSettingsPanel();
       
       // Update UI based on state
       updateUIFromState();
@@ -1725,15 +2735,15 @@
       // Show the current section
       showCurrentSection();
       
-      console.log('Heart Map initialized with fixes');
+      console.log('Heart Map initialized with enhanced animations!');
     });
     
     // ========== CLEANUP LOCALSTORAGE ==========
     function cleanupLocalStorage() {
       const keysToKeep = ['heartMapData', 'heartMapCompleted', 'heartMapCreator', 'heartMapShareId'];
       
-      // Remove all image blobs that might be clogging storage
-      for (let i = 0; i < localStorage.length; i++) {
+      // Clean up old data
+      for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i);
         if (key && (key.startsWith('blob:') || 
             (key.startsWith('heartMap_') && !keysToKeep.includes(key)))) {
@@ -1744,10 +2754,115 @@
               localStorage.removeItem(key);
             }
           } catch (e) {
+            // Remove corrupted entries
             localStorage.removeItem(key);
           }
         }
       }
+    }
+    
+    // ========== SETTINGS PANEL (NO Button Phrases) ==========
+    function initSettingsPanel() {
+      const openSettingsBtn = document.getElementById('open-settings');
+      const editNoPhrasesBtn = document.getElementById('edit-no-phrases');
+      const closeSettingsBtn = document.getElementById('close-settings');
+      const settingsOverlay = document.getElementById('settings-overlay');
+      const settingsPanel = document.getElementById('settings-panel');
+      const addPhraseBtn = document.getElementById('add-phrase');
+      const resetPhrasesBtn = document.getElementById('reset-phrases');
+      
+      // Open settings panel
+      function openSettings() {
+        settingsOverlay.classList.add('active');
+        settingsPanel.classList.add('active');
+        loadNoPhrases();
+      }
+      
+      // Close settings panel
+      function closeSettings() {
+        settingsOverlay.classList.remove('active');
+        settingsPanel.classList.remove('active');
+      }
+      
+      // Load phrases into editor
+      function loadNoPhrases() {
+        const phrasesList = document.getElementById('no-phrases-list');
+        phrasesList.innerHTML = '';
+        
+        HeartMapState.data.noButtonPhrases.forEach((phrase, index) => {
+          const phraseDiv = document.createElement('div');
+          phraseDiv.className = 'flex items-center gap-2';
+          phraseDiv.innerHTML = `
+            <input type="text" 
+                   class="flex-1 p-2 border border-blush rounded-lg focus:outline-none focus:border-rose-gold" 
+                   value="${phrase.replace(/"/g, '&quot;')}"
+                   data-index="${index}">
+            <button class="w-8 h-8 rounded-full bg-rose-gold/10 text-rose-gold flex items-center justify-center hover:bg-rose-gold/20 remove-phrase" data-index="${index}">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          phrasesList.appendChild(phraseDiv);
+        });
+        
+        // Add event listeners to inputs
+        phrasesList.querySelectorAll('input').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            HeartMapState.data.noButtonPhrases[index] = e.target.value;
+            HeartMapState.save();
+          });
+        });
+        
+        // Add event listeners to remove buttons
+        phrasesList.querySelectorAll('.remove-phrase').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.closest('button').dataset.index);
+            HeartMapState.data.noButtonPhrases.splice(index, 1);
+            HeartMapState.save();
+            loadNoPhrases(); // Reload list
+          });
+        });
+      }
+      
+      // Add new phrase
+      addPhraseBtn.addEventListener('click', () => {
+        HeartMapState.data.noButtonPhrases.push('New phrase...');
+        HeartMapState.save();
+        loadNoPhrases();
+      });
+      
+      // Reset to default phrases
+      resetPhrasesBtn.addEventListener('click', () => {
+        HeartMapState.data.noButtonPhrases = [
+          "No Pushing Me Away 😏",
+          "Maybe later 🤪",
+          "Try Again 😛",
+          "Are You Sure? 🥺",
+          "Pleaseeee 😭",
+          "Don't Punish Me Like This!!😭",
+          "Are You Perhaps Shy? 🤭",
+          "Nah, Not This Easily 😏",
+          "Let's think thoroughly 🥺 ",
+          "Come on, baby 🥺",
+          "You Can't Say No 😹"
+        ];
+        HeartMapState.save();
+        loadNoPhrases();
+        showNotification('✅ NO button phrases reset to defaults!');
+      });
+      
+      // Event listeners
+      if (openSettingsBtn) openSettingsBtn.addEventListener('click', openSettings);
+      if (editNoPhrasesBtn) editNoPhrasesBtn.addEventListener('click', openSettings);
+      closeSettingsBtn.addEventListener('click', closeSettings);
+      settingsOverlay.addEventListener('click', closeSettings);
+      
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+          closeSettings();
+        }
+      });
     }
     
     // ========== PREVIEW FUNCTIONS ==========
@@ -1767,40 +2882,269 @@
         console.warn('Could not save for preview:', e);
       }
       
-      // Switch to preview mode
-      document.body.classList.remove('creator-mode');
-      document.body.classList.add('preview-mode');
-      
       // Show preview container
       const previewContainer = document.getElementById('preview-container');
       const previewContent = document.getElementById('preview-content');
       
-      // Clone current sections for preview
-      previewContent.innerHTML = '';
+      // Generate HTML for partner view (including Valentine screen)
+      let previewHTML = '';
       
-      // Show all sections in preview mode
-      ['welcome', 'greeting', 'letter', 'memories', 'final'].forEach(sectionId => {
-        const originalSection = document.getElementById(sectionId);
-        if (originalSection) {
-          const clonedSection = originalSection.cloneNode(true);
-          clonedSection.classList.add('active', 'fade-in');
-          clonedSection.style.display = 'flex';
-          previewContent.appendChild(clonedSection);
-        }
-      });
+      // Valentine question screen
+      previewHTML += `
+        <div class="text-center max-w-3xl w-full mx-auto mb-8">
+          <div class="elegant-card">
+            <div class="mb-8">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                  <i class="fas fa-heart text-white text-xl"></i>
+                </div>
+                <h1 class="text-4xl elegant-font">Heart Map</h1>
+              </div>
+              <p class="subtle-text mb-2">A Special Question For You</p>
+            </div>
+            
+            <div class="mb-12">
+              <div class="w-48 h-48 mx-auto mb-8 relative">
+                <div class="absolute inset-4 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                  <i class="fas fa-heart text-white text-6xl heartbeat"></i>
+                </div>
+              </div>
+              
+              <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Will You Be My Valentine?</h2>
+              
+              <p class="text-xl subtle-text mb-6 max-w-2xl mx-auto">
+                My heart has mapped its course, and it leads straight to you. 
+                Will you be mine on this journey of love?
+              </p>
+              
+              <div class="inline-block px-6 py-3 rounded-full bg-blush/30 mb-8">
+                <span class="text-2xl script-font gradient-text">${HeartMapState.data.partnerName || 'My Dearest'}</span>
+              </div>
+            </div>
+            
+            <div class="space-y-6 max-w-md mx-auto">
+              <button class="primary-btn w-full shimmer-btn">
+                <span class="flex items-center justify-center gap-3 text-xl">
+                  <i class="fas fa-heart"></i>
+                  Yes, With All My Heart!
+                  <i class="fas fa-heart"></i>
+                </span>
+              </button>
+              
+              <div class="w-full flex justify-center">
+                <button class="no-btn w-full max-w-sm">
+                  <i class="fas fa-times"></i> ${HeartMapState.data.noButtonPhrases[0] || 'No Never!'}
+                </button>
+              </div>
+              
+              <div class="mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
+                <p class="subtle-text">
+                  <span class="animated-smirk">😏</span>
+                  <span class="ml-2">I know you're just being shy! The "Yes" button is waiting patiently...</span>
+                </p>
+              </div>
+              
+              <p class="text-sm subtle-text mt-6">
+                <i class="fas fa-info-circle mr-1"></i>
+                Keep clicking the NO button to see it move around!
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
       
+      // Welcome screen
+      previewHTML += `
+        <div class="text-center max-w-3xl w-full mx-auto mb-8">
+          <div class="elegant-card">
+            <div class="mb-8">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                  <i class="fas fa-heart text-white text-xl"></i>
+                </div>
+                <h1 class="text-4xl elegant-font">Heart Map</h1>
+              </div>
+              <p class="subtle-text mb-2">An Interactive Love Letter</p>
+            </div>
+            
+            <div class="mb-10">
+              <div class="relative inline-block">
+                <div class="w-48 h-48 mx-auto rounded-full flex items-center justify-center gentle-pulse" style="background: linear-gradient(135deg, rgba(125, 139, 111, 0.1), rgba(183, 110, 121, 0.1));">
+                  <svg class="w-32 h-32" fill="url(#heartGradient)" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Welcome to My Heart Map</h2>
+            
+            <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
+              You've received a special love letter! Created just for you by your devotee.
+              Every click reveals more of my heartfelt confession.
+            </p>
+            
+            <div class="space-y-4">
+              <button class="primary-btn w-full max-w-sm mx-auto shimmer-btn">
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fas fa-heart"></i>
+                  Open Your Love Letter
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Greeting screen
+      previewHTML += `
+        <div class="max-w-2xl w-full mx-auto mb-8">
+          <div class="elegant-card">
+            <div class="mb-8 text-center">
+              <h2 class="text-4xl elegant-font mb-4">For My Dearest ${HeartMapState.data.partnerName || '[Name]'}</h2>
+              <p class="subtle-text">A heartfelt message just for you</p>
+            </div>
+            
+            <div class="text-center mb-8">
+              <h3 class="text-3xl script-font gradient-text">My Dearest ${HeartMapState.data.partnerName || '[Name]'}</h3>
+            </div>
+            
+            <div class="text-center mt-12">
+              <button class="primary-btn shimmer-btn">
+                Read Your Love Letter
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Letter screen
+      previewHTML += `
+        <div class="max-w-3xl w-full mx-auto mb-8">
+          <div class="glass-card">
+            <div class="mb-8 text-center">
+              <h2 class="text-4xl elegant-font mb-4">Your Love Letter</h2>
+              <p class="subtle-text mb-6">A message from the heart</p>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="text-right">
+                <p class="subtle-text text-lg">${HeartMapState.data.letter.date || 'February 14, 2026'}</p>
+              </div>
+              
+              <div class="text-center mb-8">
+                <h3 class="text-3xl script-font gradient-text">My Dearest ${HeartMapState.data.partnerName || '[Name]'}</h3>
+              </div>
+              
+              <div class="space-y-8">
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.opening || 'My love, the moment I met you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.body || 'I love everything about you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.promise || 'I promise to always love you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.closing || 'With all my love...'}</p>
+                </div>
+              </div>
+              
+              <div class="text-center mt-12 pt-8 border-t border-blush">
+                <div class="mb-4">
+                  <span class="text-3xl script-font gradient-text">${HeartMapState.data.yourName || 'Your Valentine'}</span>
+                </div>
+                <p class="text-sm subtle-text italic">Forever yours</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Memories screen
+      previewHTML += `
+        <div class="max-w-6xl w-full mx-auto mb-8">
+          <div class="glass-card">
+            <div class="mb-10 text-center">
+              <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
+              <p class="subtle-text mb-6">Special memories we've shared together</p>
+            </div>
+            
+            <div class="memory-grid mb-12">
+      `;
+      
+      // Add memory previews
+      for (let i = 0; i < 3; i++) {
+        const memory = HeartMapState.data.memories[i] || {};
+        previewHTML += `
+          <div class="memory-item">
+            <div class="memory-image-container aspect-square rounded-xl overflow-hidden">
+              ${memory.image && !memory.image.includes('[COMPRESSED]') ? 
+                `<img src="${memory.image}" class="w-full h-full object-cover rounded-xl" alt="Memory ${i+1}">` : 
+                `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
+                  <div class="text-center p-6">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background: linear-gradient(135deg, ${i === 0 ? 'var(--rose-gold), var(--deep-pink)' : i === 1 ? 'var(--sage), var(--moss)' : 'var(--rose-gold), var(--soft-pink)'});">
+                      <i class="fas fa-${i === 0 ? 'camera' : i === 1 ? 'heart' : 'star'} text-white text-lg"></i>
+                    </div>
+                    <h4 class="font-medium mb-1">${i === 0 ? 'Our First Memory' : i === 1 ? 'A Happy Moment' : 'Looking Forward'}</h4>
+                  </div>
+                </div>`
+              }
+            </div>
+            <div class="mt-4">
+              <div class="text-center subtle-text p-3 bg-white/90 rounded-lg">${memory.caption || 'No description yet'}</div>
+            </div>
+          </div>
+        `;
+      }
+      
+      previewHTML += `
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Final screen
+      previewHTML += `
+        <div class="max-w-3xl w-full mx-auto">
+          <div class="elegant-card">
+            <div class="text-center">
+              <div class="mb-8">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                  <i class="fas fa-heart text-white text-2xl"></i>
+                </div>
+                <h2 class="text-5xl elegant-font mb-4 gradient-text">Thank You</h2>
+                <p class="subtle-text text-lg mb-6">For exploring this Heart Map made just for you</p>
+                
+                <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
+                  <h3 class="text-xl elegant-font mb-4">
+                    <span class="animated-smirk">😏</span> 
+                    Create Your Own Response 
+                    <span class="animated-blush">😊</span>
+                  </h3>
+                  <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
+                  <button class="primary-btn shimmer-btn">
+                    <i class="fas fa-heart mr-2"></i>
+                    Create Your Heart Map
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      previewContent.innerHTML = previewHTML;
       previewContainer.classList.add('active');
-      
-      // Add event listener to close button
-      document.getElementById('close-preview').onclick = function() {
-        closePreview();
-      };
     }
     
     function closePreview() {
       document.getElementById('preview-container').classList.remove('active');
-      document.body.classList.remove('preview-mode');
-      document.body.classList.add('creator-mode');
     }
     
     // ========== VALENTINE QUESTION SCREEN ==========
@@ -1808,7 +3152,7 @@
       // Only show if viewing as partner
       if (HeartMapState.isViewOnly && !HeartMapState.isCreator) {
         // Navigate to valentine question screen
-        navigateToSection('valentine-question');
+        navigateToSectionWithAnimation('valentine-question');
         
         // Update partner name if available
         if (HeartMapState.data.partnerName) {
@@ -1836,46 +3180,48 @@
           if (currentNoButton) {
             currentNoButton.remove();
           }
-          initialNoBtn.remove();
+          if (initialNoBtn) initialNoBtn.remove();
           
           // Navigate to welcome screen after a delay
           setTimeout(() => {
-            navigateToSection('welcome');
+            navigateToSectionWithAnimation('welcome');
           }, 1500);
         });
         
         // Initial NO button (beside YES)
-        initialNoBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          noButtonClickCount++;
-          
-          // Vibrate on mobile
-          if (navigator.vibrate) {
-            navigator.vibrate(50);
-          }
-          
-          // After first click, move NO button to random position
-          if (noButtonClickCount === 1) {
-            // Hide the initial NO button
-            this.style.opacity = '0';
-            this.style.transform = 'scale(0.8)';
+        if (initialNoBtn) {
+          initialNoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Create floating NO button
-            setTimeout(() => {
-              this.style.display = 'none';
-              createFloatingNoButton();
-            }, 300);
-          }
-          
-          // Update secret message after 3 clicks
-          if (noButtonClickCount >= 3 && !secretMessage.classList.contains('show')) {
-            secretMessage.classList.remove('hidden');
-            secretMessage.classList.add('show');
-            secretMessage.style.animation = 'fadeIn 0.5s ease-out';
-          }
-        });
+            noButtonClickCount++;
+            
+            // Vibrate on mobile
+            if (navigator.vibrate) {
+              navigator.vibrate(50);
+            }
+            
+            // After first click, move NO button to random position
+            if (noButtonClickCount === 1) {
+              // Hide the initial NO button
+              this.style.opacity = '0';
+              this.style.transform = 'scale(0.8)';
+              
+              // Create floating NO button
+              setTimeout(() => {
+                this.style.display = 'none';
+                createFloatingNoButton();
+              }, 300);
+            }
+            
+            // Update secret message after 3 clicks
+            if (noButtonClickCount >= 3 && secretMessage && !secretMessage.classList.contains('show')) {
+              secretMessage.classList.remove('hidden');
+              secretMessage.classList.add('show');
+              secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+            }
+          });
+        }
       }
     }
     
@@ -1886,7 +3232,8 @@
       }
       
       const container = document.getElementById('no-button-container');
-      const randomPhrase = noButtonPhrases[Math.floor(Math.random() * noButtonPhrases.length)];
+      const phrases = HeartMapState.data.noButtonPhrases;
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
       
       currentNoButton = document.createElement('button');
       currentNoButton.className = 'no-btn';
@@ -1915,7 +3262,7 @@
         }
         
         // Change phrase
-        const newPhrase = noButtonPhrases[Math.floor(Math.random() * noButtonPhrases.length)];
+        const newPhrase = phrases[Math.floor(Math.random() * phrases.length)];
         this.innerHTML = `<i class="fas fa-times"></i> ${newPhrase}`;
         this.title = newPhrase;
         
@@ -1930,7 +3277,7 @@
         
         // Update secret message after 3 clicks
         const secretMessage = document.getElementById('secret-message');
-        if (noButtonClickCount >= 3 && !secretMessage.classList.contains('show')) {
+        if (noButtonClickCount >= 3 && secretMessage && !secretMessage.classList.contains('show')) {
           secretMessage.classList.remove('hidden');
           secretMessage.classList.add('show');
           secretMessage.style.animation = 'fadeIn 0.5s ease-out';
@@ -1943,7 +3290,7 @@
     
     function createValentineHearts() {
       const container = document.getElementById('valentine-hearts-container');
-      const heartTypes = ['💖', '💗', '💓', '💕', '💞', '💘', '💝', '🧡'];
+      const heartTypes = ['❤️‍🔥', '💚', '❣️', '🤎', '💘',];
       
       for (let i = 0; i < 8; i++) {
         const heart = document.createElement('div');
@@ -1971,7 +3318,7 @@
     }
     
     function createCelebration() {
-      const container = document.getElementById('floating-container');
+      const container = document.getElementById('emoji-container');
       const celebrations = ['🎉', '✨', '🌟', '💫', '🥳', '🎊', '💖', '💝'];
       
       for (let i = 0; i < 20; i++) {
@@ -1994,33 +3341,50 @@
     // ========== UPDATE PARTNER VIEW ==========
     function updatePartnerView() {
       // Update display elements with loaded data
-      document.getElementById('partner-name-display').textContent = HeartMapState.data.partnerName || 'My Love';
-      document.getElementById('partner-name-display-text').textContent = HeartMapState.data.partnerName || 'My Love';
-      document.getElementById('letter-date-display').textContent = HeartMapState.data.letter.date || 'February 14, 2026';
+      const partnerNameDisplay = document.getElementById('partner-name-display');
+      const partnerNameDisplayText = document.getElementById('partner-name-display-text');
+      const letterDateDisplay = document.getElementById('letter-date-display');
+      
+      if (partnerNameDisplay) partnerNameDisplay.textContent = HeartMapState.data.partnerName || 'My Love';
+      if (partnerNameDisplayText) partnerNameDisplayText.textContent = HeartMapState.data.partnerName || 'My Love';
+      if (letterDateDisplay) letterDateDisplay.textContent = HeartMapState.data.letter.date || 'February 14, 2026';
       
       // Update letter content displays
-      document.getElementById('letter-opening-display').textContent = HeartMapState.data.letter.opening || 'My love, the moment I met you...';
-      document.getElementById('letter-body-display').textContent = HeartMapState.data.letter.body || 'I love everything about you...';
-      document.getElementById('letter-promise-display').textContent = HeartMapState.data.letter.promise || 'I promise to always love you...';
-      document.getElementById('letter-closing-display').textContent = HeartMapState.data.letter.closing || 'With all my love...';
-      document.getElementById('letter-signature-display').textContent = HeartMapState.data.yourName || 'Your Valentine';
+      const openingDisplay = document.getElementById('letter-opening-display');
+      const bodyDisplay = document.getElementById('letter-body-display');
+      const promiseDisplay = document.getElementById('letter-promise-display');
+      const closingDisplay = document.getElementById('letter-closing-display');
+      const signatureDisplay = document.getElementById('letter-signature-display');
+      
+      if (openingDisplay) openingDisplay.textContent = HeartMapState.data.letter.opening || 'My love, the moment I met you...';
+      if (bodyDisplay) bodyDisplay.textContent = HeartMapState.data.letter.body || 'I love everything about you...';
+      if (promiseDisplay) promiseDisplay.textContent = HeartMapState.data.letter.promise || 'I promise to always love you...';
+      if (closingDisplay) closingDisplay.textContent = HeartMapState.data.letter.closing || 'With all my love...';
+      if (signatureDisplay) signatureDisplay.textContent = HeartMapState.data.yourName || 'Your Valentine';
       
       // Update memory displays
       for (let i = 0; i < 3; i++) {
-        if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].image) {
-          const memoryDisplay = document.getElementById(`memory-${i+1}-display`);
-          if (memoryDisplay) {
-            memoryDisplay.innerHTML = `
-              <img src="${HeartMapState.data.memories[i].image}" 
-                   class="w-full h-full object-cover rounded-2xl"
-                   alt="Memory ${i+1}">
-            `;
+        if (HeartMapState.data.memories[i]) {
+          const memory = HeartMapState.data.memories[i];
+          
+          // Update image if exists and not compressed
+          if (memory.image && !memory.image.includes('[COMPRESSED]')) {
+            const memoryDisplay = document.getElementById(`memory-${i+1}-display`);
+            if (memoryDisplay) {
+              memoryDisplay.innerHTML = `
+                <img src="${memory.image}" 
+                     class="w-full h-full object-cover rounded-xl"
+                     alt="Memory ${i+1}">
+              `;
+            }
           }
-        }
-        if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].caption) {
-          const textDisplay = document.getElementById(`memory-${i+1}-text-display`);
-          if (textDisplay) {
-            textDisplay.textContent = HeartMapState.data.memories[i].caption;
+          
+          // Update caption
+          if (memory.caption) {
+            const textDisplay = document.getElementById(`memory-${i+1}-text-display`);
+            if (textDisplay) {
+              textDisplay.textContent = memory.caption;
+            }
           }
         }
       }
@@ -2039,7 +3403,7 @@
           document.body.classList.add('creator-mode');
           
           // Navigate to greeting section
-          navigateToSection('greeting');
+          navigateToSectionWithAnimation('greeting');
           
           // Show notification
           showNotification('💌 Creating a response Heart Map for your Valentine!');
@@ -2050,88 +3414,91 @@
     // ========== SHARE FUNCTIONS ==========
     function initShareFunctions() {
       // WhatsApp share
-      document.getElementById('whatsapp-share').addEventListener('click', () => {
-        const shareId = HeartMapState.generateShareId();
-        const baseUrl = window.location.href.split('?')[0];
-        const shareUrl = `${baseUrl}?id=${shareId}`;
-        
-        // Check if mobile
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const whatsappUrl = isMobile ? 
-          `whatsapp://send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}` :
-          `https://web.whatsapp.com/send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}`;
-        
-        window.open(whatsappUrl, '_blank');
-      });
+      const whatsappBtn = document.getElementById('whatsapp-share');
+      if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => {
+          const shareId = HeartMapState.generateShareId();
+          if (!shareId) {
+            showNotification('❌ Could not generate share link. Please try again.');
+            return;
+          }
+          
+          const baseUrl = window.location.origin + window.location.pathname;
+          const shareUrl = `${baseUrl}?id=${shareId}`;
+          
+          // Check if mobile
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          const whatsappUrl = isMobile ? 
+            `whatsapp://send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}` :
+            `https://web.whatsapp.com/send?text=${encodeURIComponent(`💖 Heart Map for you: ${shareUrl}`)}`;
+          
+          window.open(whatsappUrl, '_blank');
+          showNotification('📱 Opening WhatsApp to share your Heart Map!');
+        });
+      }
       
       // Copy link
-      document.getElementById('copy-link').addEventListener('click', async () => {
-        const shareId = HeartMapState.generateShareId();
-        const baseUrl = window.location.href.split('?')[0];
-        const shareUrl = `${baseUrl}?id=${shareId}`;
-        
-        try {
-          await navigator.clipboard.writeText(shareUrl);
+      const copyLinkBtn = document.getElementById('copy-link');
+      if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', async () => {
+          const shareId = HeartMapState.generateShareId();
+          if (!shareId) {
+            showNotification('❌ Could not generate share link. Please try again.');
+            return;
+          }
           
-          // Show success message
-          const originalText = document.getElementById('copy-link').innerHTML;
-          document.getElementById('copy-link').innerHTML = 
-            '<i class="fas fa-check-circle"></i> Copied!';
-          document.getElementById('copy-link').style.backgroundColor = 'var(--sage)';
-          document.getElementById('copy-link').style.color = 'white';
+          const baseUrl = window.location.origin + window.location.pathname;
+          const shareUrl = `${baseUrl}?id=${shareId}`;
           
-          showNotification('✅ Link copied to clipboard! Send this to your partner.');
-          
-          setTimeout(() => {
-            document.getElementById('copy-link').innerHTML = originalText;
-            document.getElementById('copy-link').style.backgroundColor = '';
-            document.getElementById('copy-link').style.color = '';
-          }, 2000);
-          
-        } catch (err) {
-          // Fallback
-          const tempInput = document.createElement('input');
-          tempInput.value = shareUrl;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-          
-          alert('Link copied to clipboard!');
-        }
-      });
+          try {
+            await navigator.clipboard.writeText(shareUrl);
+            
+            // Visual feedback
+            const originalHTML = copyLinkBtn.innerHTML;
+            const originalBg = copyLinkBtn.style.background;
+            
+            copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Link Copied!';
+            copyLinkBtn.style.background = 'linear-gradient(135deg, var(--sage), var(--deep-sage))';
+            
+            showNotification('✅ Link copied to clipboard! Send this to your partner.');
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+              copyLinkBtn.innerHTML = originalHTML;
+              copyLinkBtn.style.background = originalBg;
+            }, 2000);
+            
+          } catch (err) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = shareUrl;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+              document.execCommand('copy');
+              showNotification('✅ Link copied to clipboard! Send this to your partner.');
+            } catch (e) {
+              showNotification('❌ Failed to copy link. Please try again.');
+            }
+            
+            document.body.removeChild(textArea);
+          }
+        });
+      }
       
       // Save draft
-      document.getElementById('save-draft').addEventListener('click', () => {
-        HeartMapState.save();
-        showNotification('💾 Draft saved! You can continue anytime.');
-      });
-      
-      // Add hover preview for share buttons
-      initSharePreview();
-    }
-    
-    function initSharePreview() {
-      const copyBtn = document.getElementById('copy-link');
-      const whatsappBtn = document.getElementById('whatsapp-share');
-      
-      copyBtn.addEventListener('mouseenter', () => {
-        const shareId = localStorage.getItem('heartMapShareId');
-        if (shareId) {
-          const baseUrl = window.location.origin + window.location.pathname;
-          const shareUrl = `${baseUrl}?id=${shareId}`;
-          copyBtn.title = `Click to copy:\n${shareUrl}`;
-        }
-      });
-      
-      whatsappBtn.addEventListener('mouseenter', () => {
-        const shareId = localStorage.getItem('heartMapShareId');
-        if (shareId) {
-          const baseUrl = window.location.origin + window.location.pathname;
-          const shareUrl = `${baseUrl}?id=${shareId}`;
-          whatsappBtn.title = `Share via WhatsApp:\n${shareUrl}`;
-        }
-      });
+      const saveDraftBtn = document.getElementById('save-draft');
+      if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', () => {
+          HeartMapState.save();
+          showNotification('💾 Draft saved! You can continue anytime.');
+        });
+      }
     }
     
     function showNotification(message) {
@@ -2163,52 +3530,13 @@
       }, 4000);
     }
     
-    // ========== FLOATING ELEMENTS ==========
-    function initFloatingElements() {
-      createFloatingElements();
-      setInterval(createFloatingElements, 5000);
-    }
-    
-    function createFloatingElements() {
-      const container = document.getElementById('floating-container');
-      const elements = ['💖', '💗', '💓', '💕', '🌸', '🌺', '🌷', '🍃', '🌿'];
-      
-      for (let i = 0; i < 5; i++) {
-        const element = document.createElement('div');
-        const isPink = Math.random() > 0.3;
-        const elem = elements[Math.floor(Math.random() * elements.length)];
-        
-        element.textContent = elem;
-        element.className = `floating-element ${isPink ? 'pink' : ''}`;
-        
-        element.style.left = `${Math.random() * 100}vw`;
-        element.style.fontSize = `${Math.random() * 20 + 16}px`;
-        element.style.opacity = Math.random() * 0.4 + 0.1;
-        element.style.color = isPink ? getRandomPink() : getRandomGreen();
-        element.style.animationDuration = `${Math.random() * 15 + 15}s`;
-        
-        container.appendChild(element);
-        setTimeout(() => element.remove(), 30000);
-      }
-    }
-    
-    function getRandomPink() {
-      const pinks = ['#B76E79', '#C9A9A6', '#E8B4B8', '#F5C6D6'];
-      return pinks[Math.floor(Math.random() * pinks.length)];
-    }
-    
-    function getRandomGreen() {
-      const greens = ['#7D8B6F', '#5C6B4F', '#6B7B5E', '#8A9B7C'];
-      return greens[Math.floor(Math.random() * greens.length)];
-    }
-    
     // ========== NAVIGATION ==========
     function initNavigation() {
       // Navigation dots
       document.querySelectorAll('.nav-dot').forEach(dot => {
         dot.addEventListener('click', () => {
           const section = dot.dataset.section;
-          navigateToSection(section);
+          navigateToSectionWithAnimation(section);
         });
       });
       
@@ -2216,50 +3544,21 @@
       document.querySelectorAll('button[data-section]').forEach(btn => {
         btn.addEventListener('click', () => {
           const section = btn.dataset.section;
-          navigateToSection(section);
+          navigateToSectionWithAnimation(section);
         });
       });
       
       // Start button
-      document.getElementById('start-btn').addEventListener('click', () => {
-        navigateToSection('greeting');
-      });
+      const startBtn = document.getElementById('start-btn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          navigateToSectionWithAnimation('greeting');
+        });
+      }
       
       // Mark current section as active initially
       updateNavigationDots();
       showCurrentSection();
-    }
-    
-    function navigateToSection(sectionId) {
-      // Hide all sections
-      document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-        section.classList.remove('fade-in');
-      });
-      
-      // Show the selected section
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.classList.add('active');
-        // Add fade-in animation with a slight delay
-        setTimeout(() => {
-          section.classList.add('fade-in');
-        }, 50);
-        
-        HeartMapState.currentSection = sectionId;
-        
-        // Mark as completed if editing (but not for Valentine screen in view mode)
-        if (sectionId !== 'valentine-question' && !HeartMapState.completedSections.has(sectionId)) {
-          HeartMapState.completedSections.add(sectionId);
-          HeartMapState.save();
-        }
-        
-        updateNavigationDots();
-        updateProgress();
-        
-        // Scroll to top of page to ensure section is visible
-        window.scrollTo(0, 0);
-      }
     }
     
     function showCurrentSection() {
@@ -2303,26 +3602,33 @@
       const completed = HeartMapState.completedSections.size;
       const progress = (completed / totalSections) * 100;
       
-      document.getElementById('progress-fill').style.width = `${progress}%`;
+      const progressFill = document.getElementById('progress-fill');
+      if (progressFill) {
+        progressFill.style.width = `${progress}%`;
+      }
     }
     
     // ========== FORM BINDINGS ==========
     function initFormBindings() {
       // Partner name
       const partnerNameInput = document.getElementById('partner-name');
-      partnerNameInput.addEventListener('input', (e) => {
-        HeartMapState.data.partnerName = e.target.value;
-        HeartMapState.save();
-        updatePreview();
-      });
+      if (partnerNameInput) {
+        partnerNameInput.addEventListener('input', (e) => {
+          HeartMapState.data.partnerName = e.target.value;
+          HeartMapState.save();
+          updatePreview();
+        });
+      }
       
       // Your name
       const yourNameInput = document.getElementById('your-name');
-      yourNameInput.addEventListener('input', (e) => {
-        HeartMapState.data.yourName = e.target.value;
-        HeartMapState.save();
-        updatePreview();
-      });
+      if (yourNameInput) {
+        yourNameInput.addEventListener('input', (e) => {
+          HeartMapState.data.yourName = e.target.value;
+          HeartMapState.save();
+          updatePreview();
+        });
+      }
       
       // Letter sections
       ['opening', 'body', 'promise', 'closing'].forEach(section => {
@@ -2337,15 +3643,18 @@
       });
       
       // Letter date
-      document.getElementById('letter-date').addEventListener('input', (e) => {
-        HeartMapState.data.letter.date = e.target.value;
-        HeartMapState.save();
-      });
+      const letterDateInput = document.getElementById('letter-date');
+      if (letterDateInput) {
+        letterDateInput.addEventListener('input', (e) => {
+          HeartMapState.data.letter.date = e.target.value;
+          HeartMapState.save();
+        });
+      }
     }
     
     // ========== MEMORY TEXT BINDINGS ==========
     function initMemoryTextBindings() {
-      // Bind memory textareas to state - FIXED: Ensure all 3 textareas work
+      // Bind memory textareas to state
       for (let i = 1; i <= 3; i++) {
         const textarea = document.getElementById(`memory-${i}-text`);
         if (textarea) {
@@ -2369,13 +3678,20 @@
     
     function updateUIFromState() {
       // Partner name
-      document.getElementById('partner-name').value = HeartMapState.data.partnerName;
-      document.getElementById('letter-partner-name').textContent = HeartMapState.data.partnerName || '[Name]';
-      document.getElementById('preview-name').textContent = HeartMapState.data.partnerName || '[Name]';
+      const partnerNameInput = document.getElementById('partner-name');
+      const letterPartnerName = document.getElementById('letter-partner-name');
+      const previewName = document.getElementById('preview-name');
+      
+      if (partnerNameInput) partnerNameInput.value = HeartMapState.data.partnerName;
+      if (letterPartnerName) letterPartnerName.textContent = HeartMapState.data.partnerName || '[Name]';
+      if (previewName) previewName.textContent = HeartMapState.data.partnerName || '[Name]';
       
       // Your name
-      document.getElementById('your-name').value = HeartMapState.data.yourName;
-      document.getElementById('letter-signature').textContent = HeartMapState.data.yourName || '[Your Name]';
+      const yourNameInput = document.getElementById('your-name');
+      const letterSignature = document.getElementById('letter-signature');
+      
+      if (yourNameInput) yourNameInput.value = HeartMapState.data.yourName;
+      if (letterSignature) letterSignature.textContent = HeartMapState.data.yourName || '[Your Name]';
       
       // Letter sections
       Object.keys(HeartMapState.data.letter).forEach(section => {
@@ -2398,17 +3714,7 @@
     function initMediaUpload() {
       const imageUpload = document.getElementById('image-upload');
       
-      // Remove existing event listeners first
-      ['memory-1', 'memory-2', 'memory-3'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          // Clone and replace to remove old listeners
-          const newElement = element.cloneNode(true);
-          element.parentNode.replaceChild(newElement, element);
-        }
-      });
-      
-      // Add proper click handlers
+      // Add click handlers to memory image containers
       ['memory-1', 'memory-2', 'memory-3'].forEach((id, index) => {
         const element = document.getElementById(id);
         if (element && HeartMapState.isCreator) {
@@ -2417,18 +3723,11 @@
             e.preventDefault();
             currentMemoryIndex = index;
             imageUpload.click();
-          }, true); // Use capturing phase
+          });
         }
       });
       
       imageUpload.addEventListener('change', handleImageUpload);
-      
-      // Prevent click events from bubbling up
-      document.querySelectorAll('.memory-container').forEach(container => {
-        container.addEventListener('click', (e) => {
-          e.stopPropagation();
-        });
-      });
     }
     
     function handleImageUpload(e) {
@@ -2440,15 +3739,21 @@
         return;
       }
       
+      // Check file size (limit to 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image is too large. Please select an image smaller than 2MB.');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (event) => {
         const memoryElement = document.getElementById(`memory-${currentMemoryIndex + 1}`);
         if (memoryElement) {
           memoryElement.innerHTML = `
             <img src="${event.target.result}" 
-                 class="w-full h-full object-cover rounded-2xl"
+                 class="w-full h-full object-cover rounded-xl"
                  alt="Memory ${currentMemoryIndex + 1}">
-            <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-2xl flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-center justify-center">
               <div class="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center">
                 <i class="fas fa-edit text-rose-gold"></i>
               </div>
@@ -2466,6 +3771,8 @@
           // Success animation
           memoryElement.style.animation = 'gentlePulse 1s';
           setTimeout(() => memoryElement.style.animation = '', 1000);
+          
+          showNotification('✅ Photo added successfully!');
         }
       };
       reader.readAsDataURL(file);
@@ -2484,11 +3791,13 @@
       const audioUpload = document.getElementById('audio-upload');
       const songTitle = document.getElementById('song-title');
       
+      if (!audio || !playBtn || !songTitle) return;
+      
       let isPlaying = false;
       let currentSong = HeartMapState.data.song;
       
       // Load saved song
-      if (currentSong) {
+      if (currentSong && currentSong.url) {
         audio.src = currentSong.url;
         songTitle.textContent = currentSong.name;
       }
@@ -2496,7 +3805,7 @@
       playBtn.addEventListener('click', () => {
         if (!audio.src) {
           alert('Please upload a song first');
-          if (HeartMapState.isCreator) {
+          if (HeartMapState.isCreator && uploadBtn) {
             uploadBtn.click();
           }
           return;
@@ -2512,11 +3821,11 @@
         }
         
         isPlaying = !isPlaying;
-        playIcon.classList.toggle('hidden', isPlaying);
-        pauseIcon.classList.toggle('hidden', !isPlaying);
+        if (playIcon) playIcon.classList.toggle('hidden', isPlaying);
+        if (pauseIcon) pauseIcon.classList.toggle('hidden', !isPlaying);
       });
       
-      if (HeartMapState.isCreator) {
+      if (HeartMapState.isCreator && uploadBtn) {
         uploadBtn.addEventListener('click', () => {
           audioUpload.click();
         });
@@ -2547,16 +3856,16 @@
           setTimeout(() => {
             audio.play();
             isPlaying = true;
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
+            if (playIcon) playIcon.classList.add('hidden');
+            if (pauseIcon) pauseIcon.classList.remove('hidden');
           }, 300);
         });
       }
       
       audio.addEventListener('ended', () => {
         isPlaying = false;
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');
+        if (playIcon) playIcon.classList.remove('hidden');
+        if (pauseIcon) pauseIcon.classList.add('hidden');
       });
     }
     
@@ -2569,11 +3878,13 @@
       // Update letter word count
       const letterText = Object.values(HeartMapState.data.letter).join(' ');
       const wordCount = letterText.trim() ? letterText.trim().split(/\s+/).length : 0;
-      document.getElementById('preview-letter-length').textContent = wordCount;
+      const previewLetterLength = document.getElementById('preview-letter-length');
+      if (previewLetterLength) previewLetterLength.textContent = wordCount;
       
       // Update photo count
       const photoCount = HeartMapState.data.memories.filter(m => m && m.image).length;
-      document.getElementById('preview-photo-count').textContent = photoCount;
+      const previewPhotoCount = document.getElementById('preview-photo-count');
+      if (previewPhotoCount) previewPhotoCount.textContent = photoCount;
     }
   </script>
 </body>

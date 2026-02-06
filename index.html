@@ -283,28 +283,8 @@
       z-index: -1;
     }
     
-    /* 2. Twinkling stars effect */
-    @keyframes twinkle {
-      0%, 100% {
-        opacity: 0.1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.3;
-        transform: scale(1.1);
-      }
-    }
-    
-    .twinkle {
-      position: fixed;
-      background: white;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1;
-      animation: twinkle 3s infinite;
-    }
-    
-    /* 3. Floating leaves animation */
+    /* 2. Twinkling stars effect - REMOVED */
+    /* 3. Floating leaves animation - SIMPLIFIED */
     @keyframes floatLeaf {
       0% {
         transform: translateY(100vh) rotate(0deg);
@@ -470,88 +450,7 @@
       animation: bounce 0.5s;
     }
     
-    /* ========== ANIMATED EMOJIS ========== */
-    
-    /* Smirking emoji animation */
-    @keyframes smirk {
-      0%, 100% {
-        transform: rotate(0deg) scale(1);
-      }
-      25% {
-        transform: rotate(-5deg) scale(1.1);
-      }
-      50% {
-        transform: rotate(5deg) scale(1.05);
-      }
-      75% {
-        transform: rotate(-3deg) scale(1.08);
-      }
-    }
-    
-    .animated-smirk {
-      display: inline-block;
-      animation: smirk 3s infinite;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-    
-    /* Winking emoji animation */
-    @keyframes wink {
-      0%, 100% {
-        transform: scaleY(1);
-      }
-      50% {
-        transform: scaleY(0.1);
-      }
-    }
-    
-    .animated-wink {
-      display: inline-block;
-      position: relative;
-      animation: wink 2s infinite;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-    
-    /* Blushing emoji animation */
-    @keyframes blush {
-      0%, 100% {
-        filter: brightness(1);
-      }
-      50% {
-        filter: brightness(1.2) hue-rotate(10deg);
-      }
-    }
-    
-    .animated-blush {
-      display: inline-block;
-      animation: blush 4s infinite;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-    
-    /* Heart eyes animation */
-    @keyframes heartEyes {
-      0%, 100% {
-        transform: scale(1);
-      }
-      25% {
-        transform: scale(1.2);
-      }
-      50% {
-        transform: scale(1.1);
-      }
-      75% {
-        transform: scale(1.15);
-      }
-    }
-    
-    .animated-heart-eyes {
-      display: inline-block;
-      animation: heartEyes 2s infinite;
-      font-size: 2rem;
-      cursor: pointer;
-    }
+    /* ========== ANIMATED EMOJIS - SIMPLIFIED ========== */
     
     /* Floating emoji particles */
     @keyframes floatEmoji {
@@ -578,46 +477,6 @@
       font-size: 24px;
       animation: floatEmoji linear forwards;
       user-select: none;
-    }
-    
-    /* Emoji rain effect */
-    @keyframes emojiRain {
-      0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-    .emoji-rain {
-      position: fixed;
-      pointer-events: none;
-      z-index: 2;
-      animation: emojiRain linear forwards;
-    }
-    
-    /* Emoji pulse effect */
-    @keyframes emojiPulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.3);
-      }
-    }
-    
-    .emoji-pulse {
-      animation: emojiPulse 1.5s infinite;
-      display: inline-block;
     }
     
     /* ========== COMPACT MEMORY LAYOUT ========== */
@@ -1250,42 +1109,54 @@
       pointer-events: auto !important;
     }
     
-    /* Settings panel for NO button phrases */
-    .settings-panel {
-      position: fixed;
-      top: 0;
-      right: -400px;
-      width: 380px;
-      height: 100vh;
-      background: white;
-      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
-      z-index: 10000;
-      transition: right 0.3s ease;
-      padding: 2rem;
+    /* NO Button Phrases Editor */
+    .phrases-editor {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(183, 110, 121, 0.2);
+    }
+    
+    .phrases-list {
+      max-height: 200px;
       overflow-y: auto;
+      margin: 1rem 0;
     }
     
-    .settings-panel.active {
-      right: 0;
+    .phrase-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     
-    .settings-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 9999;
-      display: none;
+    .phrase-item input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 6px;
+      font-size: 14px;
     }
     
-    .settings-overlay.active {
-      display: block;
+    .remove-phrase {
+      background: rgba(183, 110, 121, 0.1);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rose-gold);
     }
     
-    /* Image compression indicator */
-    .compression-info {
+    .remove-phrase:hover {
+      background: rgba(183, 110, 121, 0.2);
+    }
+    
+    .image-compression-info {
       font-size: 12px;
       color: var(--sage);
       margin-top: 0.5rem;
@@ -1326,11 +1197,6 @@
         right: 16px;
         left: 16px;
         max-width: none;
-      }
-      
-      .settings-panel {
-        width: 100%;
-        right: -100%;
       }
     }
     
@@ -1407,41 +1273,10 @@
     <div id="progress-fill" class="progress-fill"></div>
   </div>
   
-  <!-- Settings Panel for NO button phrases -->
-  <div id="settings-overlay" class="settings-overlay"></div>
-  <div id="settings-panel" class="settings-panel">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="text-2xl elegant-font">NO Button Settings</h3>
-      <button id="close-settings" class="secondary-btn">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    
-    <p class="subtle-text mb-4">Edit what appears when your partner clicks "NO" on the Valentine question:</p>
-    
-    <div id="no-phrases-list" class="space-y-3 mb-6"></div>
-    
-    <div class="flex gap-3">
-      <button id="add-phrase" class="secondary-btn flex-1">
-        <i class="fas fa-plus mr-2"></i>Add New
-      </button>
-      <button id="reset-phrases" class="secondary-btn flex-1">
-        <i class="fas fa-redo mr-2"></i>Reset to Default
-      </button>
-    </div>
-    
-    <div class="mt-6 p-4 rounded-lg bg-rose-gold/10">
-      <p class="text-sm subtle-text">
-        <i class="fas fa-lightbulb mr-2"></i>
-        These phrases will appear randomly when your partner clicks "NO" on the Valentine question screen.
-      </p>
-    </div>
-  </div>
-  
   <!-- Navigation Dots -->
   <div class="nav-dots">
-    <div class="nav-dot" data-section="valentine-question"></div>
-    <div class="nav-dot active completed" data-section="welcome"></div>
+    <div class="nav-dot active completed" data-section="valentine-question"></div>
+    <div class="nav-dot" data-section="welcome"></div>
     <div class="nav-dot" data-section="greeting"></div>
     <div class="nav-dot" data-section="letter"></div>
     <div class="nav-dot" data-section="memories"></div>
@@ -1466,8 +1301,8 @@
   
   <!-- Main Content -->
   <main>
-    <!-- Valentine Question Screen (Shown to partner only) -->
-    <section id="valentine-question" class="section">
+    <!-- Valentine Question Screen (Shown to both creator and partner) -->
+    <section id="valentine-question" class="section active">
       <div class="text-center max-w-3xl w-full fade-in">
         <div class="elegant-card mx-auto">
           <!-- Animated Hearts Background -->
@@ -1535,7 +1370,7 @@
               <!-- Secret Message (appears after clicking No a few times) -->
               <div id="secret-message" class="hidden mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
                 <p class="subtle-text">
-                  <span class="animated-smirk">😏</span>
+                  <span class="emoji-pulse">😏</span>
                   <span class="ml-2">I know you're just being shy! The "Yes" button is waiting patiently...</span>
                 </p>
               </div>
@@ -1544,15 +1379,52 @@
                 <i class="fas fa-info-circle mr-1"></i>
                 Keep clicking the NO button to see it move around!
               </p>
+              
+              <!-- NO Button Phrases Editor (Only for creator) -->
+              <div class="phrases-editor creator-only mt-8">
+                <h4 class="font-medium mb-3 flex items-center gap-2">
+                  <i class="fas fa-cog text-rose-gold"></i>
+                  Edit NO Button Phrases
+                </h4>
+                <p class="text-sm subtle-text mb-3">
+                  Customize what appears when your partner clicks "NO"
+                </p>
+                
+                <div class="phrases-list" id="no-phrases-list">
+                  <!-- Phrases will be loaded here -->
+                </div>
+                
+                <div class="flex gap-2">
+                  <button id="add-phrase" class="secondary-btn flex-1 text-sm py-2">
+                    <i class="fas fa-plus mr-1"></i>Add Phrase
+                  </button>
+                  <button id="reset-phrases" class="secondary-btn flex-1 text-sm py-2">
+                    <i class="fas fa-redo mr-1"></i>Reset
+                  </button>
+                </div>
+                
+                <p class="text-xs subtle-text mt-3">
+                  <i class="fas fa-lightbulb mr-1"></i>
+                  These phrases will appear randomly when the NO button is clicked
+                </p>
+              </div>
             </div>
             
             <!-- Decorative Elements -->
             <div class="mt-12 flex items-center justify-center gap-6">
-              <div class="w-6 h-6 rounded-full bg-rose-gold/30 animated-smirk">😏</div>
-              <div class="w-4 h-4 rounded-full bg-sage/30 animated-wink">😉</div>
-              <div class="w-8 h-8 rounded-full bg-pale-pink/40 animated-blush">😊</div>
-              <div class="w-4 h-4 rounded-full bg-sage/30 animated-heart-eyes">😍</div>
+              <div class="w-6 h-6 rounded-full bg-rose-gold/30 emoji-pulse">😏</div>
+              <div class="w-4 h-4 rounded-full bg-sage/30 emoji-pulse">😉</div>
+              <div class="w-8 h-8 rounded-full bg-pale-pink/40 emoji-pulse">😊</div>
+              <div class="w-4 h-4 rounded-full bg-sage/30 emoji-pulse">😍</div>
               <div class="w-6 h-6 rounded-full bg-rose-gold/30 emoji-pulse">💖</div>
+            </div>
+            
+            <!-- Navigation for creator -->
+            <div class="creator-only mt-8 pt-6 border-t border-blush">
+              <button data-section="welcome" class="secondary-btn w-full bounce-on-hover">
+                <i class="fas fa-arrow-right mr-2"></i>
+                Continue to Create Heart Map
+              </button>
             </div>
           </div>
         </div>
@@ -1560,7 +1432,7 @@
     </section>
     
     <!-- Welcome Screen -->
-    <section id="welcome" class="section active gentle-sway">
+    <section id="welcome" class="section gentle-sway">
       <div class="text-center max-w-3xl w-full fade-in">
         <div class="elegant-card mx-auto">
           <!-- Logo/Title -->
@@ -1620,15 +1492,12 @@
               </p>
             </div>
             
-            <!-- Settings Button (for NO button phrases) -->
+            <!-- Back to Valentine Question -->
             <div class="mt-8 pt-6 border-t border-blush">
-              <button id="open-settings" class="secondary-btn bounce-on-hover">
-                <i class="fas fa-cog mr-2"></i>
-                Edit Valentine NO Button Phrases
+              <button data-section="valentine-question" class="secondary-btn bounce-on-hover">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Valentine Question
               </button>
-              <p class="text-xs subtle-text mt-2">
-                Customize what appears when your partner clicks "NO" on the Valentine question
-              </p>
             </div>
           </div>
           
@@ -1907,8 +1776,9 @@
                   <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
+              <!-- Partner view - will show actual image if uploaded -->
               <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-1-display">
-                <!-- Content will be added dynamically -->
+                <!-- Image will be loaded here -->
               </div>
               <div class="memory-textarea-container">
                 <textarea 
@@ -1932,8 +1802,9 @@
                   <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
+              <!-- Partner view - will show actual image if uploaded -->
               <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-2-display">
-                <!-- Content will be added dynamically -->
+                <!-- Image will be loaded here -->
               </div>
               <div class="memory-textarea-container">
                 <textarea 
@@ -1957,8 +1828,9 @@
                   <p class="text-xs subtle-text">Click to add a photo</p>
                 </div>
               </div>
+              <!-- Partner view - will show actual image if uploaded -->
               <div class="memory-image-container aspect-square rounded-xl overflow-hidden partner-only" id="memory-3-display">
-                <!-- Content will be added dynamically -->
+                <!-- Image will be loaded here -->
               </div>
               <div class="memory-textarea-container">
                 <textarea 
@@ -2051,9 +1923,9 @@
               
               <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
                 <h3 class="text-xl elegant-font mb-4">
-                  <span class="animated-smirk">😏</span> 
+                  <span class="emoji-pulse">😏</span> 
                   Create Your Own Response 
-                  <span class="animated-blush">😊</span>
+                  <span class="emoji-pulse">😊</span>
                 </h3>
                 <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
                 <button id="create-your-own-btn" class="primary-btn shimmer-btn bounce-on-hover">
@@ -2167,21 +2039,14 @@
               </div>
             </div>
             
-            <!-- Settings Button -->
-            <div class="mt-6 text-center">
-              <button id="edit-no-phrases" class="secondary-btn bounce-on-hover">
-                <i class="fas fa-cog mr-2"></i>
-                Edit Valentine NO Button Phrases
-              </button>
-              <p class="text-xs subtle-text mt-2">
-                Customize what appears when your partner clicks "NO" on the Valentine question
-              </p>
-            </div>
-            
             <!-- Final Navigation -->
             <div class="flex items-center justify-between pt-8 border-t border-blush">
               <button data-section="memories" class="secondary-btn bounce-on-hover">
                 <i class="fas fa-edit mr-2"></i>Edit
+              </button>
+              
+              <button data-section="valentine-question" class="secondary-btn bounce-on-hover">
+                <i class="fas fa-heart mr-2"></i>Edit Valentine Question
               </button>
               
               <div class="flex items-center gap-2 subtle-text">
@@ -2205,8 +2070,8 @@
     const HeartMapState = {
       isCreator: true,
       isViewOnly: false,
-      currentSection: 'welcome',
-      completedSections: new Set(['welcome']),
+      currentSection: 'valentine-question',
+      completedSections: new Set(['valentine-question']),
       data: {
         partnerName: '',
         yourName: '',
@@ -2241,13 +2106,10 @@
           letter: this.data.letter,
           memories: this.data.memories.map(mem => {
             if (mem && mem.image) {
-              // Compress image if it's too large
-              const compressed = this.compressImageData(mem.image);
               return {
                 caption: mem.caption || '',
-                image: compressed,
-                originalSize: mem.image.length,
-                compressedSize: compressed.length
+                image: mem.image,
+                hasImage: true
               };
             }
             return { caption: mem.caption || '' };
@@ -2283,15 +2145,6 @@
             return null;
           }
         }
-      },
-      compressImageData(imageData) {
-        // Simple image compression by reducing quality
-        if (imageData.length > 100000) { // If larger than 100KB
-          // For base64 images, we can't easily compress them in browser
-          // So we'll just store a placeholder for large images
-          return imageData.substring(0, 50000) + "...[COMPRESSED]";
-        }
-        return imageData;
       },
       load() {
         const saved = localStorage.getItem('heartMapData');
@@ -2344,7 +2197,7 @@
             "You Are Tired Of Saying No 😹"
           ]
         };
-        this.completedSections = new Set(['welcome']);
+        this.completedSections = new Set(['valentine-question']);
         this.isCreator = true;
         this.save();
       },
@@ -2357,16 +2210,10 @@
           const shareId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
           localStorage.setItem('heartMapShareId', shareId);
           
-          // Save minimal data for sharing (no images)
+          // Save full data for sharing (including images)
           const shareData = {
             id: shareId,
-            data: JSON.stringify({
-              partnerName: this.data.partnerName,
-              yourName: this.data.yourName,
-              letter: this.data.letter,
-              memories: this.data.memories.map(mem => ({ caption: mem.caption || '' })),
-              noButtonPhrases: this.data.noButtonPhrases
-            }),
+            data: JSON.stringify(this.data),
             completed: JSON.stringify([...this.completedSections]),
             timestamp: Date.now()
           };
@@ -2389,11 +2236,7 @@
             
             if (parsed.data) {
               const loadedData = JSON.parse(parsed.data);
-              this.data = {
-                ...this.data,
-                ...loadedData,
-                memories: loadedData.memories || [{}, {}, {}]
-              };
+              this.data = loadedData;
             }
             if (parsed.completed) {
               this.completedSections = new Set(JSON.parse(parsed.completed));
@@ -2435,20 +2278,12 @@
     let currentNoButton = null;
     let currentMemoryIndex = 0;
     
-    // ========== ENHANCED ANIMATIONS FUNCTIONS ==========
+    // ========== SIMPLIFIED ANIMATIONS FUNCTIONS ==========
     
-    function initEnhancedAnimations() {
-      // Create twinkling stars
-      createTwinklingStars();
-      setInterval(createTwinklingStars, 3000);
-      
-      // Create floating leaves
-      createFloatingLeaves();
-      setInterval(createFloatingLeaves, 4000);
-      
-      // Create animated emojis
-      createAnimatedEmojis();
-      setInterval(createAnimatedEmojis, 5000);
+    function initSimplifiedAnimations() {
+      // Create only 2 leaves and 2 hearts
+      createFloatingElements();
+      setInterval(createFloatingElements, 8000);
       
       // Add gentle sway to cards
       document.querySelectorAll('.elegant-card, .glass-card').forEach((card, index) => {
@@ -2470,35 +2305,17 @@
       });
     }
     
-    function createTwinklingStars() {
+    function createFloatingElements() {
       const container = document.getElementById('floating-container');
       
-      for (let i = 0; i < 3; i++) {
-        const star = document.createElement('div');
-        star.className = 'twinkle';
-        
-        const size = Math.random() * 3 + 1;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.left = `${Math.random() * 100}vw`;
-        star.style.top = `${Math.random() * 100}vh`;
-        star.style.opacity = Math.random() * 0.3 + 0.1;
-        star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-        star.style.animationDelay = `${Math.random() * 2}s`;
-        
-        container.appendChild(star);
-        setTimeout(() => star.remove(), 6000);
-      }
-    }
-    
-    function createFloatingLeaves() {
-      const container = document.getElementById('floating-container');
-      const leaves = ['🍁', '🌿', '🦋', '🌸'];
+      // Clear old elements
+      container.innerHTML = '';
       
+      // Create 2 leaves
       for (let i = 0; i < 2; i++) {
         const leaf = document.createElement('div');
         leaf.className = 'floating-leaf';
-        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.textContent = '🍁';
         
         leaf.style.left = `${Math.random() * 100}vw`;
         leaf.style.fontSize = `${Math.random() * 20 + 16}px`;
@@ -2506,49 +2323,28 @@
         leaf.style.animationDuration = `${Math.random() * 15 + 20}s`;
         
         container.appendChild(leaf);
-        setTimeout(() => leaf.remove(), 30000);
-      }
-    }
-    
-    function createAnimatedEmojis() {
-      const container = document.getElementById('emoji-container');
-      const emojis = ['🌹', '🦋', '🌸', '🌿', '🍁', '🍀'];
-      
-      for (let i = 0; i < 4; i++) {
-        const emoji = document.createElement('div');
-        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.className = 'emoji-particle';
-        emoji.textContent = randomEmoji;
-        
-        // Add specific animation class based on emoji
-        if (randomEmoji === '😏') emoji.classList.add('animated-smirk');
-        if (randomEmoji === '😉') emoji.classList.add('animated-wink');
-        if (randomEmoji === '😊') emoji.classList.add('animated-blush');
-        if (randomEmoji === '😍') emoji.classList.add('animated-heart-eyes');
-        if (randomEmoji.includes('💖') || randomEmoji.includes('💕') || randomEmoji.includes('💘') || randomEmoji.includes('💝')) {
-          emoji.classList.add('emoji-pulse');
-        }
-        
-        emoji.style.left = `${Math.random() * 100}vw`;
-        emoji.style.fontSize = `${Math.random() * 24 + 20}px`;
-        emoji.style.color = getRandomPink();
-        emoji.style.animationDuration = `${Math.random() * 15 + 10}s`;
-        
-        // Make some emojis interactive
-        if (Math.random() > 0.5) {
-          emoji.style.cursor = 'pointer';
-          emoji.style.pointerEvents = 'auto';
-          emoji.addEventListener('click', () => {
-            // Create a burst effect when clicked
-            createEmojiBurst(emoji.textContent, emoji.getBoundingClientRect().left, emoji.getBoundingClientRect().top);
-            emoji.remove();
-          });
-        }
-        
-        container.appendChild(emoji);
         setTimeout(() => {
-          if (emoji.parentElement === container) {
-            container.removeChild(emoji);
+          if (leaf.parentElement === container) {
+            container.removeChild(leaf);
+          }
+        }, 30000);
+      }
+      
+      // Create 2 hearts
+      for (let i = 0; i < 2; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'emoji-particle';
+        heart.textContent = '💖';
+        
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.fontSize = `${Math.random() * 24 + 20}px`;
+        heart.style.color = getRandomPink();
+        heart.style.animationDuration = `${Math.random() * 15 + 10}s`;
+        
+        container.appendChild(heart);
+        setTimeout(() => {
+          if (heart.parentElement === container) {
+            container.removeChild(heart);
           }
         }, 30000);
       }
@@ -2645,7 +2441,7 @@
         HeartMapState.currentSection = sectionId;
         
         // Mark as completed
-        if (sectionId !== 'valentine-question' && !HeartMapState.completedSections.has(sectionId)) {
+        if (!HeartMapState.completedSections.has(sectionId)) {
           HeartMapState.completedSections.add(sectionId);
           HeartMapState.save();
         }
@@ -2697,7 +2493,7 @@
           // Set current section to valentine question
           HeartMapState.currentSection = 'valentine-question';
           
-          // Initialize Valentine screen first
+          // Initialize Valentine screen
           initValentineScreen();
         } else {
           // If no shared data found, show error and redirect to creator mode
@@ -2717,7 +2513,7 @@
       }
       
       // Initialize components
-      initEnhancedAnimations();
+      initSimplifiedAnimations();
       initNavigation();
       initFormBindings();
       initMediaUpload();
@@ -2726,7 +2522,7 @@
       initShareFunctions();
       initPreviewFunctions();
       initPreviewUpdates();
-      initSettingsPanel();
+      initNoButtonPhrasesEditor();
       
       // Update UI based on state
       updateUIFromState();
@@ -2735,7 +2531,7 @@
       // Show the current section
       showCurrentSection();
       
-      console.log('Heart Map initialized with enhanced animations!');
+      console.log('Heart Map initialized with simplified animations!');
     });
     
     // ========== CLEANUP LOCALSTORAGE ==========
@@ -2761,43 +2557,27 @@
       }
     }
     
-    // ========== SETTINGS PANEL (NO Button Phrases) ==========
-    function initSettingsPanel() {
-      const openSettingsBtn = document.getElementById('open-settings');
-      const editNoPhrasesBtn = document.getElementById('edit-no-phrases');
-      const closeSettingsBtn = document.getElementById('close-settings');
-      const settingsOverlay = document.getElementById('settings-overlay');
-      const settingsPanel = document.getElementById('settings-panel');
+    // ========== NO BUTTON PHRASES EDITOR ==========
+    function initNoButtonPhrasesEditor() {
       const addPhraseBtn = document.getElementById('add-phrase');
       const resetPhrasesBtn = document.getElementById('reset-phrases');
-      
-      // Open settings panel
-      function openSettings() {
-        settingsOverlay.classList.add('active');
-        settingsPanel.classList.add('active');
-        loadNoPhrases();
-      }
-      
-      // Close settings panel
-      function closeSettings() {
-        settingsOverlay.classList.remove('active');
-        settingsPanel.classList.remove('active');
-      }
       
       // Load phrases into editor
       function loadNoPhrases() {
         const phrasesList = document.getElementById('no-phrases-list');
+        if (!phrasesList) return;
+        
         phrasesList.innerHTML = '';
         
         HeartMapState.data.noButtonPhrases.forEach((phrase, index) => {
           const phraseDiv = document.createElement('div');
-          phraseDiv.className = 'flex items-center gap-2';
+          phraseDiv.className = 'phrase-item';
           phraseDiv.innerHTML = `
             <input type="text" 
                    class="flex-1 p-2 border border-blush rounded-lg focus:outline-none focus:border-rose-gold" 
                    value="${phrase.replace(/"/g, '&quot;')}"
                    data-index="${index}">
-            <button class="w-8 h-8 rounded-full bg-rose-gold/10 text-rose-gold flex items-center justify-center hover:bg-rose-gold/20 remove-phrase" data-index="${index}">
+            <button class="remove-phrase" data-index="${index}">
               <i class="fas fa-times"></i>
             </button>
           `;
@@ -2825,53 +2605,53 @@
       }
       
       // Add new phrase
-      addPhraseBtn.addEventListener('click', () => {
-        HeartMapState.data.noButtonPhrases.push('New phrase...');
-        HeartMapState.save();
-        loadNoPhrases();
-      });
+      if (addPhraseBtn) {
+        addPhraseBtn.addEventListener('click', () => {
+          HeartMapState.data.noButtonPhrases.push('New phrase...');
+          HeartMapState.save();
+          loadNoPhrases();
+        });
+      }
       
       // Reset to default phrases
-      resetPhrasesBtn.addEventListener('click', () => {
-        HeartMapState.data.noButtonPhrases = [
-          "No Pushing Me Away 😏",
-          "Maybe later 🤪",
-          "Try Again 😛",
-          "Are You Sure? 🥺",
-          "Pleaseeee 😭",
-          "Don't Punish Me Like This!!😭",
-          "Are You Perhaps Shy? 🤭",
-          "Nah, Not This Easily 😏",
-          "Let's think thoroughly 🥺 ",
-          "Come on, baby 🥺",
-          "You Can't Say No 😹"
-        ];
-        HeartMapState.save();
-        loadNoPhrases();
-        showNotification('✅ NO button phrases reset to defaults!');
-      });
+      if (resetPhrasesBtn) {
+        resetPhrasesBtn.addEventListener('click', () => {
+          HeartMapState.data.noButtonPhrases = [
+            "No Pushing Me Away 😏",
+            "Maybe later 🤪",
+            "Try Again 😛",
+            "Are You Sure? 🥺",
+            "Pleaseeee 😭",
+            "Don't Punish Me Like This!!😭",
+            "Are You Perhaps Shy? 🤭",
+            "Nah, Not This Easily 😏",
+            "Let's think thoroughly 🥺 ",
+            "Come on, baby 🥺",
+            "You Can't Say No 😹"
+          ];
+          HeartMapState.save();
+          loadNoPhrases();
+          showNotification('✅ NO button phrases reset to defaults!');
+        });
+      }
       
-      // Event listeners
-      if (openSettingsBtn) openSettingsBtn.addEventListener('click', openSettings);
-      if (editNoPhrasesBtn) editNoPhrasesBtn.addEventListener('click', openSettings);
-      closeSettingsBtn.addEventListener('click', closeSettings);
-      settingsOverlay.addEventListener('click', closeSettings);
-      
-      // Close on escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
-          closeSettings();
-        }
-      });
+      // Load phrases on init
+      loadNoPhrases();
     }
     
     // ========== PREVIEW FUNCTIONS ==========
     function initPreviewFunctions() {
       // Live preview button
-      document.getElementById('live-preview-btn').addEventListener('click', showLivePreview);
+      const livePreviewBtn = document.getElementById('live-preview-btn');
+      if (livePreviewBtn) {
+        livePreviewBtn.addEventListener('click', showLivePreview);
+      }
       
       // Close preview button
-      document.getElementById('close-preview').addEventListener('click', closePreview);
+      const closePreviewBtn = document.getElementById('close-preview');
+      if (closePreviewBtn) {
+        closePreviewBtn.addEventListener('click', closePreview);
+      }
     }
     
     function showLivePreview() {
@@ -2886,7 +2666,7 @@
       const previewContainer = document.getElementById('preview-container');
       const previewContent = document.getElementById('preview-content');
       
-      // Generate HTML for partner view (including Valentine screen)
+      // Generate HTML for partner view
       let previewHTML = '';
       
       // Valentine question screen
@@ -2936,18 +2716,6 @@
                   <i class="fas fa-times"></i> ${HeartMapState.data.noButtonPhrases[0] || 'No Never!'}
                 </button>
               </div>
-              
-              <div class="mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
-                <p class="subtle-text">
-                  <span class="animated-smirk">😏</span>
-                  <span class="ml-2">I know you're just being shy! The "Yes" button is waiting patiently...</span>
-                </p>
-              </div>
-              
-              <p class="text-sm subtle-text mt-6">
-                <i class="fas fa-info-circle mr-1"></i>
-                Keep clicking the NO button to see it move around!
-              </p>
             </div>
           </div>
         </div>
@@ -3066,7 +2834,7 @@
         </div>
       `;
       
-      // Memories screen
+      // Memories screen - FIXED: Partner can see images
       previewHTML += `
         <div class="max-w-6xl w-full mx-auto mb-8">
           <div class="glass-card">
@@ -3078,13 +2846,13 @@
             <div class="memory-grid mb-12">
       `;
       
-      // Add memory previews
+      // Add memory previews WITH IMAGES
       for (let i = 0; i < 3; i++) {
         const memory = HeartMapState.data.memories[i] || {};
         previewHTML += `
           <div class="memory-item">
             <div class="memory-image-container aspect-square rounded-xl overflow-hidden">
-              ${memory.image && !memory.image.includes('[COMPRESSED]') ? 
+              ${memory.image ? 
                 `<img src="${memory.image}" class="w-full h-full object-cover rounded-xl" alt="Memory ${i+1}">` : 
                 `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
                   <div class="text-center p-6">
@@ -3123,9 +2891,9 @@
                 
                 <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
                   <h3 class="text-xl elegant-font mb-4">
-                    <span class="animated-smirk">😏</span> 
+                    <span class="emoji-pulse">😏</span> 
                     Create Your Own Response 
-                    <span class="animated-blush">😊</span>
+                    <span class="emoji-pulse">😊</span>
                   </h3>
                   <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
                   <button class="primary-btn shimmer-btn">
@@ -3149,79 +2917,77 @@
     
     // ========== VALENTINE QUESTION SCREEN ==========
     function initValentineScreen() {
-      // Only show if viewing as partner
-      if (HeartMapState.isViewOnly && !HeartMapState.isCreator) {
-        // Navigate to valentine question screen
-        navigateToSectionWithAnimation('valentine-question');
+      // Update partner name if available
+      if (HeartMapState.data.partnerName) {
+        document.getElementById('valentine-partner-name').textContent = HeartMapState.data.partnerName;
+      }
+      
+      // Create floating hearts for background
+      createValentineHearts();
+      setInterval(createValentineHearts, 2000);
+      
+      // Set up the YES button
+      const yesBtn = document.getElementById('yes-valentine-btn');
+      const initialNoBtn = document.getElementById('initial-no-btn');
+      const secretMessage = document.getElementById('secret-message');
+      
+      // Yes button - takes them to the next section
+      yesBtn.addEventListener('click', () => {
+        // Create celebration effect
+        createCelebration();
         
-        // Update partner name if available
-        if (HeartMapState.data.partnerName) {
-          document.getElementById('valentine-partner-name').textContent = HeartMapState.data.partnerName;
+        // Show success message
+        showNotification('💖 Yes! You\'ve made my heart complete! 💖');
+        
+        // Remove all NO buttons
+        if (currentNoButton) {
+          currentNoButton.remove();
         }
+        if (initialNoBtn) initialNoBtn.remove();
         
-        // Create floating hearts for background
-        createValentineHearts();
-        setInterval(createValentineHearts, 2000);
-        
-        // Set up the YES button
-        const yesBtn = document.getElementById('yes-valentine-btn');
-        const initialNoBtn = document.getElementById('initial-no-btn');
-        const secretMessage = document.getElementById('secret-message');
-        
-        // Yes button - takes them to the actual content
-        yesBtn.addEventListener('click', () => {
-          // Create celebration effect
-          createCelebration();
-          
-          // Show success message
-          showNotification('💖 Yes! You\'ve made my heart complete! 💖');
-          
-          // Remove all NO buttons
-          if (currentNoButton) {
-            currentNoButton.remove();
-          }
-          if (initialNoBtn) initialNoBtn.remove();
-          
-          // Navigate to welcome screen after a delay
-          setTimeout(() => {
+        // Navigate to next section after a delay
+        setTimeout(() => {
+          if (HeartMapState.isViewOnly && !HeartMapState.isCreator) {
             navigateToSectionWithAnimation('welcome');
-          }, 1500);
+          } else {
+            navigateToSectionWithAnimation('welcome');
+          }
+        }, 1500);
+      });
+      
+      // Initial NO button (beside YES)
+      if (initialNoBtn) {
+        initialNoBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          noButtonClickCount++;
+          
+          // Vibrate on mobile
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
+          
+          // After first click, move NO button to random position
+          if (noButtonClickCount === 1) {
+            // Hide the initial NO button
+            this.style.opacity = '0';
+            this.style.transform = 'scale(0.8)';
+            
+            // Create floating NO button
+            setTimeout(() => {
+              this.style.display = 'none';
+              createFloatingNoButton();
+            }, 300);
+          }
+          
+          // Update secret message after 3 clicks
+          if (noButtonClickCount >= 3 && secretMessage && !secretMessage.classList.contains('show')) {
+            secretMessage.classList.remove('hidden');
+            secretMessage.classList.add('show');
+            secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+          }
         });
-        
-        // Initial NO button (beside YES)
-        if (initialNoBtn) {
-          initialNoBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            noButtonClickCount++;
-            
-            // Vibrate on mobile
-            if (navigator.vibrate) {
-              navigator.vibrate(50);
-            }
-            
-            // After first click, move NO button to random position
-            if (noButtonClickCount === 1) {
-              // Hide the initial NO button
-              this.style.opacity = '0';
-              this.style.transform = 'scale(0.8)';
-              
-              // Create floating NO button
-              setTimeout(() => {
-                this.style.display = 'none';
-                createFloatingNoButton();
-              }, 300);
-            }
-            
-            // Update secret message after 3 clicks
-            if (noButtonClickCount >= 3 && secretMessage && !secretMessage.classList.contains('show')) {
-              secretMessage.classList.remove('hidden');
-              secretMessage.classList.add('show');
-              secretMessage.style.animation = 'fadeIn 0.5s ease-out';
-            }
-          });
-        }
       }
     }
     
@@ -3290,7 +3056,7 @@
     
     function createValentineHearts() {
       const container = document.getElementById('valentine-hearts-container');
-      const heartTypes = ['❤️‍🔥', '💚', '❣️', '🤎', '💘',];
+      const heartTypes = ['❤️', '💚', '💖', '💘'];
       
       for (let i = 0; i < 8; i++) {
         const heart = document.createElement('div');
@@ -3362,13 +3128,13 @@
       if (closingDisplay) closingDisplay.textContent = HeartMapState.data.letter.closing || 'With all my love...';
       if (signatureDisplay) signatureDisplay.textContent = HeartMapState.data.yourName || 'Your Valentine';
       
-      // Update memory displays
+      // Update memory displays WITH IMAGES
       for (let i = 0; i < 3; i++) {
         if (HeartMapState.data.memories[i]) {
           const memory = HeartMapState.data.memories[i];
           
-          // Update image if exists and not compressed
-          if (memory.image && !memory.image.includes('[COMPRESSED]')) {
+          // Update image if exists
+          if (memory.image) {
             const memoryDisplay = document.getElementById(`memory-${i+1}-display`);
             if (memoryDisplay) {
               memoryDisplay.innerHTML = `
@@ -3598,7 +3364,7 @@
     
     // ========== PROGRESS INDICATOR ==========
     function updateProgress() {
-      const totalSections = 6; // Now includes valentine-question
+      const totalSections = 6;
       const completed = HeartMapState.completedSections.size;
       const progress = (completed / totalSections) * 100;
       
@@ -3681,10 +3447,12 @@
       const partnerNameInput = document.getElementById('partner-name');
       const letterPartnerName = document.getElementById('letter-partner-name');
       const previewName = document.getElementById('preview-name');
+      const valentinePartnerName = document.getElementById('valentine-partner-name');
       
       if (partnerNameInput) partnerNameInput.value = HeartMapState.data.partnerName;
       if (letterPartnerName) letterPartnerName.textContent = HeartMapState.data.partnerName || '[Name]';
       if (previewName) previewName.textContent = HeartMapState.data.partnerName || '[Name]';
+      if (valentinePartnerName) valentinePartnerName.textContent = HeartMapState.data.partnerName || 'My Dearest';
       
       // Your name
       const yourNameInput = document.getElementById('your-name');

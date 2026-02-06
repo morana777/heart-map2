@@ -436,6 +436,26 @@
       max-width: 800px !important;
     }
     
+    /* Preview mode */
+    .preview-mode .creator-only {
+      display: none !important;
+    }
+    
+    .preview-mode .partner-only {
+      display: block !important;
+    }
+    
+    .preview-mode .editable-field,
+    .preview-mode [class*="STEP"],
+    .preview-mode .completion-checkmark {
+      display: none !important;
+    }
+    
+    .preview-mode .section > div {
+      width: 100%;
+      max-width: 800px !important;
+    }
+    
     /* Section visibility control */
     .section {
       display: none;
@@ -495,6 +515,58 @@
     
     .success-pulse {
       animation: successPulse 1.5s ease-out;
+    }
+    
+    /* Memory textarea styles */
+    .memory-description {
+      display: block !important;
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 1px solid rgba(183, 110, 121, 0.3);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--deep-sage);
+      background: rgba(255, 255, 255, 0.9);
+      resize: vertical;
+      transition: all 0.3s ease;
+      margin-top: 1rem !important;
+    }
+    
+    .memory-description:focus {
+      outline: none;
+      border-color: var(--rose-gold);
+      box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+    }
+    
+    /* Preview container */
+    .preview-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--cream);
+      z-index: 2000;
+      overflow-y: auto;
+      display: none;
+    }
+    
+    .preview-container.active {
+      display: block;
+    }
+    
+    .preview-header {
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      padding: 1rem;
+      border-bottom: 1px solid rgba(183, 110, 121, 0.1);
+      z-index: 2001;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     
     /* Mobile optimizations */
@@ -606,6 +678,22 @@
     <div class="nav-dot" data-section="letter"></div>
     <div class="nav-dot" data-section="memories"></div>
     <div class="nav-dot" data-section="final"></div>
+  </div>
+  
+  <!-- Preview Container -->
+  <div id="preview-container" class="preview-container">
+    <div class="preview-header">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+          <i class="fas fa-eye text-white"></i>
+        </div>
+        <h3 class="text-xl elegant-font">Preview Mode</h3>
+      </div>
+      <button id="close-preview" class="secondary-btn">
+        <i class="fas fa-times mr-2"></i>Close Preview
+      </button>
+    </div>
+    <div id="preview-content" class="p-4"></div>
   </div>
   
   <!-- Main Content -->
@@ -1030,7 +1118,7 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <!-- Memory 1 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-1">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-1">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
                     <i class="fas fa-camera text-white text-xl"></i>
@@ -1039,7 +1127,7 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-1-display">
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-1-display">
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
                   <div class="text-center p-6">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
@@ -1051,7 +1139,8 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
+                  id="memory-1-text"
+                  class="memory-description creator-only"
                   placeholder="Describe this special moment..."
                   rows="2"
                 ></textarea>
@@ -1061,7 +1150,7 @@
             
             <!-- Memory 2 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-2">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-2">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
                     <i class="fas fa-heart text-white text-xl"></i>
@@ -1070,7 +1159,7 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-2-display">
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-2-display">
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
                   <div class="text-center p-6">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
@@ -1082,7 +1171,8 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
+                  id="memory-2-text"
+                  class="memory-description creator-only"
                   placeholder="What made this day special?"
                   rows="2"
                 ></textarea>
@@ -1092,7 +1182,7 @@
             
             <!-- Memory 3 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-3">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only memory-container" id="memory-3">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
                     <i class="fas fa-star text-white text-xl"></i>
@@ -1101,7 +1191,7 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
-              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-3-display">
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only memory-display" id="memory-3-display">
                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
                   <div class="text-center p-6">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
@@ -1113,7 +1203,8 @@
               </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
+                  id="memory-3-text"
+                  class="memory-description creator-only"
                   placeholder="Our dreams for the future..."
                   rows="2"
                 ></textarea>
@@ -1259,6 +1350,15 @@
                     <span>Personal soundtrack included</span>
                   </div>
                 </div>
+                
+                <!-- Live Preview Button -->
+                <div class="mt-8 pt-6 border-t border-blush">
+                  <button id="live-preview-btn" class="primary-btn w-full">
+                    <i class="fas fa-eye mr-2"></i>
+                    View Live Preview
+                  </button>
+                  <p class="text-sm subtle-text mt-2 text-center">See exactly what your partner will experience</p>
+                </div>
               </div>
             </div>
             
@@ -1349,7 +1449,7 @@
         partnerName: '',
         yourName: '',
         letter: {
-          date: 'February 14, 2024',
+          date: 'February 14, 2026',
           opening: '',
           body: '',
           promise: '',
@@ -1378,7 +1478,7 @@
           partnerName: '',
           yourName: '',
           letter: {
-            date: 'February 14, 2024',
+            date: 'February 14, 2026',
             opening: '',
             body: '',
             promise: '',
@@ -1456,7 +1556,7 @@
       }
     };
 
-    // List of NO button phrases (8+ phrases)
+    // List of NO button phrases
     const noButtonPhrases = [
       "No Pushing Me Away 😏",
       "Maybe later 🤪",
@@ -1484,9 +1584,8 @@
       // Check if viewing as partner via share ID
       const urlParams = new URLSearchParams(window.location.search);
       const shareId = urlParams.get('id');
-      const isViewMode = urlParams.has('view') || shareId;
       
-      if (isViewMode && shareId) {
+      if (shareId) {
         // Try to load shared data
         const success = HeartMapState.loadFromShareId(shareId);
         
@@ -1529,8 +1628,10 @@
       initNavigation();
       initFormBindings();
       initMediaUpload();
+      initMemoryTextBindings();
       initMusicPlayer();
       initShareFunctions();
+      initPreviewFunctions();
       initPreviewUpdates();
       
       // Update UI based on state
@@ -1540,8 +1641,243 @@
       // Show the current section
       showCurrentSection();
       
-      console.log('Heart Map initialized - Working share links');
+      console.log('Heart Map initialized');
     });
+    
+    // ========== PREVIEW FUNCTIONS ==========
+    function initPreviewFunctions() {
+      // Live preview button
+      document.getElementById('live-preview-btn').addEventListener('click', showLivePreview);
+      
+      // Close preview button
+      document.getElementById('close-preview').addEventListener('click', closePreview);
+    }
+    
+    function showLivePreview() {
+      // Save current state
+      HeartMapState.save();
+      
+      // Create preview container
+      const previewContainer = document.getElementById('preview-container');
+      const previewContent = document.getElementById('preview-content');
+      
+      // Generate HTML for partner view
+      let previewHTML = '';
+      
+      // Valentine screen
+      if (HeartMapState.data.partnerName) {
+        previewHTML += `
+          <div class="text-center max-w-3xl w-full mx-auto mb-8">
+            <div class="elegant-card">
+              <div class="mb-8">
+                <div class="inline-flex items-center gap-3 mb-6">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                    <i class="fas fa-heart text-white text-xl"></i>
+                  </div>
+                  <h1 class="text-4xl elegant-font">Heart Map</h1>
+                </div>
+                <p class="subtle-text mb-2">A Special Question For You</p>
+              </div>
+              
+              <div class="mb-12">
+                <div class="w-48 h-48 mx-auto mb-8 relative">
+                  <div class="absolute inset-4 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                    <i class="fas fa-heart text-white text-6xl heartbeat"></i>
+                  </div>
+                </div>
+                
+                <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Will You Be My Valentine?</h2>
+                
+                <p class="text-xl subtle-text mb-6 max-w-2xl mx-auto">
+                  My heart has mapped its course, and it leads straight to you. 
+                  Will you be mine on this journey of love?
+                </p>
+                
+                <div class="inline-block px-6 py-3 rounded-full bg-blush/30 mb-8">
+                  <span class="text-2xl script-font gradient-text">${HeartMapState.data.partnerName || 'My Dearest'}</span>
+                </div>
+              </div>
+              
+              <div class="space-y-6 max-w-md mx-auto">
+                <button class="primary-btn w-full">
+                  <span class="flex items-center justify-center gap-3 text-xl">
+                    <i class="fas fa-heart"></i>
+                    Yes, With All My Heart!
+                    <i class="fas fa-heart"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Welcome screen
+      previewHTML += `
+        <div class="text-center max-w-3xl w-full mx-auto mb-8">
+          <div class="elegant-card">
+            <div class="mb-8">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                  <i class="fas fa-heart text-white text-xl"></i>
+                </div>
+                <h1 class="text-4xl elegant-font">Heart Map</h1>
+              </div>
+              <p class="subtle-text mb-2">An Interactive Love Letter</p>
+            </div>
+            
+            <div class="mb-10">
+              <div class="relative inline-block">
+                <div class="w-48 h-48 mx-auto rounded-full flex items-center justify-center gentle-pulse" style="background: linear-gradient(135deg, rgba(125, 139, 111, 0.1), rgba(183, 110, 121, 0.1));">
+                  <svg class="w-32 h-32" fill="url(#heartGradient)" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">Welcome to My Heart Map</h2>
+            
+            <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
+              You've received a special love letter! Created just for you by your devotee.
+              Every click reveals more of my heartfelt confession.
+            </p>
+            
+            <div class="space-y-4">
+              <button class="primary-btn w-full max-w-sm mx-auto">
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fas fa-heart"></i>
+                  Open Your Love Letter
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Letter preview
+      previewHTML += `
+        <div class="max-w-3xl w-full mx-auto mb-8">
+          <div class="glass-card">
+            <div class="mb-8 text-center">
+              <h2 class="text-4xl elegant-font mb-4">Your Love Letter</h2>
+              <p class="subtle-text mb-6">A message from the heart</p>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="text-right">
+                <p class="subtle-text text-lg">${HeartMapState.data.letter.date || 'February 14, 2026'}</p>
+              </div>
+              
+              <div class="text-center mb-8">
+                <h3 class="text-3xl script-font gradient-text">My Dearest ${HeartMapState.data.partnerName || '[Name]'}</h3>
+              </div>
+              
+              <div class="space-y-8">
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.opening || 'My love, the moment I met you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.body || 'I love everything about you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.promise || 'I promise to always love you...'}</p>
+                </div>
+                
+                <div>
+                  <p class="text-lg subtle-text leading-relaxed">${HeartMapState.data.letter.closing || 'With all my love...'}</p>
+                </div>
+              </div>
+              
+              <div class="text-center mt-12 pt-8 border-t border-blush">
+                <div class="mb-4">
+                  <span class="text-3xl script-font gradient-text">${HeartMapState.data.yourName || 'Your Valentine'}</span>
+                </div>
+                <p class="text-sm subtle-text italic">Forever yours</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Memories preview
+      previewHTML += `
+        <div class="max-w-6xl w-full mx-auto mb-8">
+          <div class="glass-card">
+            <div class="mb-10 text-center">
+              <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
+              <p class="subtle-text mb-6">Special memories we've shared together</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      `;
+      
+      // Add memory previews
+      for (let i = 0; i < 3; i++) {
+        const memory = HeartMapState.data.memories[i] || {};
+        previewHTML += `
+          <div class="group">
+            <div class="aspect-square rounded-2xl overflow-hidden">
+              ${memory.image ? 
+                `<img src="${memory.image}" class="w-full h-full object-cover rounded-2xl" alt="Memory ${i+1}">` : 
+                `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, ${i === 0 ? 'var(--rose-gold), var(--deep-pink)' : i === 1 ? 'var(--sage), var(--moss)' : 'var(--rose-gold), var(--soft-pink)'});">
+                      <i class="fas fa-${i === 0 ? 'camera' : i === 1 ? 'heart' : 'star'} text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">${i === 0 ? 'Our First Memory' : i === 1 ? 'A Happy Moment' : 'Looking Forward'}</h4>
+                  </div>
+                </div>`
+              }
+            </div>
+            <div class="mt-4">
+              <div class="text-center subtle-text p-3">${memory.caption || ''}</div>
+            </div>
+          </div>
+        `;
+      }
+      
+      previewHTML += `
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Final screen preview
+      previewHTML += `
+        <div class="max-w-3xl w-full mx-auto">
+          <div class="elegant-card">
+            <div class="text-center">
+              <div class="mb-8">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                  <i class="fas fa-heart text-white text-2xl"></i>
+                </div>
+                <h2 class="text-5xl elegant-font mb-4 gradient-text">Thank You</h2>
+                <p class="subtle-text text-lg mb-6">For exploring this Heart Map made just for you</p>
+                
+                <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
+                  <h3 class="text-xl elegant-font mb-4">💖 Create Your Own Response 💖</h3>
+                  <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
+                  <button class="primary-btn">
+                    <i class="fas fa-heart mr-2"></i>
+                    Create Your Heart Map
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      previewContent.innerHTML = previewHTML;
+      previewContainer.classList.add('active');
+    }
+    
+    function closePreview() {
+      document.getElementById('preview-container').classList.remove('active');
+    }
     
     // ========== VALENTINE QUESTION SCREEN ==========
     function initValentineScreen() {
@@ -1736,7 +2072,7 @@
       // Update display elements with loaded data
       document.getElementById('partner-name-display').textContent = HeartMapState.data.partnerName || 'My Love';
       document.getElementById('partner-name-display-text').textContent = HeartMapState.data.partnerName || 'My Love';
-      document.getElementById('letter-date-display').textContent = HeartMapState.data.letter.date || 'February 14, 2024';
+      document.getElementById('letter-date-display').textContent = HeartMapState.data.letter.date || 'February 14, 2026';
       
       // Update letter content displays
       document.getElementById('letter-opening-display').textContent = HeartMapState.data.letter.opening || 'My love, the moment I met you...';
@@ -1749,51 +2085,59 @@
       for (let i = 0; i < 3; i++) {
         if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].image) {
           const memoryDisplay = document.getElementById(`memory-${i+1}-display`);
-          memoryDisplay.innerHTML = `
-            <img src="${HeartMapState.data.memories[i].image}" 
-                 class="w-full h-full object-cover rounded-2xl"
-                 alt="Memory ${i+1}">
-          `;
+          if (memoryDisplay) {
+            memoryDisplay.innerHTML = `
+              <img src="${HeartMapState.data.memories[i].image}" 
+                   class="w-full h-full object-cover rounded-2xl"
+                   alt="Memory ${i+1}">
+            `;
+          }
         }
         if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].caption) {
-          document.getElementById(`memory-${i+1}-text-display`).textContent = HeartMapState.data.memories[i].caption;
+          const textDisplay = document.getElementById(`memory-${i+1}-text-display`);
+          if (textDisplay) {
+            textDisplay.textContent = HeartMapState.data.memories[i].caption;
+          }
         }
       }
       
       // Set up create your own button
-      document.getElementById('create-your-own-btn').addEventListener('click', function() {
-        // Reset state for response
-        HeartMapState.reset();
-        HeartMapState.data.partnerName = HeartMapState.data.yourName; // Set partner to original sender
-        HeartMapState.save();
-        
-        // Remove view-only mode
-        document.body.classList.remove('view-only');
-        document.body.classList.add('creator-mode');
-        
-        // Navigate to greeting section
-        navigateToSection('greeting');
-        
-        // Show notification
-        showNotification('💌 Creating a response Heart Map for your Valentine!');
-      });
+      const createYourOwnBtn = document.getElementById('create-your-own-btn');
+      if (createYourOwnBtn) {
+        createYourOwnBtn.addEventListener('click', function() {
+          // Reset state for response
+          HeartMapState.reset();
+          HeartMapState.data.partnerName = HeartMapState.data.yourName; // Set partner to original sender
+          HeartMapState.save();
+          
+          // Remove view-only mode
+          document.body.classList.remove('view-only');
+          document.body.classList.add('creator-mode');
+          
+          // Navigate to greeting section
+          navigateToSection('greeting');
+          
+          // Show notification
+          showNotification('💌 Creating a response Heart Map for your Valentine!');
+        });
+      }
     }
     
     // ========== SHARE FUNCTIONS ==========
     function initShareFunctions() {
-      // WhatsApp share
+      // WhatsApp share - FIXED: Proper share URL generation
       document.getElementById('whatsapp-share').addEventListener('click', () => {
         // First, ensure all data is saved and get share ID
-        HeartMapState.save();
-        const shareId = localStorage.getItem('heartMapShareId');
+        const shareId = HeartMapState.save(); // This saves and returns the share ID
         
         if (!shareId) {
           showNotification('❌ Please save your Heart Map first!');
           return;
         }
         
+        // Generate the share URL - FIXED: Use the correct format
         const baseUrl = window.location.origin + window.location.pathname;
-        const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+        const shareUrl = `${baseUrl}?id=${shareId}`;
         
         const text = `💖 I created a Heart Map love letter just for you! 💖\n\nClick the link to view my heartfelt message:\n${shareUrl}`;
         const encodedText = encodeURIComponent(text);
@@ -1805,19 +2149,19 @@
         showNotification('📱 Opening WhatsApp to share your Heart Map!');
       });
       
-      // Copy link
+      // Copy link - FIXED: Proper share URL generation
       document.getElementById('copy-link').addEventListener('click', async () => {
         // First, ensure all data is saved and get share ID
-        HeartMapState.save();
-        const shareId = localStorage.getItem('heartMapShareId');
+        const shareId = HeartMapState.save(); // This saves and returns the share ID
         
         if (!shareId) {
           showNotification('❌ Please save your Heart Map first!');
           return;
         }
         
+        // Generate the share URL - FIXED: Use the correct format
         const baseUrl = window.location.origin + window.location.pathname;
-        const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+        const shareUrl = `${baseUrl}?id=${shareId}`;
         
         try {
           await navigator.clipboard.writeText(shareUrl);
@@ -1880,7 +2224,7 @@
         const shareId = localStorage.getItem('heartMapShareId');
         if (shareId) {
           const baseUrl = window.location.origin + window.location.pathname;
-          const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+          const shareUrl = `${baseUrl}?id=${shareId}`;
           copyBtn.title = `Click to copy:\n${shareUrl}`;
         }
       });
@@ -1889,7 +2233,7 @@
         const shareId = localStorage.getItem('heartMapShareId');
         if (shareId) {
           const baseUrl = window.location.origin + window.location.pathname;
-          const shareUrl = `${baseUrl}?view=true&id=${shareId}`;
+          const shareUrl = `${baseUrl}?id=${shareId}`;
           whatsappBtn.title = `Share via WhatsApp:\n${shareUrl}`;
         }
       });
@@ -1933,7 +2277,7 @@
     
     function createFloatingElements() {
       const container = document.getElementById('floating-container');
-      const elements = ['💖', '💗', '💓', '💕', '🌸', '🌺', '🌷', '🍃', '🌿'];
+      const elements = ['💖', '💚', '💘', '💞', '🌸', '🌹', '🌷', '🍃', '🌿' '❣️','🦋','🍁',];
       
       for (let i = 0; i < 5; i++) {
         const element = document.createElement('div');
@@ -2105,6 +2449,30 @@
       });
     }
     
+    // ========== MEMORY TEXT BINDINGS ==========
+    function initMemoryTextBindings() {
+      // Bind memory textareas to state - FIXED: Ensure all 3 textareas work
+      for (let i = 1; i <= 3; i++) {
+        const textarea = document.getElementById(`memory-${i}-text`);
+        if (textarea) {
+          // Load saved text
+          if (HeartMapState.data.memories[i-1] && HeartMapState.data.memories[i-1].caption) {
+            textarea.value = HeartMapState.data.memories[i-1].caption;
+          }
+          
+          // Add input event listener
+          textarea.addEventListener('input', (e) => {
+            if (!HeartMapState.data.memories[i-1]) {
+              HeartMapState.data.memories[i-1] = {};
+            }
+            HeartMapState.data.memories[i-1].caption = e.target.value;
+            HeartMapState.save();
+            updatePreview();
+          });
+        }
+      }
+    }
+    
     function updateUIFromState() {
       // Partner name
       document.getElementById('partner-name').value = HeartMapState.data.partnerName;
@@ -2120,6 +2488,14 @@
         const element = document.getElementById(`letter-${section}`);
         if (element) element.value = HeartMapState.data.letter[section];
       });
+      
+      // Memory textareas
+      for (let i = 1; i <= 3; i++) {
+        const textarea = document.getElementById(`memory-${i}-text`);
+        if (textarea && HeartMapState.data.memories[i-1] && HeartMapState.data.memories[i-1].caption) {
+          textarea.value = HeartMapState.data.memories[i-1].caption;
+        }
+      }
       
       updatePreview();
     }
@@ -2169,10 +2545,10 @@
           `;
           
           // Save to state
-          HeartMapState.data.memories[currentMemoryIndex] = {
-            image: event.target.result,
-            caption: memoryElement.nextElementSibling?.querySelector('textarea')?.value || ''
-          };
+          if (!HeartMapState.data.memories[currentMemoryIndex]) {
+            HeartMapState.data.memories[currentMemoryIndex] = {};
+          }
+          HeartMapState.data.memories[currentMemoryIndex].image = event.target.result;
           HeartMapState.save();
           updatePreview();
           
@@ -2291,4 +2667,3 @@
   </script>
 </body>
 </html>
-

@@ -43,85 +43,39 @@
       font-family: 'Playfair Display', serif;
     }
     
-    /* Flying NO button animation */
-    @keyframes flyAround {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-        left: 10%;
-        top: 20%;
-      }
-      25% {
-        transform: translate(100px, 50px) rotate(90deg);
-        left: 50%;
-        top: 30%;
-      }
-      50% {
-        transform: translate(-80px, 80px) rotate(180deg);
-        left: 30%;
-        top: 60%;
-      }
-      75% {
-        transform: translate(120px, -40px) rotate(270deg);
-        left: 70%;
-        top: 40%;
-      }
-      100% {
-        transform: translate(0, 0) rotate(360deg);
-        left: 10%;
-        top: 20%;
-      }
-    }
-    
-    @keyframes floatRandom {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-      25% {
-        transform: translate(100px, -50px) scale(0.9);
-      }
-      50% {
-        transform: translate(-80px, 80px) scale(1.1);
-      }
-      75% {
-        transform: translate(120px, 40px) scale(0.95);
-      }
-      100% {
-        transform: translate(0, 0) scale(1);
-      }
-    }
-    
-    .flying-no-btn {
-      position: fixed !important;
-      width: 60px !important;
-      height: 60px !important;
-      border-radius: 50% !important;
-      padding: 0 !important;
-      font-size: 14px !important;
-      z-index: 9999;
-      animation: flyAround 8s linear infinite;
-      background: linear-gradient(135deg, #ff6b6b, #ff4757) !important;
-      color: white !important;
-      border: 2px solid white !important;
-      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4) !important;
+    /* NO button styles - NOT flying, not red */
+    .no-btn {
+      padding: 12px 24px !important;
+      border-radius: 50px !important;
+      font-size: 16px !important;
+      background: var(--cream) !important;
+      color: var(--sage) !important;
+      border: 2px solid var(--sage) !important;
+      box-shadow: 0 4px 12px rgba(92, 107, 79, 0.15) !important;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      max-width: 180px;
+      text-align: center;
+      line-height: 1.4;
+      position: absolute !important;
+      z-index: 100;
     }
     
-    .flying-no-btn:hover {
-      transform: scale(1.2) !important;
-      animation-play-state: paused;
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6) !important;
+    .no-btn:hover {
+      transform: scale(1.05) !important;
+      box-shadow: 0 6px 20px rgba(92, 107, 79, 0.25) !important;
+      background: var(--blush) !important;
+      border-color: var(--deep-sage) !important;
     }
     
-    .flying-no-btn i {
-      font-size: 18px;
-    }
-    
-    .flying-no-btn span {
-      display: none;
+    .no-btn i {
+      font-size: 14px;
+      margin-right: 6px;
     }
     
     /* Floating animations */
@@ -455,18 +409,46 @@
       pointer-events: auto;
     }
     
+    /* Hide creator-only elements in partner view */
+    .view-only .creator-only,
+    .view-only .editable-field,
+    .view-only [class*="STEP"],
+    .view-only .completion-checkmark {
+      display: none !important;
+    }
+    
+    /* Show partner-only elements */
+    .view-only .partner-only {
+      display: block !important;
+    }
+    
+    .creator-only {
+      display: block;
+    }
+    
+    .partner-only {
+      display: none;
+    }
+    
+    /* Adjust sections for partner view */
+    .view-only .section > div {
+      width: 100%;
+      max-width: 800px !important;
+    }
+    
     /* Section visibility control */
     .section {
       display: none;
       min-height: 100vh;
       width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
     }
     
     .section.active {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
     }
     
     /* Valentine screen specific styles */
@@ -539,10 +521,10 @@
         padding: 10px;
       }
       
-      .flying-no-btn {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 12px !important;
+      .no-btn {
+        padding: 10px 20px !important;
+        font-size: 14px !important;
+        max-width: 160px;
       }
     }
     
@@ -592,11 +574,21 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(183, 110, 121, 0.6);
     }
+    
+    /* Valentine screen fix */
+    #valentine-question.section.active {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      min-height: 100vh !important;
+      width: 100% !important;
+    }
   </style>
 </head>
 <body>
-  <!-- Flying NO Button (Will be created dynamically) -->
-  <div id="flying-no-container"></div>
+  <!-- NO Button Container (Will be created dynamically) -->
+  <div id="no-button-container"></div>
   
   <!-- Floating Elements -->
   <div id="floating-container"></div>
@@ -608,6 +600,7 @@
   
   <!-- Navigation Dots -->
   <div class="nav-dots">
+    <div class="nav-dot" data-section="valentine-question"></div>
     <div class="nav-dot active completed" data-section="welcome"></div>
     <div class="nav-dot" data-section="greeting"></div>
     <div class="nav-dot" data-section="letter"></div>
@@ -653,7 +646,7 @@
               
               <p class="text-xl subtle-text mb-6 max-w-2xl mx-auto">
                 My heart has mapped its course, and it leads straight to you. 
-                Will you join me on this journey of love?
+                Will you be mine on this journey of love?
               </p>
               
               <!-- Partner's Name Display -->
@@ -662,16 +655,26 @@
               </div>
             </div>
             
-            <!-- Yes Button -->
+            <!-- Yes Button Container -->
             <div class="space-y-6 max-w-md mx-auto">
-              <!-- Yes Button -->
-              <button id="yes-valentine-btn" class="primary-btn w-full transform hover:scale-105 transition-transform duration-300">
-                <span class="flex items-center justify-center gap-3 text-xl">
-                  <i class="fas fa-heart"></i>
-                  Yes, With All My Heart!
-                  <i class="fas fa-heart"></i>
-                </span>
-              </button>
+              <!-- Buttons Container -->
+              <div class="flex flex-col gap-4" id="buttons-container">
+                <!-- Yes Button -->
+                <button id="yes-valentine-btn" class="primary-btn w-full transform hover:scale-105 transition-transform duration-300">
+                  <span class="flex items-center justify-center gap-3 text-xl">
+                    <i class="fas fa-heart"></i>
+                    Yes, With All My Heart!
+                    <i class="fas fa-heart"></i>
+                  </span>
+                </button>
+                
+                <!-- Initial NO Button (beside YES) -->
+                <div id="initial-no-button-container" class="w-full flex justify-center">
+                  <button id="initial-no-btn" class="no-btn w-full max-w-sm">
+                    <i class="fas fa-times"></i> No Never!
+                  </button>
+                </div>
+              </div>
               
               <!-- Secret Message (appears after clicking No a few times) -->
               <div id="secret-message" class="hidden mt-4 p-4 rounded-lg bg-rose-gold/10 border border-rose-gold/20">
@@ -683,7 +686,7 @@
               
               <p class="text-sm subtle-text mt-6">
                 <i class="fas fa-info-circle mr-1"></i>
-                Look for the flying ❌ button around the screen if you want to say no
+                Keep clicking the NO button to see it move around!
               </p>
             </div>
             
@@ -735,29 +738,58 @@
             </div>
           </div>
           
-          <!-- Tagline -->
-          <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">
-            Map Your Heart
-          </h2>
-          
-          <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
-            Create a personalized, interactive love story for your special someone. 
-            Every click adds to your unique journey together.
-          </p>
-          
-          <!-- Start Button -->
-          <div class="space-y-4">
-            <button id="start-btn" class="primary-btn w-full max-w-sm mx-auto">
-              <span class="flex items-center justify-center gap-2">
-                <i class="fas fa-play"></i>
-                Begin Your Heart Map
-              </span>
-            </button>
+          <!-- Creator Mode Content -->
+          <div id="creator-mode-content" class="creator-only">
+            <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">
+              Map Your Heart
+            </h2>
             
-            <p class="text-sm subtle-text">
-              <i class="fas fa-info-circle mr-1"></i>
-              Follow the steps to create your love letter
+            <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
+              Create a personalized, interactive love story for your special someone. 
+              Every click adds to your unique journey together.
             </p>
+            
+            <!-- Start Button -->
+            <div class="space-y-4">
+              <button id="start-btn" class="primary-btn w-full max-w-sm mx-auto">
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fas fa-play"></i>
+                  Begin Your Heart Map
+                </span>
+              </button>
+              
+              <p class="text-sm subtle-text">
+                <i class="fas fa-info-circle mr-1"></i>
+                Follow the steps to create your love letter
+              </p>
+            </div>
+          </div>
+          
+          <!-- Partner Mode Content -->
+          <div id="partner-mode-content" class="partner-only">
+            <h2 class="text-5xl md:text-6xl elegant-font mb-6 gradient-text">
+              Welcome to Your Heart Map
+            </h2>
+            
+            <p class="text-xl subtle-text mb-10 max-w-2xl mx-auto">
+              You've received a special love letter!
+              Created just for you by your devotee.
+              Every click reveals more of my heartfelt confession.
+            </p>
+            
+            <div class="space-y-4">
+              <button id="view-letter-btn" class="primary-btn w-full max-w-sm mx-auto">
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fas fa-heart"></i>
+                  Open Your Love Letter
+                </span>
+              </button>
+              
+              <p class="text-sm subtle-text">
+                <i class="fas fa-info-circle mr-1"></i>
+                Will you explore this heartfelt message? I created it just for you, to show you what my words often struggle to say.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -767,50 +799,72 @@
     <section id="greeting" class="section">
       <div class="max-w-2xl w-full fade-in">
         <div class="elegant-card">
-          <div class="mb-8 text-center">
-            <div class="inline-flex items-center gap-2 mb-4">
-              <span class="completion-checkmark">1</span>
-              <span class="text-sm font-medium text-sage">STEP 1 OF 4</span>
-            </div>
-            <h2 class="text-4xl elegant-font mb-4">To My Dearest</h2>
-            <p class="subtle-text">Start by personalizing this letter with your loved one's name</p>
+          <!-- Partner View Header -->
+          <div class="mb-8 text-center partner-only">
+            <h2 class="text-4xl elegant-font mb-4">For My Dearest <span id="partner-name-display">[Name]</span></h2>
+            <p class="subtle-text">A heartfelt message just for you</p>
           </div>
           
-          <div class="space-y-8">
-            <div>
-              <label class="block text-sm font-medium mb-2 subtle-text">Their Name</label>
-              <input 
-                type="text" 
-                id="partner-name" 
-                class="elegant-input text-3xl script-font text-center editable-field"
-                placeholder="Enter their name..."
-                maxlength="30"
-              >
-              <p class="text-xs subtle-text mt-2 text-center">This will appear throughout your love letter</p>
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium mb-2 subtle-text">Your Name</label>
-              <input 
-                type="text" 
-                id="your-name" 
-                class="elegant-input text-2xl script-font text-center editable-field"
-                placeholder="Your name..."
-                maxlength="30"
-              >
-            </div>
-            
-            <div class="pt-6 border-t border-blush">
-              <div class="flex items-center justify-between">
-                <button data-section="welcome" class="secondary-btn">
-                  <i class="fas fa-arrow-left mr-2"></i>Back
-                </button>
-                
-                <button data-section="letter" class="primary-btn" id="next-to-letter">
-                  Continue to Letter
-                  <i class="fas fa-arrow-right ml-2"></i>
-                </button>
+          <!-- Creator View Header -->
+          <div class="creator-only">
+            <div class="mb-8 text-center">
+              <div class="inline-flex items-center gap-2 mb-4">
+                <span class="completion-checkmark">1</span>
+                <span class="text-sm font-medium text-sage">STEP 1 OF 4</span>
               </div>
+              <h2 class="text-4xl elegant-font mb-4">To My Dearest</h2>
+              <p class="subtle-text">Start by personalizing this letter with your loved one's name</p>
+            </div>
+            
+            <div class="space-y-8">
+              <div>
+                <label class="block text-sm font-medium mb-2 subtle-text">Their Name</label>
+                <input 
+                  type="text" 
+                  id="partner-name" 
+                  class="elegant-input text-3xl script-font text-center editable-field"
+                  placeholder="Enter their name..."
+                  maxlength="30"
+                >
+                <p class="text-xs subtle-text mt-2 text-center">This will appear throughout your love letter</p>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium mb-2 subtle-text">Your Name</label>
+                <input 
+                  type="text" 
+                  id="your-name" 
+                  class="elegant-input text-2xl script-font text-center editable-field"
+                  placeholder="Your name..."
+                  maxlength="30"
+                >
+              </div>
+              
+              <div class="pt-6 border-t border-blush">
+                <div class="flex items-center justify-between">
+                  <button data-section="welcome" class="secondary-btn">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                  </button>
+                  
+                  <button data-section="letter" class="primary-btn" id="next-to-letter">
+                    Continue to Letter
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Partner View Content -->
+          <div class="partner-only">
+            <div class="text-center mb-8">
+              <h3 class="text-3xl script-font gradient-text" id="letter-salutation-display">My Dearest <span id="partner-name-display-text">[Name]</span></h3>
+            </div>
+            <div class="text-center mt-12">
+              <button data-section="letter" class="primary-btn">
+                Read Your Love Letter
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -821,7 +875,14 @@
     <section id="letter" class="section">
       <div class="max-w-3xl w-full fade-in">
         <div class="glass-card">
-          <div class="mb-8 text-center">
+          <!-- Partner View Header -->
+          <div class="mb-8 text-center partner-only">
+            <h2 class="text-4xl elegant-font mb-4">Your Love Letter</h2>
+            <p class="subtle-text mb-6">A message from the heart</p>
+          </div>
+          
+          <!-- Creator View Header -->
+          <div class="mb-8 text-center creator-only">
             <div class="inline-flex items-center gap-2 mb-4">
               <span class="completion-checkmark">2</span>
               <span class="text-sm font-medium text-sage">STEP 2 OF 4</span>
@@ -837,10 +898,11 @@
               <input 
                 type="text" 
                 id="letter-date" 
-                class="elegant-input text-right max-w-xs ml-auto editable-field"
+                class="elegant-input text-right max-w-xs ml-auto editable-field creator-only"
                 placeholder="Today's date..."
                 value="February 14, 2024"
               >
+              <p id="letter-date-display" class="partner-only subtle-text text-lg"></p>
             </div>
             
             <!-- Salutation -->
@@ -851,43 +913,59 @@
             <!-- Letter Body -->
             <div class="space-y-8">
               <div>
-                <label class="block text-sm font-medium mb-3 subtle-text">Opening</label>
+                <label class="block text-sm font-medium mb-3 subtle-text creator-only">Opening</label>
+                <div class="partner-only">
+                  <p class="text-lg font-medium mb-2">My Dearest</p>
+                </div>
                 <textarea 
                   id="letter-opening"
-                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field creator-only"
                   placeholder="My love, the moment I met you..."
                   rows="3"
                 ></textarea>
+                <div id="letter-opening-display" class="partner-only text-lg subtle-text leading-relaxed"></div>
               </div>
               
               <div>
-                <label class="block text-sm font-medium mb-3 subtle-text">What I Love About You</label>
+                <label class="block text-sm font-medium mb-3 subtle-text creator-only">What I Love About You</label>
+                <div class="partner-only">
+                  <p class="text-lg font-medium mb-2">What I Love About You</p>
+                </div>
                 <textarea 
                   id="letter-body"
-                  class="w-full elegant-input min-h-[150px] p-4 rounded-lg border border-blush resize-none editable-field"
+                  class="w-full elegant-input min-h-[150px] p-4 rounded-lg border border-blush resize-none editable-field creator-only"
                   placeholder="I love the way you... Your smile reminds me of... The thing I cherish most is..."
                   rows="5"
                 ></textarea>
+                <div id="letter-body-display" class="partner-only text-lg subtle-text leading-relaxed"></div>
               </div>
               
               <div>
-                <label class="block text-sm font-medium mb-3 subtle-text">My Promise to You</label>
+                <label class="block text-sm font-medium mb-3 subtle-text creator-only">My Promise to You</label>
+                <div class="partner-only">
+                  <p class="text-lg font-medium mb-2">My Promise to You</p>
+                </div>
                 <textarea 
                   id="letter-promise"
-                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field"
+                  class="w-full elegant-input min-h-[100px] p-4 rounded-lg border border-blush resize-none editable-field creator-only"
                   placeholder="I promise to always... Together, we will..."
                   rows="3"
                 ></textarea>
+                <div id="letter-promise-display" class="partner-only text-lg subtle-text leading-relaxed"></div>
               </div>
               
               <div>
-                <label class="block text-sm font-medium mb-3 subtle-text">Closing</label>
+                <label class="block text-sm font-medium mb-3 subtle-text creator-only">Closing</label>
+                <div class="partner-only">
+                  <p class="text-lg font-medium mb-2">With All My Love</p>
+                </div>
                 <textarea 
                   id="letter-closing"
-                  class="w-full elegant-input min-h-[80px] p-4 rounded-lg border border-blush resize-none editable-field"
+                  class="w-full elegant-input min-h-[80px] p-4 rounded-lg border border-blush resize-none editable-field creator-only"
                   placeholder="With all my love and admiration..."
                   rows="2"
                 ></textarea>
+                <div id="letter-closing-display" class="partner-only text-lg subtle-text leading-relaxed"></div>
               </div>
             </div>
             
@@ -895,18 +973,30 @@
             <div class="text-center mt-12 pt-8 border-t border-blush">
               <div class="mb-4">
                 <span class="text-3xl script-font gradient-text" id="letter-signature">[Your Name]</span>
+                <span id="letter-signature-display" class="partner-only text-3xl script-font gradient-text"></span>
               </div>
               <p class="text-sm subtle-text italic">Forever yours</p>
             </div>
             
             <!-- Navigation -->
             <div class="flex items-center justify-between pt-8">
-              <button data-section="greeting" class="secondary-btn">
+              <!-- Creator Navigation -->
+              <button data-section="greeting" class="secondary-btn creator-only">
                 <i class="fas fa-arrow-left mr-2"></i>Back
               </button>
               
-              <button data-section="memories" class="primary-btn">
+              <button data-section="memories" class="primary-btn creator-only">
                 Add Memories
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+              
+              <!-- Partner Navigation -->
+              <button data-section="greeting" class="secondary-btn partner-only">
+                <i class="fas fa-arrow-left mr-2"></i>Previous
+              </button>
+              
+              <button data-section="memories" class="primary-btn partner-only">
+                View Memories
                 <i class="fas fa-arrow-right ml-2"></i>
               </button>
             </div>
@@ -919,19 +1009,28 @@
     <section id="memories" class="section">
       <div class="max-w-6xl w-full fade-in">
         <div class="glass-card">
-          <div class="mb-10 text-center">
-            <div class="inline-flex items-center gap-2 mb-4">
-              <span class="completion-checkmark">3</span>
-              <span class="text-sm font-medium text-sage">STEP 3 OF 4</span>
-            </div>
+          <!-- Partner View Header -->
+          <div class="mb-10 text-center partner-only">
             <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
-            <p class="subtle-text mb-6">Add photos and memories that tell our story</p>
+            <p class="subtle-text mb-6">Special memories we've shared together</p>
+          </div>
+          
+          <!-- Creator View Header -->
+          <div class="creator-only">
+            <div class="mb-10 text-center">
+              <div class="inline-flex items-center gap-2 mb-4">
+                <span class="completion-checkmark">3</span>
+                <span class="text-sm font-medium text-sage">STEP 3 OF 4</span>
+              </div>
+              <h2 class="text-4xl elegant-font mb-4">Our Treasured Moments</h2>
+              <p class="subtle-text mb-6">Add photos and memories that tell our story</p>
+            </div>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <!-- Memory 1 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-1">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-1">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
                     <i class="fas fa-camera text-white text-xl"></i>
@@ -940,18 +1039,29 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-1-display">
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--deep-pink));">
+                      <i class="fas fa-heart text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">Our First Memory</h4>
+                  </div>
+                </div>
+              </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
                   placeholder="Describe this special moment..."
                   rows="2"
                 ></textarea>
+                <div id="memory-1-text-display" class="partner-only text-center subtle-text p-3"></div>
               </div>
             </div>
             
             <!-- Memory 2 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-2">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-2">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
                     <i class="fas fa-heart text-white text-xl"></i>
@@ -960,18 +1070,29 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-2-display">
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--sage), var(--moss));">
+                      <i class="fas fa-heart text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">A Happy Moment</h4>
+                  </div>
+                </div>
+              </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
                   placeholder="What made this day special?"
                   rows="2"
                 ></textarea>
+                <div id="memory-2-text-display" class="partner-only text-center subtle-text p-3"></div>
               </div>
             </div>
             
             <!-- Memory 3 -->
             <div class="group">
-              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field" id="memory-3">
+              <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blush/20 to-pale-pink/20 border-2 border-dashed border-rose-gold/30 flex flex-col items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:border-rose-gold/60 hover:scale-[1.02] editable-field creator-only" id="memory-3">
                 <div class="text-center">
                   <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
                     <i class="fas fa-star text-white text-xl"></i>
@@ -980,12 +1101,23 @@
                   <p class="text-sm subtle-text mb-4">Click to add a photo</p>
                 </div>
               </div>
+              <div class="aspect-square rounded-2xl overflow-hidden partner-only" id="memory-3-display">
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blush/20 to-pale-pink/20">
+                  <div class="text-center p-6">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--rose-gold), var(--soft-pink));">
+                      <i class="fas fa-star text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">Looking Forward</h4>
+                  </div>
+                </div>
+              </div>
               <div class="mt-4">
                 <textarea 
-                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field"
+                  class="w-full elegant-input min-h-[80px] p-3 rounded-lg border border-blush resize-none text-center editable-field creator-only"
                   placeholder="Our dreams for the future..."
                   rows="2"
                 ></textarea>
+                <div id="memory-3-text-display" class="partner-only text-center subtle-text p-3"></div>
               </div>
             </div>
           </div>
@@ -995,7 +1127,8 @@
             <div class="max-w-md mx-auto">
               <div class="text-center mb-6">
                 <h3 class="text-xl elegant-font mb-2">Our Song</h3>
-                <p class="subtle-text text-sm">Add a song that reminds you of them</p>
+                <p class="subtle-text text-sm creator-only">Add a song that reminds you of them</p>
+                <p class="subtle-text text-sm partner-only">A special song for us</p>
               </div>
               
               <div class="bg-white rounded-xl p-6 shadow-sm border border-blush">
@@ -1004,7 +1137,7 @@
                     <div id="song-title" class="font-medium">No song selected</div>
                     <div id="song-status" class="text-sm subtle-text">Upload an MP3 file</div>
                   </div>
-                  <button id="upload-song-btn" class="secondary-btn editable-field">
+                  <button id="upload-song-btn" class="secondary-btn editable-field creator-only">
                     <i class="fas fa-upload mr-2"></i>Upload
                   </button>
                 </div>
@@ -1029,12 +1162,23 @@
           
           <!-- Navigation -->
           <div class="flex items-center justify-between pt-8 border-t border-blush">
-            <button data-section="letter" class="secondary-btn">
+            <!-- Creator Navigation -->
+            <button data-section="letter" class="secondary-btn creator-only">
               <i class="fas fa-arrow-left mr-2"></i>Back to Letter
             </button>
             
-            <button data-section="final" class="primary-btn">
+            <button data-section="final" class="primary-btn creator-only">
               Preview & Share
+              <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+            
+            <!-- Partner Navigation -->
+            <button data-section="letter" class="secondary-btn partner-only">
+              <i class="fas fa-arrow-left mr-2"></i>Back
+            </button>
+            
+            <button data-section="final" class="primary-btn partner-only">
+              Continue
               <i class="fas fa-arrow-right ml-2"></i>
             </button>
           </div>
@@ -1046,119 +1190,142 @@
     <section id="final" class="section">
       <div class="max-w-3xl w-full fade-in">
         <div class="elegant-card">
-          <div class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 mb-4">
-              <span class="completion-checkmark">4</span>
-              <span class="text-sm font-medium text-sage">STEP 4 OF 4 - COMPLETE!</span>
-            </div>
-            
+          <!-- Partner View -->
+          <div class="partner-only text-center">
             <div class="mb-8">
               <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
-                <i class="fas fa-check text-white text-2xl"></i>
+                <i class="fas fa-heart text-white text-2xl"></i>
               </div>
-              <h2 class="text-5xl elegant-font mb-4 gradient-text">Your Heart Map is Ready!</h2>
-              <p class="subtle-text text-lg">Preview your creation before sharing it with your loved one</p>
-            </div>
-          </div>
-          
-          <!-- Preview Card -->
-          <div class="mb-10">
-            <div class="bg-gradient-to-br from-blush/20 to-pale-pink/10 rounded-2xl p-8 border border-blush">
-              <div class="flex items-center justify-between mb-6">
-                <div>
-                  <h3 class="text-2xl elegant-font">Preview</h3>
-                  <p class="subtle-text">This is what your partner will see</p>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="w-3 h-3 rounded-full bg-rose-gold animate-pulse"></div>
-                  <span class="text-sm font-medium">View Only Mode</span>
-                </div>
-              </div>
+              <h2 class="text-5xl elegant-font mb-4 gradient-text">Thank You</h2>
+              <p class="subtle-text text-lg mb-6">For exploring this Heart Map made just for you</p>
               
-              <div class="space-y-6">
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-check-circle text-sage"></i>
-                  <span>Personalized greeting for <span id="preview-name" class="font-medium">[Name]</span></span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-check-circle text-sage"></i>
-                  <span>Love letter with <span id="preview-letter-length" class="font-medium">0</span> words</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-check-circle text-sage"></i>
-                  <span><span id="preview-photo-count" class="font-medium">0</span> memory photos</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <i class="fas fa-check-circle text-sage"></i>
-                  <span>Personal soundtrack included</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Important Note -->
-          <div class="mb-10 p-6 rounded-xl bg-gradient-to-r from-rose-gold/5 to-sage/5 border border-rose-gold/20">
-            <div class="flex items-start gap-3">
-              <i class="fas fa-lock mt-1 text-rose-gold"></i>
-              <div>
-                <h4 class="font-medium mb-2">Important: View-Only Mode</h4>
-                <p class="text-sm subtle-text">
-                  Once shared, your Heart Map becomes <span class="font-medium">view-only</span> for your partner. 
-                  They can experience your love story but cannot edit it. At the end, they'll have the option to create their own Heart Map for you.
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Share Buttons -->
-          <div class="space-y-4 mb-8">
-            <h3 class="text-xl elegant-font text-center">Share Your Heart Map</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3 editable-field">
-                <i class="fab fa-whatsapp text-green-500 text-lg"></i>
-                Share via WhatsApp
-              </button>
-              
-              <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3 editable-field">
-                <i class="fas fa-link text-rose-gold text-lg"></i>
-                Copy Link
-              </button>
-            </div>
-            
-            <div class="text-center">
-              <button id="save-draft" class="text-sm subtle-text hover:text-rose-gold transition-colors editable-field">
-                <i class="fas fa-save mr-1"></i>
-                Save as draft to continue later
-              </button>
-            </div>
-          </div>
-          
-          <!-- Partner's View Section (Shown to partner with creator's data) -->
-          <div id="partner-view-section" class="hidden">
-            <div class="text-center pt-8 border-t border-blush">
-              <p class="subtle-text mb-4">You've received this beautiful Heart Map from <span id="partner-sender-name" class="font-medium">[Sender]</span></p>
               <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
-                <h3 class="text-xl elegant-font mb-4">💖 A Message From Your Valentine 💖</h3>
-                <p id="partner-preview-text" class="subtle-text italic"></p>
+                <h3 class="text-xl elegant-font mb-4">💖 Create Your Own Response 💖</h3>
+                <p class="subtle-text mb-4">Now you can create your own Heart Map to send back</p>
+                <button id="create-your-own-btn" class="primary-btn">
+                  <i class="fas fa-heart mr-2"></i>
+                  Create Your Heart Map
+                </button>
               </div>
-              <button id="create-response-btn" class="primary-btn">
-                <i class="fas fa-heart mr-2"></i>
-                Create Your Response Heart Map
-              </button>
-              <p class="text-xs subtle-text mt-3">Send a heartfelt response to complete the circle of love</p>
             </div>
           </div>
           
-          <!-- Final Navigation -->
-          <div class="flex items-center justify-between pt-8 border-t border-blush">
-            <button data-section="memories" class="secondary-btn">
-              <i class="fas fa-edit mr-2"></i>Edit
-            </button>
+          <!-- Creator View -->
+          <div class="creator-only">
+            <div class="text-center mb-10">
+              <div class="inline-flex items-center gap-2 mb-4">
+                <span class="completion-checkmark">4</span>
+                <span class="text-sm font-medium text-sage">STEP 4 OF 4 - COMPLETE!</span>
+              </div>
+              
+              <div class="mb-8">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 heartbeat" style="background: linear-gradient(135deg, var(--sage), var(--rose-gold));">
+                  <i class="fas fa-check text-white text-2xl"></i>
+                </div>
+                <h2 class="text-5xl elegant-font mb-4 gradient-text">Your Heart Map is Ready!</h2>
+                <p class="subtle-text text-lg">Preview your creation before sharing it with your loved one</p>
+              </div>
+            </div>
             
-            <div class="flex items-center gap-2 subtle-text">
-              <i class="fas fa-info-circle"></i>
-              <span class="text-sm">All data is saved locally in your browser</span>
+            <!-- Preview Card -->
+            <div class="mb-10">
+              <div class="bg-gradient-to-br from-blush/20 to-pale-pink/10 rounded-2xl p-8 border border-blush">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 class="text-2xl elegant-font">Preview</h3>
+                    <p class="subtle-text">This is what your partner will see</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-rose-gold animate-pulse"></div>
+                    <span class="text-sm font-medium">View Only Mode</span>
+                  </div>
+                </div>
+                
+                <div class="space-y-6">
+                  <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-sage"></i>
+                    <span>Personalized greeting for <span id="preview-name" class="font-medium">[Name]</span></span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-sage"></i>
+                    <span>Love letter with <span id="preview-letter-length" class="font-medium">0</span> words</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-sage"></i>
+                    <span><span id="preview-photo-count" class="font-medium">0</span> memory photos</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-sage"></i>
+                    <span>Personal soundtrack included</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Important Note -->
+            <div class="mb-10 p-6 rounded-xl bg-gradient-to-r from-rose-gold/5 to-sage/5 border border-rose-gold/20">
+              <div class="flex items-start gap-3">
+                <i class="fas fa-lock mt-1 text-rose-gold"></i>
+                <div>
+                  <h4 class="font-medium mb-2">Important: View-Only Mode</h4>
+                  <p class="text-sm subtle-text">
+                    Once shared, your Heart Map becomes <span class="font-medium">view-only</span> for your partner. 
+                    They can experience your love story but cannot edit it. At the end, they'll have the option to create their own Heart Map for you.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Share Buttons -->
+            <div class="space-y-4 mb-8">
+              <h3 class="text-xl elegant-font text-center">Share Your Heart Map</h3>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="whatsapp-share" class="secondary-btn flex items-center justify-center gap-3 editable-field">
+                  <i class="fab fa-whatsapp text-green-500 text-lg"></i>
+                  Share via WhatsApp
+                </button>
+                
+                <button id="copy-link" class="secondary-btn flex items-center justify-center gap-3 editable-field">
+                  <i class="fas fa-link text-rose-gold text-lg"></i>
+                  Copy Link
+                </button>
+              </div>
+              
+              <div class="text-center">
+                <button id="save-draft" class="text-sm subtle-text hover:text-rose-gold transition-colors editable-field">
+                  <i class="fas fa-save mr-1"></i>
+                  Save as draft to continue later
+                </button>
+              </div>
+            </div>
+            
+            <!-- Partner's View Section -->
+            <div id="partner-view-section" class="hidden">
+              <div class="text-center pt-8 border-t border-blush">
+                <p class="subtle-text mb-4">You've received this beautiful Heart Map from <span id="partner-sender-name" class="font-medium">[Sender]</span></p>
+                <div class="bg-gradient-to-r from-rose-gold/10 to-sage/10 p-6 rounded-xl mb-6">
+                  <h3 class="text-xl elegant-font mb-4">💖 A Message From Your Valentine 💖</h3>
+                  <p id="partner-preview-text" class="subtle-text italic"></p>
+                </div>
+                <button id="create-response-btn" class="primary-btn">
+                  <i class="fas fa-heart mr-2"></i>
+                  Create Your Response Heart Map
+                </button>
+                <p class="text-xs subtle-text mt-3">Send a heartfelt response to complete the circle of love</p>
+              </div>
+            </div>
+            
+            <!-- Final Navigation -->
+            <div class="flex items-center justify-between pt-8 border-t border-blush">
+              <button data-section="memories" class="secondary-btn">
+                <i class="fas fa-edit mr-2"></i>Edit
+              </button>
+              
+              <div class="flex items-center gap-2 subtle-text">
+                <i class="fas fa-info-circle"></i>
+                <span class="text-sm">All data is saved locally in your browser</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1288,6 +1455,27 @@
         }
       }
     };
+
+    // List of NO button phrases (8+ phrases)
+    const noButtonPhrases = [
+      "Not right now",
+      "Maybe later",
+      "I'm not sure",
+      "Let me think about it",
+      "Can we talk first?",
+      "I need more time",
+      "I'm feeling shy",
+      "Ask me again later",
+      "I'm nervous",
+      "Let's take it slow",
+      "I need to think",
+      "Not yet, please"
+    ];
+    
+    // Track NO button state
+    let noButtonClickCount = 0;
+    let isNoButtonFloating = false;
+    let currentNoButton = null;
     
     // ========== INITIALIZATION ==========
     document.addEventListener('DOMContentLoaded', function() {
@@ -1297,7 +1485,7 @@
       // Check if viewing as partner via share ID
       const urlParams = new URLSearchParams(window.location.search);
       const shareId = urlParams.get('id');
-      const isViewMode = urlParams.has('view');
+      const isViewMode = urlParams.has('view') || shareId;
       
       if (isViewMode && shareId) {
         // Try to load shared data
@@ -1305,15 +1493,20 @@
         
         if (success) {
           document.body.classList.add('view-only');
-          
-          // Show partner view section
-          document.getElementById('partner-view-section').classList.remove('hidden');
-          document.getElementById('create-your-own-section').classList.add('hidden');
+          document.body.classList.remove('creator-mode');
           
           // Update partner view with creator's data
           updatePartnerView();
           
-          // Start with Valentine question screen
+          // Set up partner mode navigation
+          document.getElementById('view-letter-btn').addEventListener('click', () => {
+            navigateToSection('greeting');
+          });
+          
+          // Set current section to valentine question
+          HeartMapState.currentSection = 'valentine-question';
+          
+          // Initialize Valentine screen first
           initValentineScreen();
         } else {
           // If no shared data found, show error and redirect to creator mode
@@ -1324,6 +1517,7 @@
       } else {
         // Creator mode
         document.body.classList.add('creator-mode');
+        document.body.classList.remove('view-only');
         
         // Generate share ID if none exists
         if (!localStorage.getItem('heartMapShareId')) {
@@ -1344,6 +1538,9 @@
       updateUIFromState();
       updateProgress();
       
+      // Show the current section
+      showCurrentSection();
+      
       console.log('Heart Map initialized - Working share links');
     });
     
@@ -1351,7 +1548,7 @@
     function initValentineScreen() {
       // Only show if viewing as partner
       if (HeartMapState.isViewOnly && !HeartMapState.isCreator) {
-        // Show valentine question screen first
+        // Navigate to valentine question screen
         navigateToSection('valentine-question');
         
         // Update partner name if available
@@ -1363,11 +1560,9 @@
         createValentineHearts();
         setInterval(createValentineHearts, 2000);
         
-        // Create flying NO buttons
-        createFlyingNoButtons();
-        
         // Set up the YES button
         const yesBtn = document.getElementById('yes-valentine-btn');
+        const initialNoBtn = document.getElementById('initial-no-btn');
         const secretMessage = document.getElementById('secret-message');
         
         // Yes button - takes them to the actual content
@@ -1378,8 +1573,11 @@
           // Show success message
           showNotification('💖 Yes! You\'ve made my heart complete! 💖');
           
-          // Remove flying NO buttons
-          document.querySelectorAll('.flying-no-btn').forEach(btn => btn.remove());
+          // Remove all NO buttons
+          if (currentNoButton) {
+            currentNoButton.remove();
+          }
+          initialNoBtn.remove();
           
           // Navigate to welcome screen after a delay
           setTimeout(() => {
@@ -1387,73 +1585,101 @@
           }, 1500);
         });
         
-        // Update secret message based on clicks on flying buttons
-        let noClickCount = 0;
-        document.addEventListener('click', function(e) {
-          if (e.target.closest('.flying-no-btn')) {
-            noClickCount++;
-            if (noClickCount >= 3 && !secretMessage.classList.contains('show')) {
-              secretMessage.classList.remove('hidden');
-              secretMessage.classList.add('show');
-              secretMessage.style.animation = 'fadeIn 0.5s ease-out';
-            }
+        // Initial NO button (beside YES)
+        initialNoBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          noButtonClickCount++;
+          
+          // Vibrate on mobile
+          if (navigator.vibrate) {
+            navigator.vibrate(50);
+          }
+          
+          // After first click, move NO button to random position
+          if (noButtonClickCount === 1) {
+            // Hide the initial NO button
+            this.style.opacity = '0';
+            this.style.transform = 'scale(0.8)';
+            
+            // Create floating NO button
+            setTimeout(() => {
+              this.style.display = 'none';
+              createFloatingNoButton();
+            }, 300);
+          }
+          
+          // Update secret message after 3 clicks
+          if (noButtonClickCount >= 3 && !secretMessage.classList.contains('show')) {
+            secretMessage.classList.remove('hidden');
+            secretMessage.classList.add('show');
+            secretMessage.style.animation = 'fadeIn 0.5s ease-out';
           }
         });
       }
     }
     
-    function createFlyingNoButtons() {
-      const container = document.getElementById('flying-no-container');
-      const noTexts = ["No", "Nope", "Nah", "Maybe", "Later", "😊", "😉", "💭"];
-      
-      // Create 3 flying NO buttons
-      for (let i = 0; i < 3; i++) {
-        const noBtn = document.createElement('button');
-        const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
-        
-        noBtn.className = 'flying-no-btn';
-        noBtn.innerHTML = `<i class="fas fa-times"></i><span>${randomText}</span>`;
-        noBtn.title = "Click me to say no!";
-        
-        // Random starting position
-        const startX = Math.random() * 80 + 10;
-        const startY = Math.random() * 80 + 10;
-        
-        noBtn.style.left = `${startX}%`;
-        noBtn.style.top = `${startY}%`;
-        
-        // Random animation
-        const duration = Math.random() * 10 + 15;
-        const delay = Math.random() * 5;
-        noBtn.style.animation = `flyAround ${duration}s linear infinite ${delay}s`;
-        
-        // Add click event
-        noBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          // Change text
-          const newText = noTexts[Math.floor(Math.random() * noTexts.length)];
-          this.innerHTML = `<i class="fas fa-times"></i><span>${newText}</span>`;
-          
-          // Speed up animation
-          const currentDuration = parseFloat(this.style.animationDuration || '15s');
-          this.style.animationDuration = `${Math.max(3, currentDuration * 0.8)}s`;
-          
-          // Move to new random position
-          const newX = Math.random() * 80 + 10;
-          const newY = Math.random() * 80 + 10;
-          this.style.left = `${newX}%`;
-          this.style.top = `${newY}%`;
-          
-          // Vibrate on mobile
-          if (navigator.vibrate) {
-            navigator.vibrate(100);
-          }
-        });
-        
-        container.appendChild(noBtn);
+    function createFloatingNoButton() {
+      // Remove existing floating NO button if any
+      if (currentNoButton) {
+        currentNoButton.remove();
       }
+      
+      const container = document.getElementById('no-button-container');
+      const randomPhrase = noButtonPhrases[Math.floor(Math.random() * noButtonPhrases.length)];
+      
+      currentNoButton = document.createElement('button');
+      currentNoButton.className = 'no-btn';
+      currentNoButton.innerHTML = `<i class="fas fa-times"></i> ${randomPhrase}`;
+      currentNoButton.title = randomPhrase;
+      
+      // Random position (not too close to edges)
+      const maxX = window.innerWidth - 200;
+      const maxY = window.innerHeight - 100;
+      const randomX = Math.floor(Math.random() * maxX) + 50;
+      const randomY = Math.floor(Math.random() * maxY) + 50;
+      
+      currentNoButton.style.left = `${randomX}px`;
+      currentNoButton.style.top = `${randomY}px`;
+      
+      // Add click event
+      currentNoButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        noButtonClickCount++;
+        
+        // Vibrate on mobile
+        if (navigator.vibrate) {
+          navigator.vibrate(50);
+        }
+        
+        // Change phrase
+        const newPhrase = noButtonPhrases[Math.floor(Math.random() * noButtonPhrases.length)];
+        this.innerHTML = `<i class="fas fa-times"></i> ${newPhrase}`;
+        this.title = newPhrase;
+        
+        // Move to new random position
+        const newX = Math.floor(Math.random() * maxX) + 50;
+        const newY = Math.floor(Math.random() * maxY) + 50;
+        
+        // Animate movement
+        this.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        this.style.left = `${newX}px`;
+        this.style.top = `${newY}px`;
+        
+        // Update secret message after 3 clicks
+        const secretMessage = document.getElementById('secret-message');
+        if (noButtonClickCount >= 3 && !secretMessage.classList.contains('show')) {
+          secretMessage.classList.remove('hidden');
+          secretMessage.classList.add('show');
+          secretMessage.style.animation = 'fadeIn 0.5s ease-out';
+        }
+      });
+      
+      container.appendChild(currentNoButton);
+      isNoButtonFloating = true;
     }
     
     function createValentineHearts() {
@@ -1508,25 +1734,35 @@
     
     // ========== UPDATE PARTNER VIEW ==========
     function updatePartnerView() {
-      // Update sender name
-      document.getElementById('partner-sender-name').textContent = HeartMapState.data.yourName || 'Your Valentine';
+      // Update display elements with loaded data
+      document.getElementById('partner-name-display').textContent = HeartMapState.data.partnerName || 'My Love';
+      document.getElementById('partner-name-display-text').textContent = HeartMapState.data.partnerName || 'My Love';
+      document.getElementById('letter-date-display').textContent = HeartMapState.data.letter.date || 'February 14, 2024';
       
-      // Create preview text from letter
-      const letter = HeartMapState.data.letter;
-      let previewText = '';
+      // Update letter content displays
+      document.getElementById('letter-opening-display').textContent = HeartMapState.data.letter.opening || 'My love, the moment I met you...';
+      document.getElementById('letter-body-display').textContent = HeartMapState.data.letter.body || 'I love everything about you...';
+      document.getElementById('letter-promise-display').textContent = HeartMapState.data.letter.promise || 'I promise to always love you...';
+      document.getElementById('letter-closing-display').textContent = HeartMapState.data.letter.closing || 'With all my love...';
+      document.getElementById('letter-signature-display').textContent = HeartMapState.data.yourName || 'Your Valentine';
       
-      if (letter.opening) {
-        previewText = letter.opening.substring(0, 150) + '...';
-      } else if (letter.body) {
-        previewText = letter.body.substring(0, 150) + '...';
-      } else {
-        previewText = 'A heartfelt message awaits you...';
+      // Update memory displays
+      for (let i = 0; i < 3; i++) {
+        if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].image) {
+          const memoryDisplay = document.getElementById(`memory-${i+1}-display`);
+          memoryDisplay.innerHTML = `
+            <img src="${HeartMapState.data.memories[i].image}" 
+                 class="w-full h-full object-cover rounded-2xl"
+                 alt="Memory ${i+1}">
+          `;
+        }
+        if (HeartMapState.data.memories[i] && HeartMapState.data.memories[i].caption) {
+          document.getElementById(`memory-${i+1}-text-display`).textContent = HeartMapState.data.memories[i].caption;
+        }
       }
       
-      document.getElementById('partner-preview-text').textContent = previewText;
-      
-      // Update create response button
-      document.getElementById('create-response-btn').addEventListener('click', function() {
+      // Set up create your own button
+      document.getElementById('create-your-own-btn').addEventListener('click', function() {
         // Reset state for response
         HeartMapState.reset();
         HeartMapState.data.partnerName = HeartMapState.data.yourName; // Set partner to original sender
@@ -1535,9 +1771,6 @@
         // Remove view-only mode
         document.body.classList.remove('view-only');
         document.body.classList.add('creator-mode');
-        
-        // Hide partner view section
-        document.getElementById('partner-view-section').classList.add('hidden');
         
         // Navigate to greeting section
         navigateToSection('greeting');
@@ -1764,16 +1997,22 @@
       // Hide all sections
       document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
+        section.classList.remove('fade-in');
       });
       
       // Show the selected section
       const section = document.getElementById(sectionId);
       if (section) {
         section.classList.add('active');
+        // Add fade-in animation with a slight delay
+        setTimeout(() => {
+          section.classList.add('fade-in');
+        }, 50);
+        
         HeartMapState.currentSection = sectionId;
         
-        // Mark as completed if editing
-        if (!HeartMapState.completedSections.has(sectionId)) {
+        // Mark as completed if editing (but not for Valentine screen in view mode)
+        if (sectionId !== 'valentine-question' && !HeartMapState.completedSections.has(sectionId)) {
           HeartMapState.completedSections.add(sectionId);
           HeartMapState.save();
         }
@@ -1790,11 +2029,18 @@
       // Show only the current section
       document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
+        section.classList.remove('fade-in');
       });
       
       const currentSection = document.getElementById(HeartMapState.currentSection);
       if (currentSection) {
         currentSection.classList.add('active');
+        
+        // Add fade-in animation with a slight delay
+        setTimeout(() => {
+          currentSection.classList.add('fade-in');
+        }, 50);
+        
         window.scrollTo(0, 0);
       }
     }
@@ -1816,7 +2062,7 @@
     
     // ========== PROGRESS INDICATOR ==========
     function updateProgress() {
-      const totalSections = 5;
+      const totalSections = 6; // Now includes valentine-question
       const completed = HeartMapState.completedSections.size;
       const progress = (completed / totalSections) * 100;
       
